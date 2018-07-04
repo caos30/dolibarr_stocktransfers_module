@@ -1,0 +1,2 @@
+# dolibarr_stocktransfers_module
+The objective of this Dolibarr's module is to offer a more friendly interface than the Dolibarr native to transfer products from one warehouse to another of the company that owns Dolibarr. If you have installed the "Purchases" module (also from IMASDEWEB) then in case of lack of stock for the transfer, a button appears to create a new process to purchase the missing stock.
