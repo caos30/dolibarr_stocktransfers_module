@@ -1,0 +1,49 @@
+# Dolibarr language file - es_MX - stocktransfers
+CHARSET= UTF-8
+Module570002Name=Products - stocktransfers
+stocktransfersMenuTitle1=Nueva transferencia
+stocktransfersMenuTitle2=Transferencias
+stocktransfersBriefTitle=Transferencias de stock
+stocktransfersTransfer=Transferencia de stock
+stocktransfersDescription=Módulo para poder gestionar las transferencias de stock entre almacenes
+stocktransfersObjectTitle=Transferencias de stock entre almacenes (productos)
+stocktransfersSetup=Configuración del módulo Transferencias de stock
+stocktransfersSummary=Resúmen del módulo Transferencias de stock
+stocktransfersSetupNotComplete=La configuración del módulo Transferencias de stock está incompleta
+stocktransfersAboutInfo=Este módulo es desarrollado y distribuido por Sergi Rodrigues (caos30) para IMASDEWEB, <a href="https://imasdeweb.com">imasdeweb.com</a> (una futura compañía Dolibarr Preferred Partner ;o).
+stocktransfersMoreModules=Otros módulos del mismo autor están disponibles en la <a target="_blank" href="http://www.dolistore.com/search.php?search_query=%s">tienda oficial Dolistore</a>
+stocktransfersMoreModulesLink=<p><a target="_blank" href="http://www.dolistore.com/search.php?search_query=%s">Pulse aquí para ver una lista completa</a></p>  
+stocktransfersNewTransfer=Nueva transferencia
+stocktransfersDate1=Fecha de salida
+stocktransfersDate2=Fecha de llegada
+stocktransfersStatus0=Borrador
+stocktransfersStatus1=Enviado
+stocktransfersStatus2=Recibido
+stocktransfersShipper=Transportista
+stocktransfersNPackages=Núm. de bultos
+stocktransfersPDFdownload=Descargar PDF
+stocktransfersSetStatusSent=Cambiar estado a "Enviado"
+stocktransfersSetStatusReceived=Cambiar estado a "Recibido"
+stocktransfersSetStatusDraft=Regresar estado a "Borrador"
+stocktransfersErrorMsg01=Para poder cambiar el estado a "Enviado" debe establecer primero una "Fecha de salida".
+stocktransfersErrorMsg02=Para poder cambiar el estado a "Recibido" debe establecer primero una "Fecha de llegada".
+stocktransfersErrorMsg03=No hay suficientes unidades en el almacén de origen.
+stocktransfersErrorMsg04=URL incorrecta en alguno de los parámetros.
+stocktransfersGoShopping=Ir de compras
+stocktransfersAdjustStock=Corregir stock de este producto
+stocktransfersDelSure=Confirme que quiere eliminar esta transferencia. Es una acción irreversible.
+stocktransfersPDF1=FOLIO
+stocktransfersPDF2=SALIDA
+stocktransfersPDF3=LLEGADA
+stocktransfersPDF4=PROYECTO/DESTINO
+stocktransfersPDF5=CANTIDAD
+stocktransfersPDF6=# PARTE
+stocktransfersPDF7=DESCRIPCIÓN
+stocktransfersPDF8=Despachó
+stocktransfersPDF9=Transportó
+stocktransfersPDF10=Recibió
+stocktransfersTooltip1=Iniciar un proceso de compra del stock faltante
+stocktransfersConfig01=Para que un usuario tenga acceso a este módulo debe tener permisos para <b>Consultar productos</b> y para <b>Crear/modificar movimientos de stock</b>.
+stocktransfersBoxTitle=Últimas %s transferencias de stock
+stocktransfersProject=Proyecto
+stocktransfersUserGuide=Manual de usuario

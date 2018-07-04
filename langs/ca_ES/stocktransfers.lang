@@ -1,0 +1,49 @@
+# Dolibarr language file - ca_ES - stocktransfers
+CHARSET= UTF-8
+Module570002Name=Products - stocktransfers
+stocktransfersMenuTitle1=Nova transferència
+stocktransfersMenuTitle2=Transferències
+stocktransfersBriefTitle=Transferències de stock
+stocktransfersTransfer=Transferència de stock
+stocktransfersDescription=Mòdul per poder gestionar les transferèncias de stock entre magatzems
+stocktransfersObjectTitle=Transferèncias de stock entre magatzems (productes)
+stocktransfersSetup=Configuració del mòdulo Transferèncias de stock
+stocktransfersSummary=Resum del mòdul Transferèncias de stock
+stocktransfersSetupNotComplete=La configuració del mòdul Transferèncias de stock no està completa
+stocktransfersAboutInfo=Aquest mòdul és desenvolupat i distribuit per Sergi Rodrigues (caos30) per a IMASDEWEB, <a href="https://imasdeweb.com">imasdeweb.com</a> (una futura companyia Dolibarr Preferred Partner ;o).
+stocktransfersMoreModules=Altres mòduls del mateix autor són disponibles a la <a target="_blank" href="http://www.dolistore.com/search.php?search_query=%s">tenda oficial Dolistore</a>
+stocktransfersMoreModulesLink=<p><a target="_blank" href="http://www.dolistore.com/search.php?search_query=%s">Premeu aquí per veure una llista completa</a></p>  
+stocktransfersNewTransfer=Nova transferència
+stocktransfersDate1=Data de sortida
+stocktransfersDate2=Data d'arrivada
+stocktransfersStatus0=Esborrany
+stocktransfersStatus1=Enviat
+stocktransfersStatus2=Rebut
+stocktransfersShipper=Transportista
+stocktransfersNPackages=Nombre de paquets
+stocktransfersPDFdownload=Baixar PDF
+stocktransfersSetStatusSent=Canviar estat a "Enviat"
+stocktransfersSetStatusReceived=Canviar estat a "Rebut"
+stocktransfersSetStatusDraft=Retornar estat a "Esborrany"
+stocktransfersErrorMsg01=Per poder canviar l'estat a "Enviat" heu d'establir primer una "Data de sortida".
+stocktransfersErrorMsg02=Per poder canviar l'estat a "Rebut" heu d'establir primer una "Data d'arribada".
+stocktransfersErrorMsg03=No hi ha suficients unitats al magatzem d'origen.
+stocktransfersErrorMsg04=URL incorrecta en algun dels paràmetres.
+stocktransfersGoShopping=Anar de compres
+stocktransfersAdjustStock=Corregir stock d'aquest producte
+stocktransfersDelSure=Confirmeu que voleu eliminar aquesta transferència. És una acció irreversible.
+stocktransfersPDF1=FOLI
+stocktransfersPDF2=SORTIDA
+stocktransfersPDF3=ARRIBADA
+stocktransfersPDF4=PROJECTE/DESTÍ
+stocktransfersPDF5=QUANTITAT
+stocktransfersPDF6=# PART
+stocktransfersPDF7=DESCRIPCIÓ
+stocktransfersPDF8=Despatxat per
+stocktransfersPDF9=Transportat per
+stocktransfersPDF10=Rebut per
+stocktransfersTooltip1=Iniciar un procés de compra del stock que falta
+stocktransfersConfig01=Per a que un usuari tengui accés en aquest mòdul ha de tenir tots els permisos per <b>Consultar productes</b> i per <b>Crear/modificar moviments d'stock</b>
+stocktransfersBoxTitle=Darreres %s transferències d'stock
+stocktransfersProject=Projecte
+stocktransfersUserGuide=Manual d'usuari
