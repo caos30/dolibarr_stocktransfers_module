@@ -102,9 +102,9 @@ $langs->load("stocktransfers@stocktransfers");
 // == set document information
     $pdf->SetCreator('Dolibarr');
     $pdf->SetAuthor('User name');
-    $pdf->SetTitle('Transferencia de stock');
-    $pdf->SetSubject('Transferencia de stock');
-    $pdf->SetKeywords('Transferencia de stock');
+    $pdf->SetTitle('Stock Transfer Report');
+    $pdf->SetSubject('Stock Transfer');
+    $pdf->SetKeywords('Stock Transfer');
 
 // == set default header data
     //$pdf->SetHeaderData('../../../../UserFiles/admin/modulo_'.$modulo.'/fondo_bitllet.jpg', 180, 'Bitllet per a  '.$nombre.' - Colònia: '.$evento['titulo'], '');
@@ -163,7 +163,7 @@ $langs->load("stocktransfers@stocktransfers");
 // ---------------------------------------------------------
 
 // == Close and output PDF document
-    $title = 'Transferencia_de_stock__'.$transfer->date1.'__'.substr('0000'.$transfer->rowid,-4);
+    $title = $langs->trans('STFilename').'-'.$transfer->date1.'_'.substr('0000'.$transfer->rowid,-4);
     $file = urlencode($title).'.pdf';
     $pdf->Output($file, 'I');
 
