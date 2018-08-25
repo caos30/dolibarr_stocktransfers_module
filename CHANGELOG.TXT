@@ -2,6 +2,9 @@
         STOCKTRANSFERS MODULE CHANGELOG
 =====================================
 
+== 2018-08-03 v 1.5
+ - pdf view: improved the header specifying departure & destination info.
+
 == 2018-07-03 v 1.4
  - transfer_edit view: fixed an issue with dates, on days/months number lower than 10 (ie. 1/2/2018)
 
@@ -14,3 +17,5 @@
 
 == 2017-11-20 v 1.1
  - first version
+
+
