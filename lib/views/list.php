@@ -291,18 +291,18 @@
     ?>
         <tr>
             <?php
-                foreach($arrayfields as $f=>$field){ //  use this to render fancy tooltips stored on title attribute of a link class="classfortooltip" 
+                foreach($arrayfields as $f=>$field){
                     if (!empty($field['checked'])){
                         if ($f=='rowid'){
-                            print '<td><a href="transfer_edit.php?mainmenu=products&leftmenu=&rowid='.$ele[$f].'"><img src="'.DOL_URL_ROOT.'/theme/'.$conf->theme.'/img/object_bill.png" alt="" border="0"></a>';
-                            print ' <a href="transfer_edit.php?mainmenu=products&leftmenu=&rowid='.$ele[$f].'">#'.$ele['rowid'].'</a></td>';
+                            print '<td><a href="transfer_edit.php?mainmenu=products&leftmenu=&rowid='.$ele[$f].'" title="'.htmlspecialchars($langs->trans('Edit'),ENT_QUOTES).'"><img src="'.DOL_URL_ROOT.'/theme/'.$conf->theme.'/img/object_generic.png" alt="" border="0" style="margin-bottom:-5px;" /></a>';
+                            print ' <a href="transfer_edit.php?mainmenu=products&leftmenu=&rowid='.$ele[$f].'" title="'.htmlspecialchars($langs->trans('Edit'),ENT_QUOTES).'">#'.$ele['rowid'].'</a></td>';
                             
                         }else if ($f=='fk_depot1' || $f=='fk_depot2'){
                             if (!isset($ele[$f])){
                                 print '<td>&nbsp;</td>';
                             }else if (isset($depots[$ele[$f]])){
-                                print '<td><a href="#" onclick="js_filter_by(\''.$f.'\',\''.$ele[$f].'\');return false;"><img src="'.DOL_URL_ROOT.'/theme/'.$conf->theme.'/img/filter.png" border="0"></a>';
-                                print ' <a href="'.DOL_URL_ROOT.'/product/stock/card.php?id='.$ele[$f].'"><img src="'.DOL_URL_ROOT.'/theme/'.$conf->theme.'/img/object_company.png" border="0"></a>';
+                                print '<td><a href="#" onclick="js_filter_by(\''.$f.'\',\''.$ele[$f].'\');return false;" title="'.htmlspecialchars($langs->trans('Filter').' '.$langs->trans('Warehouse'),ENT_QUOTES).'"><img src="'.DOL_URL_ROOT.'/theme/'.$conf->theme.'/img/filter.png" border="0" style="margin-bottom:-5px;" /></a>';
+                                print ' <a href="'.DOL_URL_ROOT.'/product/stock/card.php?id='.$ele[$f].'" title="'.htmlspecialchars($langs->trans('WarehouseCard'),ENT_QUOTES).'"><img src="'.DOL_URL_ROOT.'/theme/'.$conf->theme.'/img/object_company.png" border="0" style="margin-bottom:-5px;" /></a>';
                                 print ' <a href="'.DOL_URL_ROOT.'/product/stock/card.php?id='.$ele[$f].'" title="'.str_replace('"','',$depots[$ele[$f]]['lieu'].' ('.$depots[$ele[$f]]['town'].')').'">'.$depots[$ele[$f]]['label'].'</a></td>';
                             }else{
                                 print '<td>#'.$ele[$f].'</td>';
@@ -311,8 +311,8 @@
                             if (empty($ele[$f])){
                                 print '<td>&nbsp;</td>';
                             }else if (isset($projects[$ele[$f]])){
-                                print '<td><a href="#" onclick="js_filter_by(\''.$f.'\',\''.$ele[$f].'\');return false;"><img src="'.DOL_URL_ROOT.'/theme/'.$conf->theme.'/img/filter.png" border="0"></a>';
-                                print ' <a href="'.DOL_URL_ROOT.'/projet/card.php?id='.$ele[$f].'"><img src="'.DOL_URL_ROOT.'/theme/'.$conf->theme.'/img/object_project.png" border="0"></a>';
+                                print '<td><a href="#" onclick="js_filter_by(\''.$f.'\',\''.$ele[$f].'\');return false;"><img src="'.DOL_URL_ROOT.'/theme/'.$conf->theme.'/img/filter.png" border="0" style="margin-bottom:-5px;" /></a>';
+                                print ' <a href="'.DOL_URL_ROOT.'/projet/card.php?id='.$ele[$f].'"><img src="'.DOL_URL_ROOT.'/theme/'.$conf->theme.'/img/object_project.png" border="0" style="margin-bottom:-5px;" /></a>';
                                 print ' <a href="'.DOL_URL_ROOT.'/projet/card.php?id='.$ele[$f].'">'.$projects[$ele[$f]]['title'].'</a></td>';
                             }else{
                                 print '<td>#'.$ele[$f].'</td>';
@@ -329,9 +329,15 @@
                             else
                                 print '<td>&nbsp;</td>';
                         }else if ($f=='n_products'){
-                            print '<td style="text-align:center;">'
+                            print '<td style="text-align:left;">'
+                                    .'<a href="transfer_pdf.php?id='.$ele['rowid'].'" target="_blank"><img src="'.DOL_URL_ROOT.'/theme/'.$conf->theme.'/img/pdf2.png" title="'.htmlspecialchars($langs->trans('stocktransfersPDFdownload'),ENT_QUOTES).'" style="margin-bottom:-5px;" /></a> '
                                     .($html_list_products!='' ? ' <img src="'.DOL_URL_ROOT.'/theme/'.$conf->theme.'/img/info.png" title="'.str_replace('"','',  htmlentities($html_list_products)).'" class="classfortooltip" style="margin-bottom:-5px;" /> ' : '')
-                                    .(isset($ele[$f]) ? intval($ele[$f]) : '').'</td>';
+                                    .(isset($ele[$f]) ? intval($ele[$f]) : '')
+                                    .'</td>';
+                        }else if ($f=='ts_create'){
+                            print '<td style="text-align:left;">'.(isset($ele[$f]) ? dol_print_date($ele[$f],'dayhour') : '').'</td>';
+                        }else if ($f=='date1'){
+                            print '<td style="text-align:left;">'.(isset($ele[$f]) ? dol_print_date($ele[$f],'day') : '').'</td>';
                         }else{
                             print '<td>'.(isset($ele[$f]) ? $ele[$f] : '').'</td>';
                         }

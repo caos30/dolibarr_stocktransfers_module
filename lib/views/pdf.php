@@ -66,12 +66,10 @@
 
     // == load depots
         $depots = array();
-        $resql = $db->query("SELECT rowid,label,town FROM ".MAIN_DB_PREFIX."entrepot");
+        $resql = $db->query("SELECT rowid,label,town,address FROM ".MAIN_DB_PREFIX."entrepot");
         if ($resql) {
             while($row = $resql->fetch_assoc()) $depots[$row['rowid']] = $row;
         }
-        $depot1_tit = isset($depots[$transfer->fk_depot1]) ? $depots[$transfer->fk_depot1]['town'] : 'Almacén '.$transfer->fk_depot1;
-        $depot2_tit = isset($depots[$transfer->fk_depot2]) ? $depots[$transfer->fk_depot2]['town'] : 'Almacén '.$transfer->fk_depot2;
         
     // == load products
         $products = array();
@@ -106,30 +104,61 @@
         
 ?>
 
-<table style="font-size:12px;" border="0">
+<table style="font-size:12px;" border="0" cellpadding="0">
     
     <!-- === HEADER === -->
     
     <tr>
         <td>
-            <table border="0">
+            <table border="0" cellpadding="5">
                 <tr>
-                    <td style="text-align:left;">
+                    <td style="text-align:left;" rowspan="2" width="30%">
                         <?php if (!empty($logo64)){ ?>
                         <img height="60" src="data:image/jpg;base64,<?= $logo64 ?>//Z" />
                         <?php } ?>
                     </td>
-                    <td>
-                        <table border="1" cellpadding="5">
+                    <td width="70%">
+                        <table border="0" cellpadding="0">
                             <tr>
-                                <td style="text-align:center;font-size:18px;"><?= $langs->trans('stocktransfersPDF1') ?></td>
-                                <td style="text-align:center;font-size:20px;color:red;font-weight:bold;"># <?= substr('0000'.$transfer->rowid,-4) ?></td>
+                                <td width="30%">&nbsp;</td>
+                                <td width="70%">
+                                    <table border="1" cellpadding="5">
+                                        <tr>
+                                            <td style="text-align:center;font-size:18px;"><?= $langs->trans('stocktransfersPDF1') ?></td>
+                                            <td style="text-align:center;font-size:20px;color:red;font-weight:bold;"># <?= substr('0000'.$transfer->rowid,-4) ?></td>
+                                        </tr>
+                                    </table>
+                                </td>
                             </tr>
                         </table>
-                        <p style="text-align:center;font-weight:bold;">
-                            <?= strtoupper(html_entity_decode($langs->trans('stocktransfersPDF2'))).' '.strtoupper($depot1_tit) ?> /
-                            <?= strtoupper(html_entity_decode($langs->trans('stocktransfersPDF3'))).' '.strtoupper($depot2_tit) ?>
-                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <table border="0" width="100%">
+                            <tr>
+                                <td style="text-align:right;font-weight:bold;" width="25%"><?= mb_strtoupper(html_entity_decode($langs->trans('stocktransfersPDF2'))).': ' ?></td>
+                                <td style="text-align:left;" width="75%">
+                            <?php   if (isset($depots[$transfer->fk_depot1])){ 
+                                        echo '['.$depots[$transfer->fk_depot1]['label'].'] '.$depots[$transfer->fk_depot1]['address'].' ('.$depots[$transfer->fk_depot1]['town'].')';
+                                    }else{
+                                        echo $langs->trans('Warehouse').' #'.$transfer->fk_depot1;
+                                    }
+                            ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:right;font-weight:bold;" width="25%"><?= mb_strtoupper(html_entity_decode($langs->trans('stocktransfersPDF3'))).': ' ?></td>
+                                <td style="text-align:left;" width="75%">
+                            <?php   if (isset($depots[$transfer->fk_depot2])){ 
+                                        echo '['.$depots[$transfer->fk_depot2]['label'].'] '.$depots[$transfer->fk_depot2]['address'].' ('.$depots[$transfer->fk_depot2]['town'].')';
+                                    }else{
+                                        echo $langs->trans('Warehouse').' #'.$transfer->fk_depot2;
+                                    }
+                            ?>
+                                </td>
+                            </tr>
+                        </table>
                     </td>
                 </tr>
             </table>        

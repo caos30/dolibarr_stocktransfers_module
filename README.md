@@ -75,6 +75,10 @@ As developers & translators:
 
  + transfer_edit view: fixed an issue with dates, on days/months number lower than 10 (ie. 1/2/2018)
 
+== 1.5 [2018-08-03]
+
+ + pdf view: improved the header specifying departure & destination info.
+
 
 ## To do
 
