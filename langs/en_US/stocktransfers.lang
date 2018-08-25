@@ -1,4 +1,4 @@
-# Dolibarr language file - en_EN - stocktransfers
+# Dolibarr language file - en_US - stocktransfers
 CHARSET= UTF-8
 Module570002Name=Product Stock Transfers
 stocktransfersMenuTitle1=New Stock Transfer
@@ -19,7 +19,7 @@ stocktransfersDate2=Arrival date
 stocktransfersStatus0=Draft
 stocktransfersStatus1=Sent
 stocktransfersStatus2=Received
-stocktransfersShipper=Shipper
+stocktransfersShipper=Driver
 stocktransfersNPackages=Number of packs
 stocktransfersPDFdownload=Download PDF
 stocktransfersSetStatusSent=Set status to <b>Sent</b>
@@ -39,7 +39,7 @@ stocktransfersPDF4=PROJECT/DESTINATION
 stocktransfersPDF5=QUANTITY
 stocktransfersPDF6=PART N°
 stocktransfersPDF7=DESCRIPTION
-stocktransfersPDF8=Dispatched by
+stocktransfersPDF8=Delivered by
 stocktransfersPDF9=Carried by
 stocktransfersPDF10=Received by
 stocktransfersTooltip1=Start a process of buying the missing stock
