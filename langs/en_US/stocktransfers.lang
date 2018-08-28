@@ -1,25 +1,25 @@
-# Dolibarr language file - en_EN - stocktransfers
+# Dolibarr language file - en_US - stocktransfers
 CHARSET= UTF-8
-Module570002Name=Products - stocktransfers
-stocktransfersMenuTitle1=New stock transfer
-stocktransfersMenuTitle2=Stock transfers
-stocktransfersBriefTitle=Transfers
-stocktransfersTransfer=Stock transfer
+Module570002Name=Product Stock Transfers
+stocktransfersMenuTitle1=New Stock Transfer
+stocktransfersMenuTitle2=Stock Transfers
+stocktransfersBriefTitle=Stock Transfers
+stocktransfersTransfer=Stock Transfer
 stocktransfersDescription=Module to manage stock transfers between company depots
 stocktransfersObjectTitle=Stock transfers between company depots (products)
 stocktransfersSetup=Stock transfers module setup
 stocktransfersSummary=Stock transfers summary
 stocktransfersSetupNotComplete=Stock transfers setup is not complete
-stocktransfersAboutInfo=This module is developped and distributed by Sergi Rodrigues (caos30) for IMASDEWEB, <a href="https://imasdeweb.com">imasdeweb.com</a> (a future Dolibarr Preferred Partner company ;o).
+stocktransfersAboutInfo=This module is developped and distributed by Sergi Rodrigues (caos30) for IMASDEWEB, <a href="https://imasdeweb.com" title="Opens in a new window">imasdeweb.com</a> (a future Dolibarr Preferred Partner company ;o).
 stocktransfersMoreModules=Other modules of same author are available on the official DoliStore market place...
-stocktransfersMoreModulesLink=<p><a target="_blank" href="http://www.dolistore.com/search.php?search_query=%s">Click here to see full list</a></p>  
+stocktransfersMoreModulesLink=<p><a title="Opens in a new window" target="_blank" href="http://www.dolistore.com/search.php?search_query=%s">Click here to see full list</a></p>  
 stocktransfersNewTransfer=New transfer
 stocktransfersDate1=Departure date
 stocktransfersDate2=Arrival date
 stocktransfersStatus0=Draft
 stocktransfersStatus1=Sent
 stocktransfersStatus2=Received
-stocktransfersShipper=Shipper
+stocktransfersShipper=Driver
 stocktransfersNPackages=Number of packs
 stocktransfersPDFdownload=Download PDF
 stocktransfersSetStatusSent=Set status to <b>Sent</b>
@@ -32,18 +32,38 @@ stocktransfersErrorMsg04=Wrong URL in any of the parameters.
 stocktransfersGoShopping=Go shopping
 stocktransfersAdjustStock=Correct stock for this product
 stocktransfersDelSure=Confirm that you want to delete this transfer. It is an irreversible action.
-stocktransfersPDF1=FOLIO
+stocktransfersPDF1=Transfer N°
 stocktransfersPDF2=DEPARTURE
 stocktransfersPDF3=DESTINATION
 stocktransfersPDF4=PROJECT/DESTINATION
 stocktransfersPDF5=QUANTITY
-stocktransfersPDF6=# PART
+stocktransfersPDF6=PART N°
 stocktransfersPDF7=DESCRIPTION
-stocktransfersPDF8=Dispatched by
+stocktransfersPDF8=Delivered by
 stocktransfersPDF9=Carried by
 stocktransfersPDF10=Received by
 stocktransfersTooltip1=Start a process of buying the missing stock
 stocktransfersConfig01=For a user to have access to this module he must have all the permissions to <b>See products</b> and to <b>Create/edit stock movements</b>.
 stocktransfersBoxTitle=Latest %s stock transfers
 stocktransfersProject=Project
-stocktransfersUserGuide=User guide
+stocktransfersUserGuide=User Guide
+purchasesMenuTitle3=Stock Transfers List
+WarehouseSource=Source Location
+WarehouseTarget=Target Location
+STLabelMovement=Stock Movement
+STStatus=Status
+stocktransfersStatus=Status
+STSave=Save
+STDelete=Delete
+STProductRef=Product
+STBatch=Batch
+STQty=Quantity
+STStock=Stock
+STAdd=Add Product
+STID=Transfer N°
+STDate=Date
+STLabel=Label
+STinventorycode=Inventory Code
+STProducts=Products
+STRemove=Remove
+STFilename=StockTransfer
