@@ -2,8 +2,14 @@
    STOCKTRANSFERS MODULE CHANGELOG
 =====================================
 
-== v 1.4 [2019-0613]
+== v 1.6 [2019-06-13]
  - upgraded to be fully compatible with Dolibarr 7.x 8.x & 9.0.x
+
+== v 1.5 [2018-08-03]
+ - pdf view: improved the header specifying departure & destination info.
+
+== v 1.4 [2018-07-03]
+- transfer_edit view: fixed an issue with dates, on days/months number lower than 10 (ie. 1/2/2018)
 
 == v 1.3
  - transfer edit page: easter egg to render the raw data of the transfer on database when double clicking a hidden link

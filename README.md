@@ -4,7 +4,7 @@
 
 The objective of this Dolibarr's module is to offer a more friendly interface than the Dolibarr native to transfer products from one warehouse to another of the company that owns Dolibarr. If you have installed the "Purchases" module (also from IMASDEWEB) then in case of lack of stock for the transfer, a button appears to create a new process to purchase the missing stock.
 
-The module allows the download of a PDF file with the list of products to be transferred and space below for the triple signature of the one who makes the shipment, the carrier and the one who will receive the products in the destination warehouse, usual "delivery note" in this type of transportation. 
+The module allows the download of a PDF file with the list of products to be transferred and space below for the triple signature of the one who makes the shipment, the carrier and the one who will receive the products in the destination warehouse, usual "delivery note" in this type of transportation.
 
 ## Interface language translations
 
@@ -16,7 +16,7 @@ Until now: English / Catalan / Castillian (spanish)
 
 ## Initial author and history
 
-Caos30 was the initial developer of this module, made for an specific customer on 2017. One year afterwards, caos30 decided in July 2018 to liberate the code of the module to make easy the contribution of other users, testers and developers. The final target is to be added to the core of the Dolibarr CMS, when the module be enough mature. 
+Caos30 was the initial developer of this module, made for an specific customer on 2017. One year afterwards, caos30 decided in July 2018 to liberate the code of the module to make easy the contribution of other users, testers and developers. The final target is to be added to the core of the Dolibarr CMS, when the module be enough mature.
 
 ## Installation & user guide
 
@@ -52,10 +52,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 ## Team
 
-As developers & translators: 
+As developers & translators:
 
  - DEV & translation to CA, EN, ES: Sergi Rodrigues (from 2017)
- 
+
 ## Versions Log
 
 == 1.1 [2017-11-20]
@@ -75,9 +75,14 @@ As developers & translators:
 
  + transfer_edit view: fixed an issue with dates, on days/months number lower than 10 (ie. 1/2/2018)
 
-== 1.5 [2018-08-03]
+== 1.5 [2018-08-27]
 
  + pdf view: improved the header specifying departure & destination info.
+ + improvements on english translations. also added new text labels.
+
+== 1.6 [2019-06-13]
+
+ + upgraded to be fully compatible with Dolibarr 7.x 8.x & 9.0.x
 
 
 ## To do

@@ -130,7 +130,7 @@
         <table class="border" style="width:100%;">
             <?php if ($transfer->rowid > 0){ ?>
             <tr>
-                <td class="titlefield fieldrequired">Id</td>
+                <td class="titlefield fieldrequired"><?= $langs->trans('STID') ?></td>
                 <td>#<?= $transfer->rowid ?></td>
             </tr>
             <?php } ?>
@@ -172,20 +172,20 @@
                 </td>
             </tr>
             <tr>
-                <td class="titlefield"><?= $langs->trans("InventoryCode") ?></td>
+                <td class="titlefield"><?= $langs->trans("STinventorycode") ?></td>
                 <td>
                     <input type="text" name="inventorycode" style="width:300px;" maxlength="128" value="<?= dol_escape_htmltag($transfer->inventorycode) ?>">
                 </td>
             </tr>
             <?php if ($transfer->rowid > 0){ ?>
             <tr>
-                <td><?= $langs->trans("LabelMovement") ?></td>
+                <td><?= $langs->trans("STLabelMovement") ?></td>
                 <td>
                     <input type="text" name="label"  style="width:300px;" maxlength="255" value="<?= dol_escape_htmltag($labelmovement) ?>">
                 </td>
             </tr>
             <tr>
-                <td class="titlefield fieldrequired"><?= $langs->trans("Status") ?></td>
+                <td class="titlefield fieldrequired"><?= $langs->trans("STStatus") ?></td>
                 <td>
                     <?php
                         $picto = $transfer->status == '1' ? '3' : ( $transfer->status == '2' ? '4' : '0') ;
@@ -218,11 +218,11 @@
         <div class="center">
 
             <!-- save button -->
-            <a href="#" class="button" onclick="js_validate_form('transfer_card_form');return false;"><?= $transfer->rowid > 0 ? dol_escape_htmltag($langs->trans('Save')) : dol_escape_htmltag($langs->trans('CreateDraft')) ?></a>
+            <a href="#" class="button" onclick="js_validate_form('transfer_card_form');return false;"><?= $transfer->rowid > 0 ? dol_escape_htmltag($langs->trans('STSave')) : dol_escape_htmltag($langs->trans('CreateDraft')) ?></a>
 
             <!-- delete button -->
             <?php if ($transfer->rowid > 0 && $transfer->status == '0'){ ?>
-            <a href="#" class="button" onclick="js_delete_transfer();return false;"><?= dol_escape_htmltag($langs->trans('Delete')) ?></a>
+            <a href="#" class="button" onclick="js_delete_transfer();return false;"><?= dol_escape_htmltag($langs->trans('STDelete')) ?></a>
             <?php } ?>
 
             <!-- pdf button -->
@@ -274,13 +274,13 @@
             <table class="liste">
                 <tr class="liste_titre">
                 <?php
-                    print getTitleFieldOfList($langs->trans('ProductRef'),0,$_SERVER["PHP_SELF"],'',$param,'','class="tagtd maxwidthonsmartphone"',$sortfield,$sortorder);
+                    print getTitleFieldOfList($langs->trans('STProductRef'),0,$_SERVER["PHP_SELF"],'',$param,'','class="tagtd maxwidthonsmartphone"',$sortfield,$sortorder);
                     if ($conf->productbatch->enabled) {
-                     print getTitleFieldOfList($langs->trans('Batch'),0,$_SERVER["PHP_SELF"],'',$param,'','class="tagtd maxwidthonsmartphone"',$sortfield,$sortorder);
+                     print getTitleFieldOfList($langs->trans('STBatch'),0,$_SERVER["PHP_SELF"],'',$param,'','class="tagtd maxwidthonsmartphone"',$sortfield,$sortorder);
                     }
-                    print getTitleFieldOfList($langs->trans('Qty'),0,$_SERVER["PHP_SELF"],'',$param,'','align="center" class="tagtd maxwidthonsmartphone"',$sortfield,$sortorder);
+                    print getTitleFieldOfList($langs->trans('STQty'),0,$_SERVER["PHP_SELF"],'',$param,'','align="center" class="tagtd maxwidthonsmartphone"',$sortfield,$sortorder);
                     if ($transfer->status == '0')
-                    print getTitleFieldOfList($langs->trans('Stock'),0,$_SERVER["PHP_SELF"],'',$param,'','align="center" class="tagtd maxwidthonsmartphone"',$sortfield,$sortorder);
+                    print getTitleFieldOfList($langs->trans('STStock'),0,$_SERVER["PHP_SELF"],'',$param,'','align="center" class="tagtd maxwidthonsmartphone"',$sortfield,$sortorder);
                     print getTitleFieldOfList('',0);
                 ?>
                 </tr>
@@ -315,7 +315,7 @@
                     <td>
                         <?php if ($transfer->status == '0' ){ ?>
                         <a href="#" onclick="js_del_line('<?= $pid ?>');return false;" style="display:inline-block;height:25px;float:left;margin:0px 4px;">
-                            <?= img_delete($langs->trans("Remove")) ?></a>
+                            <?= img_delete($langs->trans("STRemove")) ?></a>
 
                         <a href="<?= DOL_URL_ROOT ?>/product/stock/product.php?id=<?= $pid ?>&action=correction&id_entrepot=<?= $transfer->fk_depot1 ?>" target="_blank" style="display:inline-block;height:25px;float:left;margin:0px 4px;">
                             <?= img_warning($langs->trans("stocktransfersAdjustStock")) ?></a>
@@ -355,7 +355,7 @@
 
                     <!-- ========= Button to add ========= -->
                     <td style='text-align:left;'>
-                        <input type="submit" class="button" value="<?= dol_escape_htmltag($langs->trans("Add")) ?>">
+                        <input type="submit" class="button" value="<?= dol_escape_htmltag($langs->trans("STAdd")) ?>">
                     </td>
                 </tr>
 

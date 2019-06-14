@@ -50,10 +50,10 @@
 
     // == object fields
         $arrayfields=array(
-            'rowid'=>array('label'=>$langs->trans("ID"), 'checked'=>1, 'style'=>'width:4rem;'),
-            'ts_create'=>array('label'=>$langs->trans("Date"), 'checked'=>1),
-            'label'=>array('label'=>$langs->trans("Label"), 'checked'=>1),
-            'inventorycode'=>array('label'=>$langs->trans("inventorycode"), 'checked'=>0),
+            'rowid'=>array('label'=>$langs->trans("STID"), 'checked'=>1, 'style'=>'width:4rem;'),
+            'ts_create'=>array('label'=>$langs->trans("STDate"), 'checked'=>1),
+            'label'=>array('label'=>$langs->trans("STLabel"), 'checked'=>1),
+            'inventorycode'=>array('label'=>$langs->trans("STinventorycode"), 'checked'=>0),
             'fk_depot1'=>array('label'=>$langs->trans("WarehouseSource"), 'checked'=>1),
             'fk_depot2'=>array('label'=>$langs->trans("WarehouseTarget"), 'checked'=>1),
             'date1'=>array('label'=>$langs->trans("stocktransfersDate1"), 'checked'=>1),
@@ -61,8 +61,8 @@
             'fk_project'=>array('label'=>$langs->trans("stocktransfersProject"), 'checked'=>1),
             'shipper'=>array('label'=>$langs->trans("stocktransfersShipper"), 'checked'=>0),
             'n_package'=>array('label'=>$langs->trans("stocktransfersNPackages"), 'checked'=>0),
-            'n_products'=>array('label'=>$langs->trans("Products"), 'checked'=>1,  'style'=>'width:4rem;'),
-            'status'=>array('label'=>$langs->trans("Status"), 'checked'=>1),
+            'n_products'=>array('label'=>$langs->trans("STProducts"), 'checked'=>1,  'style'=>'width:4rem;'),
+            'status'=>array('label'=>$langs->trans("STStatus"), 'checked'=>1),
         );
         if (empty($conf->projet->enabled)) unset($arrayfields['fk_project']);
 
@@ -375,7 +375,7 @@
         $user_lang = substr($langs->defaultlang,0,2);
     ?>
     <div style="margin: 2rem 0;color: #ccc;display: inline-block;border-top: 1px #ccc solid;border-bottom: 1px #ccc solid;background-color: rgba(0,0,0,0.05);padding: 0.5rem;">
-        <span class="help">Stock transfers <?= $module->version ?>
+        <span class="help">Stock Transfers <?= $module->version ?>
            &nbsp; | &nbsp; <a href="https://imasdeweb.com/index.php?pag=m_blog&gad=detalle_entrada&entry=<?= $user_lang == 'es' ? '38':'39'?>" target="_blank"><?= $langs->trans('stocktransfersUserGuide') ?></a>
         </span>
     </div>
