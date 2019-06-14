@@ -76,7 +76,7 @@ $head[$h][1] = $langs->trans("About");
 $head[$h][2] = 'tababout';
 $h++;
 
-$search_query = 'proyectos@imasdeweb.com';
+$search_query = 'bimex';
 
 dol_fiche_head($head, 'tababout', '');
 

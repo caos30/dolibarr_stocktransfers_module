@@ -28,22 +28,22 @@
 
     // == ACTIVATE the ERROR reporting
     //ini_set('display_errors',1);ini_set('display_startup_errors',1);error_reporting(-1);
-    
+
 /***************************************************
- * 
+ *
  *	Prepare data
- * 
+ *
 ****************************************************/
 
     // == misc
         $now=dol_now();
         $socid = $user->societe_id > 0 ? $user->societe_id : 0;
-                
+
         $form = new Form($db);
         $formproduct = new FormProduct($db);
-        if (!empty($conf->projet->enabled))  
+        if (!empty($conf->projet->enabled))
             $formproject = new FormProjets($db);
-        else 
+        else
             $formproject = null;
         $productstatic = new Product($db);
         //$transfer = new StockTransfer($db);
@@ -52,6 +52,8 @@
         $sortfield = GETPOST('sortfield','alpha');
         $sortorder = GETPOST('sortorder','alpha');
         $page = GETPOST('page','int');
+        if (empty($page)) $page = 0;
+
         if (!$sortfield) {
             $sortfield = 'p.ref';
         }
@@ -60,24 +62,26 @@
         }
         $limit = GETPOST('limit') ? GETPOST('limit','int') : $conf->liste_limit;
         $offset = $limit * $page ;
-        
+
         if (! empty($conf->global->STOCK_SUPPORTS_SERVICES)) $filtertype='';
         $limit = $conf->global->PRODUIT_LIMIT_SIZE <= 0 ? '' : $conf->global->PRODUIT_LIMIT_SIZE;
 
     // == load depots
         $depots = array();
-        $resql = $db->query("SELECT rowid,label,town,address FROM ".MAIN_DB_PREFIX."entrepot");
+        $resql = $db->query("SELECT rowid,label,town FROM ".MAIN_DB_PREFIX."entrepot");
         if ($resql) {
             while($row = $resql->fetch_assoc()) $depots[$row['rowid']] = $row;
         }
-        
+        $depot1_tit = isset($depots[$transfer->fk_depot1]) ? $depots[$transfer->fk_depot1]['town'] : 'Almacén '.$transfer->fk_depot1;
+        $depot2_tit = isset($depots[$transfer->fk_depot2]) ? $depots[$transfer->fk_depot2]['town'] : 'Almacén '.$transfer->fk_depot2;
+
     // == load products
         $products = array();
         $resql = $db->query("SELECT rowid,label FROM ".MAIN_DB_PREFIX."product");
         if ($resql) {
             while($row = $resql->fetch_assoc()) $products[$row['rowid']] = $row;
         }
-        
+
     // == load project
         $project = array();
         $resql = $db->query("SELECT rowid,title FROM ".MAIN_DB_PREFIX."projet WHERE rowid=".$transfer->fk_project);
@@ -88,87 +92,56 @@
 
     // == prepare logo
         if ( $mysoc->logo && file_exists($conf->mycompany->dir_output.'/logos/thumbs/'.$mysoc->logo_small) ) {
-            $logo64 = base64_encode(file_get_contents($conf->mycompany->dir_output.'/logos/thumbs/'.$mysoc->logo_small));
+            $logo_path = $conf->mycompany->dir_output.'/logos/thumbs/'.$mysoc->logo_small;
         }else if (is_readable(DOL_DOCUMENT_ROOT.'/theme/dolibarr_logo.png')){
-            $logo64 = base64_encode(file_get_contents(DOL_DOCUMENT_ROOT.'/theme/dolibarr_logo.png'));
+            $logo_path = DOL_DOCUMENT_ROOT.'/theme/dolibarr_logo.png';
         }else{
-            $logo64 = '';
+            $logo_path = '';
         }
 
-        
+
 /***************************************************
- * 
+ *
  *	View
- * 
+ *
 ****************************************************/
-        
+
 ?>
 
-<table style="font-size:12px;" border="0" cellpadding="0">
-    
+<table style="font-size:12px;" border="0">
+
     <!-- === HEADER === -->
-    
+
     <tr>
         <td>
-            <table border="0" cellpadding="5">
+            <table border="0">
                 <tr>
-                    <td style="text-align:left;" rowspan="2" width="30%">
-                        <?php if (!empty($logo64)){ ?>
-                        <img height="60" src="data:image/jpg;base64,<?= $logo64 ?>//Z" />
+                    <td style="text-align:left;">
+                        <?php if ($logo_path!=''){  ?>
+                        <img height="60" src="<?= $logo_path ?>" />
                         <?php } ?>
                     </td>
-                    <td width="70%">
-                        <table border="0" cellpadding="0">
-                            <tr>
-                                <td width="30%">&nbsp;</td>
-                                <td width="70%">
-                                    <table border="1" cellpadding="5">
-                                        <tr>
-                                            <td style="text-align:center;font-size:18px;"><?= $langs->trans('stocktransfersPDF1') ?></td>
-                                            <td style="text-align:center;font-size:20px;color:red;font-weight:bold;"># <?= substr('0000'.$transfer->rowid,-4) ?></td>
-                                        </tr>
-                                    </table>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-                <tr>
                     <td>
-                        <table border="0" width="100%">
+                        <table border="1" cellpadding="5">
                             <tr>
-                                <td style="text-align:right;font-weight:bold;" width="25%"><?= mb_strtoupper(html_entity_decode($langs->trans('stocktransfersPDF2'))).': ' ?></td>
-                                <td style="text-align:left;" width="75%">
-                            <?php   if (isset($depots[$transfer->fk_depot1])){ 
-                                        echo '['.$depots[$transfer->fk_depot1]['label'].'] '.$depots[$transfer->fk_depot1]['address'].' ('.$depots[$transfer->fk_depot1]['town'].')';
-                                    }else{
-                                        echo $langs->trans('Warehouse').' #'.$transfer->fk_depot1;
-                                    }
-                            ?>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="text-align:right;font-weight:bold;" width="25%"><?= mb_strtoupper(html_entity_decode($langs->trans('stocktransfersPDF3'))).': ' ?></td>
-                                <td style="text-align:left;" width="75%">
-                            <?php   if (isset($depots[$transfer->fk_depot2])){ 
-                                        echo '['.$depots[$transfer->fk_depot2]['label'].'] '.$depots[$transfer->fk_depot2]['address'].' ('.$depots[$transfer->fk_depot2]['town'].')';
-                                    }else{
-                                        echo $langs->trans('Warehouse').' #'.$transfer->fk_depot2;
-                                    }
-                            ?>
-                                </td>
+                                <td style="text-align:center;font-size:18px;"><?= $langs->trans('stocktransfersPDF1') ?></td>
+                                <td style="text-align:center;font-size:20px;color:red;font-weight:bold;"># <?= substr('0000'.$transfer->rowid,-4) ?></td>
                             </tr>
                         </table>
+                        <p style="text-align:center;font-weight:bold;">
+                            <?= strtoupper(html_entity_decode($langs->trans('stocktransfersPDF2'))).' '.strtoupper($depot1_tit) ?> /
+                            <?= strtoupper(html_entity_decode($langs->trans('stocktransfersPDF3'))).' '.strtoupper($depot2_tit) ?>
+                        </p>
                     </td>
                 </tr>
-            </table>        
+            </table>
         </td>
     </tr>
-    
+
     <tr><td><p>&nbsp;</p></td></tr>
-    
+
     <!-- === HEADER 2 === -->
-    
+
     <tr>
         <td>
             <table border="1" cellpadding="3">
@@ -189,10 +162,10 @@
     </tr>
 
     <tr><td><p>&nbsp;<br />&nbsp;</p></td></tr>
-    
-    
+
+
     <!-- === PRODUCT LIST === -->
-    
+
     <tr>
         <td>
             <table border="1" cellpadding="2">
@@ -208,7 +181,7 @@
                     <td width="60%" style="text-align:left;"><?= $products[$p['id']]['label'] ?></td>
                 </tr>
                 <?php } ?>
-                
+
                 <?php for($ii=0 ; $ii < (20 - count($transfer->products)); $ii++){ ?>
                 <tr>
                     <td width="15%" style="text-align:center;">&nbsp;</td>
@@ -220,11 +193,11 @@
         </td>
     </tr>
 
-    
+
     <!-- === HEADER 2 === -->
-    
+
     <tr><td><p>&nbsp;<br />&nbsp;</p><p>&nbsp;<br />&nbsp;</p></td></tr>
-    
+
     <tr>
         <td>
             <table border="0" cellpadding="5">
@@ -244,8 +217,6 @@
     </tr>
 
     <tr><td><p>&nbsp;<br />&nbsp;</p></td></tr>
-    
-    
+
+
 </table>
-
-

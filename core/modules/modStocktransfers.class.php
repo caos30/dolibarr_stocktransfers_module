@@ -40,7 +40,7 @@ class modStockTransfers extends DolibarrModules
 	 *   Constructor. Define names, constants, directories, boxes, permissions
 	 *
 	 *   @param		DoliDB		$db		Database handler
-	 */ 
+	 */
 	function __construct($db)
 	{
                 global $langs,$conf;
@@ -63,7 +63,7 @@ class modStockTransfers extends DolibarrModules
                 $this->editor_url = 'https://imasdeweb.com';
 		$this->editor_web = 'imasdeweb.com';
 		// Possible values for version are: 'development', 'experimental', 'dolibarr' or version
-		$this->version = '1.2 - '.DOL_VERSION;
+		$this->version = '1.4 [Dolibarr 5-9.0.x]';
 		// Key used in llx_const table to save module status enabled/disabled (where MYMODULE is value of property name of module in uppercase)
 		$this->const_name = 'MAIN_MODULE_'.strtoupper($this->name);
 		// Where to store the module in setup page (0=common,1=interface,2=others,3=very specific)
@@ -139,7 +139,7 @@ class modStockTransfers extends DolibarrModules
 
                 // Dictionaries
                         $this->dictionaries=array();
-                        
+
                 /* Example:
                 $this->dictionaries=array(
                     'langs'=>'mylangfile@mymodule',
@@ -182,85 +182,42 @@ class modStockTransfers extends DolibarrModules
 		// = Main menu entries
 		$this->menus = array();			// List of menus to add
 		$r=0;
-                
-                // = Left menu entrie uder 'mainmenu'
-                // = doc: https://wiki.dolibarr.org/index.php/Module_development#Define_your_entries_in_menu_.28optional.29
-                
-                $this->menu[$r]=array(	
-                                    'fk_menu'=>'fk_mainmenu=products,fk_leftmenu=stock', // Use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode of parent menu
-                                    'type'=>'left', // This is a Left menu entry
-                                    'titre'=>'stocktransfersMenuTitle2',
-                                    'mainmenu'=>'products',
-                                    'leftmenu'=>'stock',
-                                    'url'=>'/stocktransfers/transfer_list.php',
-                                    'langs'=>'stocktransfers@stocktransfers',	// Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
-                                    'position'=>4,
-                                    'enabled'=>'1', // Define condition to show or hide menu entry. Use '$conf->mymodule->enabled' if entry must be visible if module is enabled.
-                                    'perms'=>'($user->rights->stock->mouvement->lire&&$user->rights->produit)', // Use 'perms'=>'$user->rights->mymodule->level1->level2' if you want your menu with a permission rules
-                                    'target'=>'',
-                                    'user'=>0);
-                
-		$r++;
-                
-                $this->menu[$r]=array(	
-                                    'fk_menu'=>'fk_mainmenu=products,fk_leftmenu=stock', // Use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode of parent menu
-                                    'type'=>'left', // This is a Left menu entry
-                                    'titre'=>'stocktransfersMenuTitle1',
-                                    'mainmenu'=>'products',
-                                    'leftmenu'=>'stock',
-                                    'url'=>'/stocktransfers/transfer_edit.php',
-                                    'langs'=>'stocktransfers@stocktransfers',	// Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
-                                    'position'=>5,
-                                    'enabled'=>'1', // Define condition to show or hide menu entry. Use '$conf->mymodule->enabled' if entry must be visible if module is enabled.
-                                    'perms'=>'($user->rights->stock->mouvement->creer&&$user->rights->produit)', // Use 'perms'=>'$user->rights->mymodule->level1->level2' if you want your menu with a permission rules
-                                    'target'=>'',
-                                    'user'=>0);
-                
-		$r++;
-                
-                // Example to declare a Left Menu entry into an existing Top menu entry:
-		// $this->menu[$r]=array(	'fk_menu'=>'fk_mainmenu=xxx',		    // '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
-		//				'type'=>'left',			                // This is a Left menu entry
-		//				'titre'=>'MyModule left menu',
-		//				'mainmenu'=>'xxx',
-		//				'leftmenu'=>'mymodule',
-		//				'url'=>'/mymodule/pagelevel2.php',
-		//				'langs'=>'mylangfile@mymodule',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
-		//				'position'=>100,
-		//				'enabled'=>'$conf->mymodule->enabled',  // Define condition to show or hide menu entry. Use '$conf->mymodule->enabled' if entry must be visible if module is enabled. Use '$leftmenu==\'system\'' to show if leftmenu system is selected.
-		//				'perms'=>'1',			                // Use 'perms'=>'$user->rights->mymodule->level1->level2' if you want your menu with a permission rules
-		//				'target'=>'',
-		//				'user'=>2);				                // 0=Menu for internal users, 1=external users, 2=both
-		// $r++;
-                
-		// Imports
-		//--------
 
-		$r=0;
-                /*
-		// Import bank movements
+            // = Left menu entrie uder 'mainmenu'
+            // = doc: https://wiki.dolibarr.org/index.php/Module_development#Define_your_entries_in_menu_.28optional.29
+
+            $this->menu[$r]=array(
+                                'fk_menu'=>'fk_mainmenu=products,fk_leftmenu=stock', // Use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode of parent menu
+                                'type'=>'left', // This is a Left menu entry
+                                'titre'=>'stocktransfersMenuTitle2',
+                                'mainmenu'=>'products',
+                                'leftmenu'=>'stock',
+                                'url'=>'/stocktransfers/transfer_list.php',
+                                'langs'=>'stocktransfers@stocktransfers',	// Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
+                                'position'=>4,
+                                'enabled'=>'1', // Define condition to show or hide menu entry. Use '$conf->mymodule->enabled' if entry must be visible if module is enabled.
+                                'perms'=>'($user->rights->stock->mouvement->lire&&$user->rights->produit)', // Use 'perms'=>'$user->rights->mymodule->level1->level2' if you want your menu with a permission rules
+                                'target'=>'',
+                                'user'=>0);
+
 		$r++;
-		$this->import_code[$r] = $this->rights_class.'_'.$r;
-		$this->import_name[$r] = 'Bank';
-		$this->import_label[$r]= 'stocktransfersObjectTitle';	// Translation key
-		$this->import_icon[$r]=$this->picto;
-		$this->import_entities_array[$r]=array();		// We define here only fields that use another icon that the one defined into import_icon
-		$this->import_tables_array[$r]=array('e'=>MAIN_DB_PREFIX.'bank');
-		$this->import_tables_creator_array[$r]= array(); //array('e'=>'fk_user_author');
-		$this->import_fields_array[$r]=array('e.datev'=>"Date value",'e.dateo'=>"Date operation",
-				'e.amount'=>"Amount",'e.label'=>"Label"
-		);
-                $this->import_fieldshidden_array[$r]=array();
-		$this->import_convertvalue_array[$r]=array(
-				//'e.fk_pays'=>array('rule'=>'fetchidfromcodeid','classfile'=>'/core/class/ccountry.class.php','class'=>'Ccountry','method'=>'fetch','dict'=>'DictionaryCountry')
-		);
-		$this->import_regex_array[$r]=array(); //array('e.statut'=>'^[0|1]');
-                $this->import_updatekeys_array[$r]=array();
-		$this->import_examplevalues_array[$r]=array('e.datev'=>"2017-05-27",'e.dateo'=>"2017-05-27",
-				'e.amount'=>"-300.00",'e.label'=>"Card payment in OXXO"
-		);
-                */
-                
+
+	        $this->menu[$r]=array(
+	                            'fk_menu'=>'fk_mainmenu=products,fk_leftmenu=stock', // Use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode of parent menu
+	                            'type'=>'left', // This is a Left menu entry
+	                            'titre'=>'stocktransfersMenuTitle1',
+	                            'mainmenu'=>'products',
+	                            'leftmenu'=>'stock',
+	                            'url'=>'/stocktransfers/transfer_edit.php',
+	                            'langs'=>'stocktransfers@stocktransfers',	// Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
+	                            'position'=>5,
+	                            'enabled'=>'1', // Define condition to show or hide menu entry. Use '$conf->mymodule->enabled' if entry must be visible if module is enabled.
+	                            'perms'=>'($user->rights->stock->mouvement->creer&&$user->rights->produit)', // Use 'perms'=>'$user->rights->mymodule->level1->level2' if you want your menu with a permission rules
+	                            'target'=>'',
+	                            'user'=>0);
+
+		$r++;
+
 	}
 
 	/**
@@ -273,11 +230,11 @@ class modStockTransfers extends DolibarrModules
 	 */
 	function init($options='')
 	{
-                
+
         	$sql = array();
 
 		$result = $this->_load_tables('/stocktransfers/sql/');
-                
+
 		return $this->_init($sql, $options);
 	}
 

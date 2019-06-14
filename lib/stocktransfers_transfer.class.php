@@ -40,7 +40,7 @@ class StockTransfer extends CommonObject
     public $element='transfer';
     public $table_element='stocktransfers_transfers';
     public $picto='stocktransfers';
-    
+
     var $rowid;
     var $ts_create;
     var $fk_depot1;
@@ -54,29 +54,29 @@ class StockTransfer extends CommonObject
     var $shipper;
     var $n_package = 1;
     var $status = '0'; // 0->draft, 1->validated-not-delivered, 2->delivered
-    
+
     var $s_products = '';
     var $products = array();
-    
+
     var $s;
-    
+
     const STATUS_DRAFT = 0;
     const STATUS_VALIDATED = 1;
     const STATUS_DELIVERED = 2;
-    
+
     /**
      *      \brief      Constructor
      *      \param      DB      Database handler
      */
-    function __construct($DB) 
+    function __construct($DB)
     {
         global $conf;
         $this->db = $DB;
-        
+
         return 1;
     }
 
-	
+
     /**
      *      \brief      Create in database
      *      \param      user        	User that create
@@ -113,9 +113,9 @@ class StockTransfer extends CommonObject
             $sql.= "date2,";
             $sql.= "shipper,";
             $sql.= "n_package";
-		
+
             $sql.= ") VALUES (";
-        
+
             $sql.= " '".$user->id."',";
             $sql.= " ".($this->fk_project ? "'".intval($this->fk_project)."'" : '0' ).",";
             $sql.= " ".($this->label ? "'".$this->db->escape($this->label)."'" : "'Nueva transferencia'").",";
@@ -132,7 +132,7 @@ class StockTransfer extends CommonObject
             $this->db->begin();
 
             dol_syslog(get_class($this)."::create sql=".$sql, LOG_DEBUG);
-                
+
         // run SQL
             $resql=$this->db->query($sql);
             if (! $resql) { $error++; $this->errors[]="Error ".$this->db->lasterror(); }
@@ -150,7 +150,7 @@ class StockTransfer extends CommonObject
                             {
                         dol_syslog(get_class($this)."::create ".$errmsg, LOG_ERR);
                         $this->error.=($this->error?', '.$errmsg:$errmsg);
-                            }	
+                            }
                             $this->db->rollback();
                             return -1*$error;
                     }
@@ -161,7 +161,7 @@ class StockTransfer extends CommonObject
                     }
     }
 
-    
+
     /**
      *    \brief      Load object in memory from database
      *    \param      id          id object
@@ -186,13 +186,13 @@ class StockTransfer extends CommonObject
                 /*
                 $this->rowid = $obj->rowid;
                 $this->ts_create = $obj->pattern;
-                 * 
+                 *
                  */
             }
             $this->db->free($resql);
-            
+
             $this->unserializeProducts();
-            
+
             return 1;
         }
         else
@@ -202,7 +202,7 @@ class StockTransfer extends CommonObject
             return -1;
         }
     }
-    
+
 
     /**
      *      \brief      Update database
@@ -231,20 +231,24 @@ class StockTransfer extends CommonObject
             $sql.= "inventorycode=".($this->inventorycode ? "'".$this->db->escape($this->inventorycode)."'" : 'NULL').", ";
             $sql.= "fk_depot1=".($this->fk_depot1 ? "'".intval($this->fk_depot1)."'" : '0' ).",";
             $sql.= "fk_depot2=".($this->fk_depot2 ? "'".intval($this->fk_depot2)."'" : '0' ).",";
-            $sql.= "date1=".($this->date1 ? "'".$this->date1."'" : 'NULL').",";
-            $sql.= "date2=".($this->date2 ? "'".$this->date2."'" : 'NULL').",";
+            if (!empty($this->date1))
+            $sql.= "date1=STR_TO_DATE('".str_replace('-','',$this->date1)."','%Y%m%d'), "; // 20190613
+            if (!empty($this->date2))
+            $sql.= "date2=STR_TO_DATE('".str_replace('-','',$this->date2)."','%Y%m%d'), "; // 20190613
             $sql.= "shipper=".($this->shipper ? "'".$this->db->escape($this->shipper)."'" : 'NULL').",";
             $sql.= "n_package=".($this->n_package ? "'".$this->db->escape($this->n_package)."'" : 'NULL').",";
             $sql.= "s_products=".(is_array($this->products) ? "'".serialize($this->products)."'" : "'".serialize(array())."'").",";
             $sql.= "status='".$this->status."',";
             $sql.= "n_products='".count($this->products)."'";
-        
+
             $sql.= " WHERE rowid=".$this->rowid;
+
+            //echo "<h3>sql=$sql</h3>";
 
             $this->db->begin();
 
             dol_syslog(get_class($this)."::update sql=".$sql, LOG_DEBUG);
-        
+
         // run query
             $resql = $this->db->query($sql);
             if (! $resql) { $error++; $this->errors[]="Error ".$this->db->lasterror(); }
@@ -256,7 +260,7 @@ class StockTransfer extends CommonObject
                 {
                     dol_syslog(get_class($this)."::update ".$errmsg, LOG_ERR);
                     $this->error.=($this->error?', '.$errmsg:$errmsg);
-                }	
+                }
                 $this->db->rollback();
                 return -1*$error;
             }
@@ -264,10 +268,10 @@ class StockTransfer extends CommonObject
             {
                 $this->db->commit();
                 return 1;
-            }		
+            }
     }
-  
-  
+
+
     /**
     *   \brief      Delete object in database
     *	\param      user        	User that delete
@@ -275,7 +279,7 @@ class StockTransfer extends CommonObject
     *	\return		int				<0 if KO, >0 if OK
     */
     function delete($user, $notrigger=0){
-        
+
         global $conf, $langs;
         $error=0;
 
@@ -285,7 +289,7 @@ class StockTransfer extends CommonObject
         $this->db->begin();
 
         dol_syslog(get_class($this)."::delete sql=".$sql);
-        
+
         $resql = $this->db->query($sql);
         if (! $resql) { $error++; $this->errors[]="Error ".$this->db->lasterror(); }
 
@@ -294,7 +298,7 @@ class StockTransfer extends CommonObject
                     foreach($this->errors as $errmsg){
                         dol_syslog(get_class($this)."::delete ".$errmsg, LOG_ERR);
                         $this->error.=($this->error?', '.$errmsg:$errmsg);
-                    }	
+                    }
                     $this->db->rollback();
                     return -1*$error;
             }else{
@@ -310,10 +314,10 @@ class StockTransfer extends CommonObject
     *	\return		int				<0 if KO, >0 if OK
     */
     function create_stock_movements($depot,$reverse=0){ // $depot = '1' -> movements on depot1 / $depot = '2' -> movements on depot2
-        
+
     	global $conf, $langs, $user;
         $error=0;
-        
+
         $this->db->begin();
 
         $product = new Product($this->db);
@@ -323,9 +327,9 @@ class StockTransfer extends CommonObject
                 $batch = $p['b'];
                 $qty   = intval($p['n']);
                 if ($qty==0) continue;
-                
+
                 if ($reverse && empty($p['m'.$depot])) continue; // we check that this product really has a stock movement ID, if not then we do nothing. It shouldn't be match never... so it's a redundant checking, by the way :)
-                
+
                 $id_sw = $this->fk_depot1;
                 $id_tw = $this->fk_depot2;
                 $dlc=-1;		// They are loaded later from serial
@@ -380,7 +384,7 @@ class StockTransfer extends CommonObject
                                         $dlc='';
                                         $dluo='';
                                 }
-                                
+
                             if ($depot == '1'){
                                 // Remove stock
                                 $typemov = $reverse ? 0 : 1;
@@ -410,9 +414,9 @@ class StockTransfer extends CommonObject
                         $error++;
                 }
         }
-        
+
 	if (! $error){
-            
+
                 // == update the stock movements IDs stored at $transfer->products array
                     if (!$reverse){
                         // = get IDs of stock movements
@@ -437,19 +441,19 @@ class StockTransfer extends CommonObject
                             $this->products[$pid]['m'.$depot] = '';
                         }
                     }
-            
-                // = to save IDs of the stock movements 
+
+                // = to save IDs of the stock movements
                 // = it will let us to delete that movements later if it's requested by user
-                $this->update(); 
+                $this->update();
 		$this->db->commit();
-                
+
 		$_SESSION['EventMessages'][] = array($langs->trans("StockMovementRecorded"), null, 'mesgs');
                 return 1;
 	}else{
 		$this->db->rollback();
 		$_SESSION['EventMessages'][] = array($langs->trans("Error"), null, 'errors');
                 return -1;
-	}        
+	}
     }
 
 
@@ -480,7 +484,7 @@ class StockTransfer extends CommonObject
             $result=$object->create($user);
 
         // Other options
-            if ($result < 0) 
+            if ($result < 0)
             {
                 $this->error=$object->error;
                 $error++;
@@ -499,7 +503,7 @@ class StockTransfer extends CommonObject
             }
     }
 
-	
+
     /**
      *		\brief		Initialise object with example values
      *		\remarks	id must be 0 if object instance is a specimen.
@@ -512,7 +516,7 @@ class StockTransfer extends CommonObject
         $this->fk_account='';
         $this->category='';
     }
-    
+
     /**
      *		\brief		Unserialize s_products
      */
@@ -530,7 +534,7 @@ class StockTransfer extends CommonObject
         $this->products = $products;
         $this->n_products = count($products);
     }
-    
+
     /*
      * return an array with current stock of products in the origin depot
      */
@@ -557,20 +561,20 @@ class StockTransfer extends CommonObject
         //echo _var_export($stock,'$stock');die();
         return $stock;
     }
-    
+
     /*
      * Returns the last $max transfers
      */
     function getLatestTransfers($vars)
     {
     	global $langs;
-        
+
         $max = !empty($vars['max']) ? intval($vars['max']) : 5;
-        
+
         $sql = "SELECT * FROM ".MAIN_DB_PREFIX."stocktransfers_transfers";
         $sql.= " ORDER BY rowid DESC";
         $sql.= " LIMIT ".$max;
-        
+
     	dol_syslog(get_class($this)."::fetch sql=".$sql, LOG_DEBUG);
 
         $elements = array();
@@ -581,7 +585,7 @@ class StockTransfer extends CommonObject
             {
                 while($row = $resql->fetch_assoc()){
                     if (is_array($row)) $elements[] = $row;
-                } 
+                }
             }
             $this->db->free($resql);
         }
@@ -593,6 +597,6 @@ class StockTransfer extends CommonObject
 
         return $elements;
     }
-    
+
 }
 ?>

@@ -25,8 +25,8 @@
  *      \version    v 1.0 2017/11/20
  */
 
-    // == ACTIVATE the ERROR reporting
-    ini_set('display_errors',1);ini_set('display_startup_errors',1);error_reporting(-1);
+// == ACTIVATE the ERROR reporting
+ini_set('display_errors',1);ini_set('display_startup_errors',1);error_reporting(-1);
 
 
 $res=0;
@@ -77,27 +77,27 @@ $langs->load("stocktransfers@stocktransfers");
 
 // == Get parameters
     $transfer_id = GETPOST('id', '0');
-    
+
 // == data object
     global $transfer;
     $transfer = new StockTransfer($db);
     if ($transfer_id > 0) {
         $ret = $transfer->fetch($transfer_id);
     }
-    
+
 /***************************************************
- * 
+ *
  *	Generate and output PDF
- * 
+ *
 ****************************************************/
 
 // == load PDF class
     require_once TCPDF_PATH.'tcpdf.php';
 
 // == create new PDF document
-    $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false); 
+    $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
-    $pdf->setJPEGQuality(75);		
+    $pdf->setJPEGQuality(75);
 
 // == set document information
     $pdf->SetCreator('Dolibarr');
@@ -109,7 +109,7 @@ $langs->load("stocktransfers@stocktransfers");
 // == set default header data
     //$pdf->SetHeaderData('../../../../UserFiles/admin/modulo_'.$modulo.'/fondo_bitllet.jpg', 180, 'Bitllet per a  '.$nombre.' - Colònia: '.$evento['titulo'], '');
     //$pdf->SetHeaderData('', 180, $title, '');
-    $pdf->setPrintFooter(false); 
+    $pdf->setPrintFooter(false);
 
 // == set header and footer fonts
     $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
@@ -119,8 +119,7 @@ $langs->load("stocktransfers@stocktransfers");
     $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 
 // == set margins
-    //$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
-    $pdf->SetMargins(PDF_MARGIN_LEFT, 20, PDF_MARGIN_RIGHT);
+    $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
     $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
     $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
 
@@ -128,11 +127,11 @@ $langs->load("stocktransfers@stocktransfers");
     $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
 
 // == set image scale factor
-    $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO); 
+    $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 
 // == set some language-dependent strings
-    //$pdf->setLanguageArray($l); 
-    $pdf->setLanguageArray('es'); 
+    //$pdf->setLanguageArray($l);
+    $pdf->setLanguageArray('es');
 
 // == set font
     $pdf->SetFont('courier', '', 10);
@@ -141,8 +140,8 @@ $langs->load("stocktransfers@stocktransfers");
     $pdf->AddPage();
 
 // == calculate margins
-    $wp=185;  
-    $hp=250; 
+    $wp=185;
+    $hp=250;
     $xm=15;	$ym=25;
 
 // == add Image
@@ -150,12 +149,13 @@ $langs->load("stocktransfers@stocktransfers");
     $img_file = $config_site['path_s'].'/UserFiles/admin/modulo_registrations/pdf_voucher_card_background.jpg';
     if (file_exists($img_file)){
         $dimensions = _get_proportional_dimensions(array('uri_source'=>$img_file, 'max_width'=>$wp, 'max_height'=>240));
-        $pdf->Image($img_file, $xm, $ym, $dimensions[0], $dimensions[1] , '', 'http'.$config_site['HTTPS'].'://'.$config_site['dominio_s'], '', true, 150); 
+        $pdf->Image($img_file, $xm, $ym, $dimensions[0], $dimensions[1] , '', 'http'.$config_site['HTTPS'].'://'.$config_site['dominio_s'], '', true, 150);
     }
     */
 
 // == HTML body of the PDF
     $html = _render_view('pdf',array('transfer'=>$transfer,'db'=>$db, 'langs'=>$langs, 'mysoc'=>$mysoc));
+    //echo $html; die();
     $pdf->writeHTML($html, true, false, true, false, '');
 
 // == reset pointer to the last page
@@ -169,7 +169,5 @@ $langs->load("stocktransfers@stocktransfers");
     $pdf->Output($file, 'I');
 
 //============================================================+
-// END OF FILE                                                 
+// END OF FILE
 //============================================================+
-
-
