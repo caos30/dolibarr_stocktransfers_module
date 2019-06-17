@@ -67,3 +67,4 @@ STinventorycode=Codi d'inventari
 STProducts=Productes
 STRemove=Treure
 STFilename=TransferenciaStock
+STFilterThis=Filtrar elements amb aquest valor en aquesta columna

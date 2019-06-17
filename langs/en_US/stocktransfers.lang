@@ -12,7 +12,7 @@ stocktransfersSummary=Stock transfers summary
 stocktransfersSetupNotComplete=Stock transfers setup is not complete
 stocktransfersAboutInfo=This module is developped and distributed by Sergi Rodrigues (caos30) for IMASDEWEB, <a href="https://imasdeweb.com" title="Opens in a new window">imasdeweb.com</a> (a future Dolibarr Preferred Partner company ;o).
 stocktransfersMoreModules=Other modules of same author are available on the official DoliStore market place...
-stocktransfersMoreModulesLink=<p><a title="Opens in a new window" target="_blank" href="http://www.dolistore.com/search.php?search_query=%s">Click here to see full list</a></p>  
+stocktransfersMoreModulesLink=<p><a title="Opens in a new window" target="_blank" href="http://www.dolistore.com/search.php?search_query=%s">Click here to see full list</a></p>
 stocktransfersNewTransfer=New transfer
 stocktransfersDate1=Departure date
 stocktransfersDate2=Arrival date
@@ -67,3 +67,4 @@ STinventorycode=Inventory Code
 STProducts=Products
 STRemove=Remove
 STFilename=StockTransfer
+STFilterThis=Filter elements with this value in this column

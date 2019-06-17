@@ -227,7 +227,7 @@
 
             <!-- pdf button -->
             <?php if ($transfer->rowid > 0 && count($transfer->products) > 0){ ?>
-            <a href="transfer_pdf.php?id=<?= $transfer->rowid ?>" class="button" target="_blank"><?= dol_escape_htmltag($langs->trans('stocktransfersPDFdownload')) ?></a>
+            <a href="transfer_pdf.php?id=<?= $transfer->rowid ?>" class="button" target="_blank"><img src="img/pdf.png" style="margin-bottom: -2px;" /> <?= dol_escape_htmltag($langs->trans('stocktransfersPDFdownload')) ?></a>
             <?php } ?>
             <!-- purchase proceed button -->
             <?php if ($buy_stock!='' && $conf->purchases->enabled){

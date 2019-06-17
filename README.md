@@ -84,6 +84,11 @@ As developers & translators:
 
  + upgraded to be fully compatible with Dolibarr 7.x 8.x & 9.0.x
 
+== v 1.7 [2019-06-17]
+ + Minor improvements on transfer list:
+ ++ fixed some issues on date format
+ ++ add a direct PDF download link
+ ++ add some tooltips
 
 ## To do
 
