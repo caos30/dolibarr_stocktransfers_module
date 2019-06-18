@@ -2,27 +2,32 @@
    STOCKTRANSFERS MODULE CHANGELOG
 =====================================
 
+== v 1.8 [2019-06-17]
+- Improved the add_line form on transfer_edit view:
+  + check required fields
+  + show a warning when changing data of a previously added line
+
 == v 1.7 [2019-06-17]
- - Minor improvements on transfer list:
- + fixed some issues on date format
- + add a direct PDF download link
- + add some tooltips 
+- Minor improvements on transfer list:
+  + fixed some issues on date format
+  + add a direct PDF download link
+  + add some tooltips
 
 == v 1.6 [2019-06-13]
-  - upgraded to be fully compatible with Dolibarr 7.x 8.x & 9.0.x
+- upgraded to be fully compatible with Dolibarr 7.x 8.x & 9.0.x
 
 == v 1.5 [2018-08-03]
- - pdf view: improved the header specifying departure & destination info.
+- pdf view: improved the header specifying departure & destination info.
 
 == v 1.4 [2018-07-03]
 - transfer_edit view: fixed an issue with dates, on days/months number lower than 10 (ie. 1/2/2018)
 
 == v 1.3
- - transfer edit page: easter egg to render the raw data of the transfer on database when double clicking a hidden link
+- transfer edit page: easter egg to render the raw data of the transfer on database when double clicking a hidden link
 
 == v 1.2 [2017-11-29]
- - made compatible the module with /custom install
- - fixed some issues when not enabled Projects module
+- made compatible the module with /custom install
+- fixed some issues when not enabled Projects module
 
 == v 1.1 [2017-11-20]
- - first version
+- first version

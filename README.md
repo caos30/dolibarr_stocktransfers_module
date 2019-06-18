@@ -58,38 +58,4 @@ As developers & translators:
 
 ## Versions Log
 
-== 1.1 [2017-11-20]
-
- + First version
-
-== 1.2 [2017-11-29]
-
- + made compatible the module with /custom install
- + fixed some issues when not enabled Projects module
-
-== 1.3 []
-
- + transfer edit page: easter egg to render the raw data of the transfer on database when double clicking a hidden link
-
-== 1.4 [2018-07-03]
-
- + transfer_edit view: fixed an issue with dates, on days/months number lower than 10 (ie. 1/2/2018)
-
-== 1.5 [2018-08-27]
-
- + pdf view: improved the header specifying departure & destination info.
- + improvements on english translations. also added new text labels.
-
-== 1.6 [2019-06-13]
-
- + upgraded to be fully compatible with Dolibarr 7.x 8.x & 9.0.x
-
-== v 1.7 [2019-06-17]
- + Minor improvements on transfer list:
- ++ fixed some issues on date format
- ++ add a direct PDF download link
- ++ add some tooltips
-
-## To do
-
- - ¿?
+See [CHANGELOG.TXT](https://github.com/caos30/dolibarr_stocktransfers_module/blob/master/CHANGELOG.TXT) file.

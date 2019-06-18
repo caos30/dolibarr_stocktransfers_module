@@ -68,3 +68,6 @@ STProducts=Productes
 STRemove=Treure
 STFilename=TransferenciaStock
 STFilterThis=Filtrar elements amb aquest valor en aquesta columna
+STErrorMsg05=Heu de seleccionar un producte.
+STErrorMsg06=La quantitat ha de ser un nombre sencer positiu.
+STErrorMsg07=Avís: aquest producte ja havia estat afegit. Les dades que ara indiqueu reemplaçaran a les que hi havien. Voleu continuar?

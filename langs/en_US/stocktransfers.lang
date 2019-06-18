@@ -68,3 +68,6 @@ STProducts=Products
 STRemove=Remove
 STFilename=StockTransfer
 STFilterThis=Filter elements with this value in this column
+STErrorMsg05=You have to select a product.
+STErrorMsg06=The quantity must be a positive integer.
+STErrorMsg07=Warning: this product has already been added. The data you now indicates will replace the existing data. Do you want to continue?

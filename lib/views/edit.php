@@ -294,7 +294,7 @@
                     $needed_stock_this = !isset($stock[$pid]) || intval($stock[$pid]) < intval($p['n']);
                 ?>
 
-                <tr <?= $bc[$var] ?>>
+                <tr <?= $bc[$var] ?> class='product' data-pid='<?= $pid ?>'>
                     <td>
                         <?= $productstatic->getNomUrl(1).' - '.$productstatic->label ?>
                     </td>
@@ -345,7 +345,7 @@
                     <?php } ?>
 
                     <!-- ========= Quantity ========= -->
-                    <td style='text-align:center;'>
+                    <td style='text-align:center;' class=''>
                         <input type="text" size="3" class="flat" name="n" value="<?= !empty($_POST['n']) ? $_POST['n'] : '' ?>">
                     </td>
 
@@ -373,6 +373,52 @@
 </div>
 
 <script>
+    $(document).ready(function(){
+        $('#transfer_product_form').bind('submit',function(){
+            /* we don't check nothing if we're deleting a line  */
+                if ($('#transfer_product_form input[name=action]').val()=='del_line') return;
+
+            /* check data to add  */
+                var msg = js_check_submit_add_line();
+                if (msg!='') return false;
+
+            /* alert if the product was already added before */
+                var pid = parseInt($('#transfer_product_form select[name=pid]').val());
+                if ($('form tr.product[data-pid='+pid+']').length != 0){
+                    if (!confirm("<?= str_replace('"','',html_entity_decode($langs->trans('STErrorMsg07'))) ?>")) {
+                        return false;
+                    }
+                }
+        });
+    });
+
+    function js_check_submit_add_line(){
+
+        /* read form values */
+        var pid = parseInt($('#transfer_product_form select[name=pid]').val());
+        var qty = parseInt($('#transfer_product_form input[name=n]').val());
+
+        /* check wrong data */
+        var msg = '';
+        if (isNaN(pid) || pid<1) {
+            msg += "<?= str_replace('"','',$langs->trans('STErrorMsg05')) ?> ";
+            $('#transfer_product_form span[role=combobox]').css('background-color','yellow');
+            $('#transfer_product_form .select2').addClass('alertedcontainer');
+        }
+
+        if (isNaN(qty) || qty<1) {
+            msg += "<?= str_replace('"','',$langs->trans('STErrorMsg06')) ?> ";
+            $('#transfer_product_form input[name=n]').addClass('alertedfield');
+        }
+
+        /* if wrong data, then show a warning message to user */
+        if (msg!=''){
+            alert(msg);
+        }
+
+        return msg;
+    }
+
     function js_delete_transfer(){
         if (confirm("<?= str_replace('"','',html_entity_decode($langs->trans('stocktransfersDelSure','',0))) ?>")){
             document.location = 'transfer_edit.php?mainmenu=products&action=delete_transfer&rowid=<?= $transfer->rowid ?>';
@@ -411,46 +457,40 @@
     }
 
     function js_validate_form(form_id){
+
         /* prepare */
             var all_fine = true, fine = true, control, c_val, c_name, c_id;
             $(control).removeClass('alertedfield');
             $('#'+form_id+' tr').removeClass('alertedcontainer');
-        /* check required fields */
-        $('#'+form_id+' .fieldrequired').each(function(){
-            /* = input fields = */
-                control = $(this).closest('tr').find('input');
-                c_val = $(control).val();
-                c_name = $(control).attr('name');
-                c_id = $(control).attr('id');
-                if (c_name!=undefined){
-                    if (c_val=='') fine = false;
-                    if (!fine){
-                        all_fine = false;
-                        $(control).addClass('alertedfield');
-                        $(control).closest('tr').addClass('alertedcontainer');
-                    }
-                }
-            /* = select fields = */
-                control = $(this).closest('tr').find('select');
-                c_val = $(control).val();
-                c_name = $(control).attr('name');
-                c_id = $(control).attr('id');
-                if (c_name!=undefined){
-                    if (c_val=='' || c_val=='-1') fine = false;
-                    if (!fine){
-                        all_fine = false;
-                        $(control).addClass('alertedfield');
-                        $(control).closest('tr').addClass('alertedcontainer');
-                    }
-                }
-        });
 
-        /* set auto UN-ALERT */
-            $('.alertedfield').on('click',function(){
-                $(this).removeClass('alertedfield');
-            });
-            $('.alertedcontainer').on('click',function(){
-                $(this).removeClass('alertedcontainer');
+        /* check required fields */
+            $('#'+form_id+' .fieldrequired').each(function(){
+                /* = input fields = */
+                    control = $(this).closest('tr').find('input');
+                    c_val = $(control).val();
+                    c_name = $(control).attr('name');
+                    c_id = $(control).attr('id');
+                    if (c_name!=undefined){
+                        if (c_val=='') fine = false;
+                        if (!fine){
+                            all_fine = false;
+                            $(control).addClass('alertedfield');
+                            $(control).closest('tr').addClass('alertedcontainer');
+                        }
+                    }
+                /* = select fields = */
+                    control = $(this).closest('tr').find('select');
+                    c_val = $(control).val();
+                    c_name = $(control).attr('name');
+                    c_id = $(control).attr('id');
+                    if (c_name!=undefined){
+                        if (c_val=='' || c_val=='-1') fine = false;
+                        if (!fine){
+                            all_fine = false;
+                            $(control).addClass('alertedfield');
+                            $(control).closest('tr').addClass('alertedcontainer');
+                        }
+                    }
             });
 
         /* submit form */
@@ -462,9 +502,22 @@
 
     $(document).ready(function(){
         /* == put focus on the box to add a new product line == */
-        if ($('#new_line td.titlefield').length){
-            $('#new_line td.titlefield').find('label').focus();
-        }
+            if ($('#new_line td.titlefield').length){
+                $('#new_line td.titlefield').find('label').focus();
+            }
+
+        /* set auto UN-ALERT */
+            $('form').on('click','.select2.alertedcontainer span',function(){
+                $('#transfer_product_form span[role=combobox]').css('background-color','');
+                $('#transfer_product_form .select2').removeClass('alertedcontainer');
+            });
+            $('form').on('click','.alertedfield',function(){
+                $(this).removeClass('alertedfield');
+            });
+            $('form').on('click','.alertedcontainer',function(){
+                $(this).removeClass('alertedcontainer');
+            });
+
     });
 </script>
 <div id="debug"></div>

@@ -68,3 +68,6 @@ STProducts=Productos
 STRemove=Quitar
 STFilename=TransferenciaDeStock
 STFilterThis=Filtrar elementos con este valor en esta columna
+STErrorMsg05=Ha de seleccionar un producto.
+STErrorMsg06=La cantidad ha de ser un número entero positivo.
+STErrorMsg07=Aviso: este producto ya había sido añadido. Los datos que ahora indica reemplazarán a los que habían. ¿Quiere continuar?
