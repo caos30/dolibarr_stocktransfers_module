@@ -337,7 +337,7 @@
                         <?= $form->select_produits(!empty($_POST['pid']) ? $_POST['pid'] : '', 'pid', $filtertype, $limit, 0, -1, 2, '', 0, array(), 0, '1', 0, 'maxwidth400', 1) ?>
                     </td>
 
-                    <!-- ========= Batch number ========= -->
+                    <!-- ========= Batch/lot number ========= -->
                     <?php if ($conf->productbatch->enabled) { ?>
                     <td>
                         <input type="text" name="batch" class="flat maxwidth50onsmartphone" value="<?= !empty($_POST['batch']) ? $_POST['batch'] : '' ?>">
@@ -398,7 +398,7 @@
         var pid = parseInt($('#transfer_product_form select[name=pid]').val());
         var qty = parseInt($('#transfer_product_form input[name=n]').val());
 
-        /* check wrong data */
+        /* check product */
         var msg = '';
         if (isNaN(pid) || pid<1) {
             msg += "<?= str_replace('"','',$langs->trans('STErrorMsg05')) ?> ";
@@ -406,10 +406,20 @@
             $('#transfer_product_form .select2').addClass('alertedcontainer');
         }
 
+        /* check quantity */
         if (isNaN(qty) || qty<1) {
             msg += "<?= str_replace('"','',$langs->trans('STErrorMsg06')) ?> ";
             $('#transfer_product_form input[name=n]').addClass('alertedfield');
         }
+
+        /* check batch/lot serial number if this feature is enabled on Dolibarr */
+        <?php if ($conf->productbatch->enabled) { ?>
+            var batch = $('#transfer_product_form input[name=batch]').val();
+            if (batch.trim()=='') {
+                msg += "<?= str_replace('"','',$langs->trans('STErrorMsg08')) ?> ";
+                $('#transfer_product_form input[name=batch]').addClass('alertedfield');
+            }
+        <?php } ?>
 
         /* if wrong data, then show a warning message to user */
         if (msg!=''){

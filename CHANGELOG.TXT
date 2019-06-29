@@ -2,6 +2,9 @@
    STOCKTRANSFERS MODULE CHANGELOG
 =====================================
 
+== v 1.10 [2019-06-29]
+- Fixed an issue when enabled lot/batch serial numbers on Dolibarr
+
 == v 1.9 [2019-06-29]
 - Added settings to configure the PDF generation
 - Added italian translation

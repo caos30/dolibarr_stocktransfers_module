@@ -94,6 +94,7 @@ STsettLab07=Campo per nominare un magazzino
 STsettLab07opt1=Ubicazione abbreviata
 STsettLab07opt2=Riferimento
 STsettLab08=Mostra il lotto/numero di serie
+STErrorMsg08=Il lotto/numero di serie non possono essere vuoti.
 STsettLab09=Mostra il codice a barre
 STsettLab09desc=È necessario attivare il modulo del codice a barre
 STprice=Prezzo
