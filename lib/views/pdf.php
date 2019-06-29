@@ -265,7 +265,7 @@
                             $price = !empty($products[$p['id']]) && !empty($products[$p['id']]['price_ttc']) ? floatval($products[$p['id']]['price_ttc']) : '';
                         }
                         $subtotal = !empty($price) && $price!='' && !empty($n) ? price($price * $n) : '';
-                        if ($subtotal != '&nbsp;') $total += $subtotal;
+                        if (!empty($subtotal)) $total += $subtotal;
                     ?>
                         <td width="59%" style="border:0.5px #000000 solid;text-align:left;"><?= $label ?></td>
                         <td width="14%" style="border:0.5px #000000 solid;text-align:right;"><?= !empty($price) ? _price($price) : '&nbsp;' ?></td>
