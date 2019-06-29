@@ -25,8 +25,8 @@
  *      \version    v 1.0 2017/11/20
  */
 
-// == ACTIVATE the ERROR reporting	
-ini_set('display_errors',1);ini_set('display_startup_errors',1);error_reporting(-1); 
+// == ACTIVATE the ERROR reporting
+ini_set('display_errors',1);ini_set('display_startup_errors',1);error_reporting(-1);
 
 define('NOCSRFCHECK',1);
 
@@ -57,63 +57,194 @@ $langs->load("other");
 $langs->load("stocktransfers");
 
 /***************************************************
- * 
+ *
  *	Actions / prepare data
- * 
+ *
 ****************************************************/
 
     // == request action by GET/POST
-    
-        //if (!empty($_POST)){ echo var_export($_POST,true);die(); }
-        /*
-        if (isset($_POST['action']) && $_POST['action'] == "addRule" && $fk_account > 0){
-            $rule = new ImpBM_rule($db);
-            $rule->ruleOrder = GETPOST('ruleOrder','int');
-            $rule->pattern = GETPOST('rulePattern');
-            $rule->fk_account = $fk_account;
-            $rule->fk_categ = GETPOST('fk_categ');
 
-            $result = $rule->create(NULL);
-            if ($result < 0) dol_print_error($db,$myobject->error);
+        if (!empty($_POST['config'])){
+
+            //echo var_export($_POST,true);die();
+
+            /* save incoming data */
+                $db->begin();
+                $error = 0;
+                foreach ($_POST['config'] as $K => $v){
+                    //$result = dolibarr_set_const($db, "STRIPE_TEST_PUBLISHABLE_KEY", GETPOST('STRIPE_TEST_PUBLISHABLE_KEY', 'alpha'), 'chaine', 0, '', $conf->entity);
+                    $result = dolibarr_set_const($db, $K, $v, 'chaine', 0, '', $conf->entity);
+            		if (! $result > 0) $error ++;
+                }
+
+            /* message to user */
+            	if (! $error) {
+            		$db->commit();
+            		setEventMessages($langs->trans("SetupSaved"), null, 'mesgs');
+            	} else {
+            		$db->rollback();
+            		dol_print_error($db);
+            	}
         }
-         * 
-         */
-        
+
 /***************************************************
- * 
+ *
  *	View
- * 
+ *
 ****************************************************/
 
 $help_url='';
 llxHeader('','stocktransfers',$help_url);
 
-$linkback='<a href="'.DOL_URL_ROOT.'/admin/modules.php">'.$langs->trans("BackToModuleList").'</a>';
-print_fiche_titre($langs->trans("stocktransfersSetup"),$linkback,'setup');
-print '<br>';
+// = first header row (section title & go back link)
 
-$h=0;
+    $linkback='<a href="'.DOL_URL_ROOT.'/admin/modules.php">'.$langs->trans("BackToModuleList").'</a>';
+    print_fiche_titre($langs->trans("stocktransfersSetup"),$linkback,'setup');
 
-$head[$h][0] = 'config.php';
-$head[$h][1] = $langs->trans("Config");
-$head[$h][2] = 'tabconfig';
-$h++;
+// = tabs of the section
 
-$head[$h][0] = 'about.php';
-$head[$h][1] = $langs->trans("About");
-$head[$h][2] = 'tababout';
-$h++;
+    $h=0;
 
-$html = new Form($db);
+    $head[$h][0] = 'config.php';
+    $head[$h][1] = $langs->trans("Config");
+    $head[$h][2] = 'tabconfig';
+    $h++;
 
-dol_fiche_head($head, 'tabconfig', '');
+    $head[$h][0] = 'about.php';
+    $head[$h][1] = $langs->trans("About");
+    $head[$h][2] = 'tababout';
+    $h++;
+
+// = init current tab
+
+    $html = new Form($db);
+
+    dol_fiche_head($head, 'tabconfig', 'Stocktransfers',-1,'stock');
 
 ?>
 
-<form id="frm" name="stoctransfersForm" action="<?= $_SERVER["PHP_SELF"] ?>" method="post">
-      
-    <input type="hidden" name="action" id="action" value=""/>
-    
+<form id="stocktransfersForm" name="stocktransfersForm" action="<?= $_SERVER["PHP_SELF"] ?>" method="post">
+
+    <!-- ** PDF HEADER ** SETTINGS -->
+
+    <?= load_fiche_titre($langs->trans("STsettTit01"),'','') ?>
+
+    <table class="noborder" width="100%">
+        <tr class="liste_titre">
+            <td><?= $langs->trans("Name") ?></td>
+            <td><?= $langs->trans("Value") ?></td>
+        </tr>
+        <!-- document title -->
+        <tr>
+            <td><?= $langs->trans("STsettLab01") ?></td>
+            <td>
+                <input name="config[STOCKTRANSFERS_MODULE_SETT_01]" type="text" class=""
+                    value="<?= $conf->global->STOCKTRANSFERS_MODULE_SETT_01 ?>"
+                    placeholder="<?= htmlentities($langs->trans("STsettExampleAbbrv").' '.$langs->trans("STsettLab01def")) ?>" />
+                &nbsp; <em><?= $langs->trans("STsettEmpty") ?></em>
+            </td>
+        </tr>
+        <!-- label for Reference -->
+        <tr>
+            <td><b><?= $langs->trans("STsettLab02") ?></b></td>
+            <td>
+                <input name="config[STOCKTRANSFERS_MODULE_SETT_02]" type="text" class="fieldrequired"
+                    value="<?= !empty($conf->global->STOCKTRANSFERS_MODULE_SETT_02) ? $conf->global->STOCKTRANSFERS_MODULE_SETT_02 : $langs->trans('stocktransfersPDF1') ?>"
+                    placeholder="<?= htmlentities($langs->trans("STsettExampleAbbrv").' '.$langs->trans("STsettLab02def")) ?>" />
+            </td>
+        </tr>
+        <!-- show the shipper name -->
+        <tr>
+            <td><?= $langs->trans("STsettLab03") ?></td>
+            <td>
+                <?php $value = !empty($conf->global->STOCKTRANSFERS_MODULE_SETT_03) ? $conf->global->STOCKTRANSFERS_MODULE_SETT_03 : 'M' ?>
+                <select name="config[STOCKTRANSFERS_MODULE_SETT_03]">
+                    <option value="N" <?= $value=='N' ? "selected='selected'":"" ?>><?= $langs->trans('STno') ?></option>
+                    <option value="Y" <?= $value=='Y' ? "selected='selected'":"" ?>><?= $langs->trans('STyes') ?></option>
+                    <option value="M" <?= $value=='M' ? "selected='selected'":"" ?>><?= strip_tags($langs->trans("STsettLab03opt3")) ?></option>
+                </select>
+            </td>
+        </tr>
+        <!-- show the number of packages -->
+        <tr>
+            <td><?= $langs->trans("STsettLab04") ?></td>
+            <td>
+                <?php $value = !empty($conf->global->STOCKTRANSFERS_MODULE_SETT_04) ? $conf->global->STOCKTRANSFERS_MODULE_SETT_04 : 'M' ?>
+                <select name="config[STOCKTRANSFERS_MODULE_SETT_04]">
+                    <option value="N" <?= $value=='N' ? "selected='selected'":"" ?>><?= $langs->trans('STno') ?></option>
+                    <option value="Y" <?= $value=='Y' ? "selected='selected'":"" ?>><?= $langs->trans('STyes') ?></option>
+                    <option value="M" <?= $value=='M' ? "selected='selected'":"" ?>><?= strip_tags($langs->trans("STsettLab03opt3")) ?></option>
+                </select>
+            </td>
+        </tr>
+        <!-- field to name the warehouse -->
+        <tr>
+            <td><?= $langs->trans("STsettLab07") ?></td>
+            <td>
+                <?php $value = !empty($conf->global->STOCKTRANSFERS_MODULE_SETT_07) ? $conf->global->STOCKTRANSFERS_MODULE_SETT_07 : 'L' ?>
+                <select name="config[STOCKTRANSFERS_MODULE_SETT_07]">
+                    <option value="L" <?= $value=='L' ? "selected='selected'":"" ?>><?= strip_tags($langs->trans("STsettLab07opt1")) ?></option>
+                    <option value="R" <?= $value=='R' ? "selected='selected'":"" ?>><?= strip_tags($langs->trans("STsettLab07opt2")) ?></option>
+                </select>
+            </td>
+        </tr>
+    </table>
+
+    <!-- ** PDF PODUCT LIST ** SETTINGS -->
+
+    <br /><?= load_fiche_titre($langs->trans("STsettTit02"),'','') ?>
+
+    <table class="noborder" width="100%">
+        <tr class="liste_titre">
+            <td><?= $langs->trans("Name") ?></td>
+            <td><?= $langs->trans("Value") ?></td>
+        </tr>
+        <!-- show price -->
+        <tr>
+            <td><?= $langs->trans("STsettLab05") ?></td>
+            <td>
+                <?php $value = !empty($conf->global->STOCKTRANSFERS_MODULE_SETT_05) ? $conf->global->STOCKTRANSFERS_MODULE_SETT_05 : 'N' ?>
+                <select name="config[STOCKTRANSFERS_MODULE_SETT_05]">
+                    <option value="N" <?= $value=='N' ? "selected='selected'":"" ?>><?= $langs->trans('STno') ?></option>
+                    <option value="Y" <?= $value=='Y' ? "selected='selected'":"" ?>><?= strip_tags($langs->trans("STsettLab05opt2")) ?></option>
+                    <option value="T" <?= $value=='T' ? "selected='selected'":"" ?>><?= strip_tags($langs->trans("STsettLab05opt3")) ?></option>
+                </select>
+            </td>
+        </tr>
+    </table>
+
+    <!-- ** PDF FOOTER ** SETTINGS -->
+
+    <br /><?= load_fiche_titre($langs->trans("STsettTit03"),'','') ?>
+
+    <table class="noborder" width="100%">
+        <tr class="liste_titre">
+            <td><?= $langs->trans("Name") ?></td>
+            <td><?= $langs->trans("Value") ?></td>
+        </tr>
+        <!-- show signatures -->
+        <?php for ($ii=1;$ii<4;$ii++){ ?>
+        <tr>
+            <td><?= $langs->trans("STsettLab06".$ii) ?></td>
+            <td>
+                <input name="config[STOCKTRANSFERS_MODULE_SETT_06<?= $ii ?>]" type="text" class=""
+                    value="<?= $conf->global->{'STOCKTRANSFERS_MODULE_SETT_06'.$ii} ?>"
+                    placeholder="<?= htmlentities($langs->trans("STsettExampleAbbrv").' '.$langs->trans("stocktransfersPDF".($ii+7))) ?>" />
+                &nbsp; <em><?= $langs->trans("STsettEmpty") ?></em>
+            </td>
+        </tr>
+    <?php } ?>
+    </table>
+
+    <!-- SUBMIT button -->
+
+    <p style="text-align:center;margin:4rem;">
+        <a href="#" onclick="$('#stocktransfersForm').submit();return false;" class="button"><?= dol_escape_htmltag($langs->trans("Save")) ?></a>
+    </p>
+
+    <!-- NOTES & ALERTS -->
+
+    <p><br /><br /></p>
     <table class="noborder">
         <tr>
             <td>
@@ -121,18 +252,90 @@ dol_fiche_head($head, 'tabconfig', '');
             </td>
         </tr>
     </table>
-    
+
     <!-- MODULE VERSION & USER GUIDE LINK -->
-    <?php 
+    <?php
         require_once STOCKTRANSFERS_MODULE_DOCUMENT_ROOT.'/core/modules/modStocktransfers.class.php';
         $module = new modStockTransfers($db);
         $user_lang = substr($langs->defaultlang,0,2);
     ?>
     <div style="margin: 2rem 0;color: #ccc;display: inline-block;border-top: 1px #ccc solid;border-bottom: 1px #ccc solid;background-color: rgba(0,0,0,0.05);padding: 0.5rem;">
-        <span class="help">Stock transfers <?= $module->version ?> 
+        <span class="help">Stock transfers <?= $module->version ?>
            &nbsp; | &nbsp; <a href="https://imasdeweb.com/index.php?pag=m_blog&gad=detalle_entrada&entry=<?= $user_lang == 'es' ? '38':'39'?>" target="_blank"><?= $langs->trans('stocktransfersUserGuide') ?></a>
         </span>
     </div>
+
+    <script>
+        $(document).ready(function(){
+            $('#stocktransfersForm').bind('submit',function(){
+                var msg = js_validate_form('stocktransfersForm');
+                if (msg!=""){
+                    alert(msg);
+                    return false;
+                }
+            });
+        });
+
+        function js_validate_form(form_id){
+
+            /* prepare */
+                var all_fine = true, fine = true, control, c_val, c_name, c_id;
+                $(control).removeClass('alertedfield');
+                $('#'+form_id+' tr').removeClass('alertedcontainer');
+
+            /* check required fields */
+                $('#'+form_id+' .fieldrequired').each(function(){
+                    /* = input fields = */
+                        control = $(this).closest('tr').find('input');
+                        c_val = $(control).val();
+                        c_name = $(control).attr('name');
+                        c_id = $(control).attr('id');
+                        if (c_name!=undefined){
+                            if (c_val=='') fine = false;
+                            if (!fine){
+                                all_fine = false;
+                                $(control).addClass('alertedfield');
+                                $(control).closest('tr').addClass('alertedcontainer');
+                            }
+                        }
+                    /* = select fields = */
+                        control = $(this).closest('tr').find('select');
+                        c_val = $(control).val();
+                        c_name = $(control).attr('name');
+                        c_id = $(control).attr('id');
+                        if (c_name!=undefined){
+                            if (c_val=='' || c_val=='-1') fine = false;
+                            if (!fine){
+                                all_fine = false;
+                                $(control).addClass('alertedfield');
+                                $(control).closest('tr').addClass('alertedcontainer');
+                            }
+                        }
+                });
+
+            /* submit form */
+                if (!all_fine){
+                    return "You must populate some mandatory fields before submit changes.";
+                }else{
+                    return "";
+                }
+        }
+
+        $(document).ready(function(){
+                $('form').on('click','.alertedfield',function(){
+                    $(this).removeClass('alertedfield');
+                });
+                $('form').on('click','.alertedcontainer',function(){
+                    $(this).removeClass('alertedcontainer');
+                });
+        });
+    </script>
+
+    <style>
+        input.alertedfield, select.alertedfield, textarea.alertedfield{background-color:yellow!important;}
+        .alertedcontainer td, .alertedcontainer td.fieldrequired{color:red!important;}
+        .block{padding:0.5rem;background-color:rgba(100,100,100,0.05);border-radius:3px;border:1px rgba(100,100,100,0.2) solid;}
+    </style>
 
 <?php
 

@@ -355,7 +355,7 @@
 
                     <!-- ========= Button to add ========= -->
                     <td style='text-align:left;'>
-                        <input type="submit" class="button" value="<?= dol_escape_htmltag($langs->trans("STAdd")) ?>">
+                        <input type="submit" class="button" value="<?= dol_escape_htmltag($langs->trans("STAdd")) ?>" />
                     </td>
                 </tr>
 

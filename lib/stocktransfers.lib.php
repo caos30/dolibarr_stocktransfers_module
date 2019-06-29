@@ -27,10 +27,22 @@
 
 $linktohelp='EN:Module_stockTransfers_En|CA:Modul_stockTransfers|ES:Modulo_stockTransfers';
 
+/*
+    this function should not be necessary, but i've not understood why the dolibarr price() function doesn't render thousands separator
+*/
+function _price($floatval){
+    global $langs, $db, $conf;
+    $dec = $langs->transnoentitiesnoconv("SeparatorDecimal");
+    if ($dec==',')
+        return number_format(floatval($floatval),2,',','.');
+    else
+        return number_format(floatval($floatval),2,'.',',');
+}
+
 function _render_view($viewname,Array $vars){
     global $langs, $db, $conf;
     // == passed vars
-        if (count($vars)>0){ 
+        if (count($vars)>0){
             foreach($vars as $__k__=>$__v__){
                 ${$__k__} = $__v__;
             }
@@ -41,7 +53,7 @@ function _render_view($viewname,Array $vars){
         ob_start( );
         include(dirname(__FILE__).'/views/'.$viewname.'.php');
     // == we get the current output
-        $render = ob_get_clean( ); 
+        $render = ob_get_clean( );
     // == we re-send to output buffer the existing content before to arrive to this function ;)
         ob_start( );
         echo $existing_render;
@@ -53,23 +65,23 @@ function _render_view($viewname,Array $vars){
 function _var_export($arr, $title=''){
         if ($title!='' && phpversion() > '5.3.0' && class_exists('Tracy\Debugger')){
             eval("Tracy\Debugger::barDump(\$arr,\$title);");
-        } 
-            
+        }
+
         $html = !empty($title) ? '<h3>'.$title.'</h3>' : '';
 	$html .= "\n<div style='margin-left:100px;font-size:10px;font-family:sans-serif;'>";
 	if (is_array($arr)){
             if (count($arr)==0){
-                $html .= "&nbsp;";	
+                $html .= "&nbsp;";
             }else{
                 $ii=0;
                 foreach ($arr as $k=>$ele){
                     $html .= "\n\t<div style='float:left;'><b>$k <span style='color:#822;'>&rarr;</span> </b></div>"
                             ."\n\t<div style='border:1px #ddd solid;font-size:10px;font-family:sans-serif;'>"._var_export($ele)."</div>";
                     $html .= "\n\t<div style='float:none;clear:both;'></div>";
-                    $ii++; 
+                    $ii++;
                 }
             }
-	}else if ($arr===NULL){ 
+	}else if ($arr===NULL){
             $html .= "&nbsp;";
 	}else if ($arr === 'b:0;' || substr($arr,0,2)=='a:'){
             $uns = @unserialize($arr);
@@ -83,4 +95,3 @@ function _var_export($arr, $title=''){
 	$html .= "</div>";
 	return $html;
 }
-

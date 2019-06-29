@@ -1,6 +1,6 @@
 # [dolibarr_stocktransfers_module](https://github.com/caos30/dolibarr_stocktransfers_module)
 
-## Current version: 1.8
+## Current version: 1.9 [2019-06-28]
 
 ## Description
 

@@ -59,7 +59,7 @@ class box_stocktransfers extends ModeleBoxes
 
 		$this->db = $db;
                 $this->hidden =  !$user->rights->stock->mouvement->lire || !$user->rights->produit;
-                
+
                 // == STOCKTRANSFERS_MODULE DOCUMENT_ROOT & URL_ROOT
                     if (file_exists(DOL_DOCUMENT_ROOT.'/custom/stocktransfers/core/modules/modStocktransfers.class.php')){
                         define('STOCKTRANSFERS_MODULE_DOCUMENT_ROOT',DOL_DOCUMENT_ROOT.'/custom/stocktransfers');
@@ -68,7 +68,7 @@ class box_stocktransfers extends ModeleBoxes
                         define('STOCKTRANSFERS_MODULE_DOCUMENT_ROOT',DOL_DOCUMENT_ROOT.'/stocktransfers');
                         define('STOCKTRANSFERS_MODULE_URL_ROOT',DOL_URL_ROOT.'/stocktransfers');
                     }
-                
+
 	}
 
 	/**
@@ -85,7 +85,7 @@ class box_stocktransfers extends ModeleBoxes
 		$this->max = $max;
 
                 $this->info_box_head = array('text' => $langs->trans("stocktransfersBoxTitle",$max));
-                
+
                 // == check permissions
                     if (!$user->rights->produit && !$user->rights->fournisseur && !$user->rights->societe){
                         $this->info_box_contents[0][0] = array(
@@ -94,7 +94,7 @@ class box_stocktransfers extends ModeleBoxes
                         );
                         return;
                     }
-                
+
                 // == load data
                     include_once STOCKTRANSFERS_MODULE_DOCUMENT_ROOT.'/lib/stocktransfers_transfer.class.php';
                     $transfer = new StockTransfer($db);
@@ -104,14 +104,14 @@ class box_stocktransfers extends ModeleBoxes
                         $this->hidden = false;
                         return;
                     }
-                    
+
                 // == load depots
                     $depots = array();
                     $resql = $db->query("SELECT * FROM ".MAIN_DB_PREFIX."entrepot");
                     if ($resql) {
                         while($row = $resql->fetch_assoc()) $depots[$row['rowid']] = $row;
                     }
-                    
+
                 // == render
                     dol_syslog(get_class($this)."::loadBox", LOG_DEBUG);
                     $status_picto = array('0'=>'0','1'=>'1','2'=>'3','3'=>'4');
@@ -132,13 +132,18 @@ class box_stocktransfers extends ModeleBoxes
                         // = column: depot 1
                             $url = 'product/stock/card.php?id='.$t['fk_depot1'];
                             $picto_link = "<a href='$url'><img src='theme/".$conf->theme."/img/object_company.png' /></a>";
-                            $text_link = " <a href='$url'>".(!empty($depots[$t['fk_depot1']]) ? $depots[$t['fk_depot1']]['label'] : '#'.$t['fk_depot1'])."</a>";
+							$label = '#'.$t['fk_depot1'];
+							if (!empty($depots[$t['fk_depot1']] && !empty($depots[$t['fk_depot1']]['lieu'])))
+								$label = $depots[$t['fk_depot1']]['lieu'];
+							else if (!empty($depots[$t['fk_depot1']] && !empty($depots[$t['fk_depot1']]['label'])))
+								$label = $depots[$t['fk_depot1']]['label'];
+							$text_link = " <a href='$url'>$label</a>";
                             $this->info_box_contents[$line][] = array(
                                 'td' => 'align="left"',
                                 'text' => $picto_link.$text_link,
                                 'asis' => 1,
                             );
-                            
+
                         // = column: depot 2
                             $url = 'product/stock/card.php?id='.$t['fk_depot2'];
                             $picto_link = "<a href='$url'><img src='theme/".$conf->theme."/img/object_company.png' /></a>";
@@ -148,7 +153,7 @@ class box_stocktransfers extends ModeleBoxes
                                 'text' => $picto_link.$text_link,
                                 'asis' => 1,
                             );
-                            
+
                         // = column: number of products included
                             $this->info_box_contents[$line][] = array(
                                 'td' => 'align="center"',
@@ -165,12 +170,12 @@ class box_stocktransfers extends ModeleBoxes
                                 $text = img_picto($langs->trans('stocktransfersStatus1'),'statut3');
                             else if ($t['status']=='2')
                                 $text = img_picto($langs->trans('stocktransfersStatus2'),'statut4');
-                            
+
                             $this->info_box_contents[$line][] = array(
                                 'td' => 'align="center" width="18"',
                                 'text' => $text //img_picto($langs->trans('purchasesStatus'.$t['status']),'statut'.$status_picto[$t['status']])
                             );
-                            
+
                         $line++;
                     }
 
@@ -192,4 +197,3 @@ class box_stocktransfers extends ModeleBoxes
 	}
 
 }
-
