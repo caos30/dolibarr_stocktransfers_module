@@ -76,7 +76,8 @@
 
     // == load products
         $products = array();
-        $resql = $db->query("SELECT rowid,label,price,price_ttc FROM ".MAIN_DB_PREFIX."product");
+        $resql = $db->query("SELECT rowid,label,price,price_ttc,barcode FROM ".MAIN_DB_PREFIX."product");
+        //$resql = $db->query("SELECT * FROM ".MAIN_DB_PREFIX."product");
         if ($resql) {
             while($row = $resql->fetch_assoc()) $products[$row['rowid']] = $row;
         }
@@ -253,7 +254,22 @@
                     foreach($transfer->products as $p){
                         $n_rows++;
                         $label = !empty($products[$p['id']]) && !empty($products[$p['id']]['label']) ? $products[$p['id']]['label'] : '#'.$p['id'];
-                        if (!empty($p['b'])) $label = '['.$p['b'].'] '.$label; // barcode / part number / serial code
+
+                        // = part number / serial code
+                            if (!empty($conf->global->STOCKTRANSFERS_MODULE_SETT_08) && $conf->global->STOCKTRANSFERS_MODULE_SETT_08!='N'){
+                                if ($conf->global->STOCKTRANSFERS_MODULE_SETT_08=='Y' || !empty($p['b'])){
+                                        $label = '('.$p['b'].') '.$label;
+                                }
+                            }
+
+                        // = barcode
+                            if (!empty($conf->global->STOCKTRANSFERS_MODULE_SETT_09) && $conf->global->STOCKTRANSFERS_MODULE_SETT_09!='N'){
+                                if ($conf->global->STOCKTRANSFERS_MODULE_SETT_08=='Y' ||
+                                        (!empty($products[$p['id']]) && !empty($products[$p['id']]['barcode']))){
+                                        $label = '['.$products[$p['id']]['barcode'].'] '.$label;
+                                }
+                            }
+
                         $n = !empty($p['n']) ? floatval($p['n']) : '&nbsp;';
                 ?>
                 <tr>

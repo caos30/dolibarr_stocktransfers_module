@@ -22,7 +22,9 @@ Caos30 was the initial developer of this module, made for an specific customer o
 
 ## Installation & user guide
 
-The usual to any other module of Dolibarr. But also take in account that if you will use more than one currency on your Dolibarr then you need to apply a minor patch on Dolibarr core (at least on versions 5.x and 6.X).
+The usual to any other module of Dolibarr.
+
+Note: if you update your existing module -already using it- go to Settings > Modules and visit the settings of this module, and do at least a one SAVE of settings with new configuration. It will preserve the existing options but it probably will add new ones.
 
 Complete information at: https://imasdeweb.com/index.php?pag=m_blog&gad=detalle_entrada&entry=39
 

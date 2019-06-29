@@ -211,6 +211,30 @@ llxHeader('','stocktransfers',$help_url);
                 </select>
             </td>
         </tr>
+        <!-- show num. part / serial code -->
+        <tr>
+            <td><?= $langs->trans("STsettLab08") ?></td>
+            <td>
+                <?php $value = !empty($conf->global->STOCKTRANSFERS_MODULE_SETT_08) ? $conf->global->STOCKTRANSFERS_MODULE_SETT_08 : 'M' ?>
+                <select name="config[STOCKTRANSFERS_MODULE_SETT_08]">
+                    <option value="N" <?= $value=='N' ? "selected='selected'":"" ?>><?= $langs->trans('STno') ?></option>
+                    <option value="Y" <?= $value=='Y' ? "selected='selected'":"" ?>><?= $langs->trans('STyes') ?></option>
+                    <option value="M" <?= $value=='M' ? "selected='selected'":"" ?>><?= strip_tags($langs->trans("STsettLab03opt3")) ?></option>
+                </select>
+            </td>
+        </tr>
+        <!-- show barcode -->
+        <tr>
+            <td><?= $langs->trans("STsettLab09") ?></td>
+            <td>
+                <?php $value = !empty($conf->global->STOCKTRANSFERS_MODULE_SETT_09) ? $conf->global->STOCKTRANSFERS_MODULE_SETT_09 : 'M' ?>
+                <select name="config[STOCKTRANSFERS_MODULE_SETT_09]">
+                    <option value="N" <?= $value=='N' ? "selected='selected'":"" ?>><?= $langs->trans('STno') ?></option>
+                    <option value="Y" <?= $value=='Y' ? "selected='selected'":"" ?>><?= $langs->trans('STyes') ?></option>
+                    <option value="M" <?= $value=='M' ? "selected='selected'":"" ?>><?= strip_tags($langs->trans("STsettLab03opt3")) ?></option>
+                </select>
+            </td>
+        </tr>
     </table>
 
     <!-- ** PDF FOOTER ** SETTINGS -->
