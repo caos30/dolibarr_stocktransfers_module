@@ -235,7 +235,7 @@
                 <!-- TABLE HEADER -->
 
                 <tr>
-                    <?php if (!empty($conf->global->STOCKTRANSFERS_MODULE_SETT_05)){ ?>
+                    <?php if (!empty($conf->global->STOCKTRANSFERS_MODULE_SETT_05) && $conf->global->STOCKTRANSFERS_MODULE_SETT_05!='N'){ ?>
                         <td width="59%" style="border:0.5px #000000 solid;border-top:2px #000000 solid;border-bottom:2px #000000 solid;text-align:left;"><b><?= html_entity_decode($langs->trans('stocktransfersPDF7')) ?></b></td>
                         <td width="14%" style="border:0.5px #000000 solid;border-top:2px #000000 solid;border-bottom:2px #000000 solid;text-align:center;"><b><?= mb_strtoupper(html_entity_decode($langs->trans('STprice'))) ?></b></td>
                         <td width="10%" style="border:0.5px #000000 solid;border-top:2px #000000 solid;border-bottom:2px #000000 solid;text-align:center;"><b><?= substr(html_entity_decode($langs->trans('stocktransfersPDF5')),0,5).'.' ?></b></td>
@@ -285,7 +285,7 @@
                     for($ii=0 ; $ii < (20 - count($transfer->products)); $ii++){ ?>
 
                 <tr>
-                    <?php if (!empty($conf->global->STOCKTRANSFERS_MODULE_SETT_05)){ ?>
+                    <?php if (!empty($conf->global->STOCKTRANSFERS_MODULE_SETT_05) && $conf->global->STOCKTRANSFERS_MODULE_SETT_05!='N'){ ?>
                         <td width="59%" style="border:0.5px #000000 solid;text-align:left;">&nbsp;</td>
                         <td width="14%" style="border:0.5px #000000 solid;text-align:center;">&nbsp;</td>
                         <td width="10%" style="border:0.5px #000000 solid;text-align:center;">&nbsp;</td>
