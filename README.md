@@ -1,6 +1,8 @@
 # [dolibarr_stocktransfers_module](https://github.com/caos30/dolibarr_stocktransfers_module)
 
-## Current version: 1.10 [2019-06-29]
+## Current version: 1.11 [2019-07-02]
+
+Compatible with Dolibarr v. 5.X-10.X
 
 ## Description
 
@@ -10,7 +12,7 @@ The module allows the download of a PDF file with the list of products to be tra
 
 ## Interface language translations
 
-Until now: English / Catalan / Castillian (spanish)
+Until now: English / Catalan / Castillian (spanish) / Italian
 
 ## Slide presentation
 
@@ -24,7 +26,7 @@ Caos30 was the initial developer of this module, made for an specific customer o
 
 The usual to any other module of Dolibarr.
 
-Note: if you update your existing module -already using it- go to Settings > Modules and visit the settings of this module, and do at least a one SAVE of settings with new configuration. It will preserve the existing options but it probably will add new ones.
+Note: if you are updating your existing module -already using it- go to Settings > Modules and visit the settings of this module, and do at least one time a SAVE of settings with new configuration. It will preserve the existing options but it probably will add new ones.
 
 Complete information at: https://imasdeweb.com/index.php?pag=m_blog&gad=detalle_entrada&entry=39
 
@@ -59,6 +61,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 As developers & translators:
 
  - DEV & translation to CA, EN, ES: Sergi Rodrigues (from 2017)
+ - Italian translation: Marco Civra (2019)
 
 ## Versions Log
 

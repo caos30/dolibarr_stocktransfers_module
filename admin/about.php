@@ -58,7 +58,7 @@ $langs->load("stocktransfers");
  */
 
 $help_url='';
-llxHeader('','',$help_url);
+llxHeader('',$langs->trans('stocktransfersMenuTitle2').' :: '.$langs->trans('STtabAbout'),$help_url);
 
 $linkback='<a href="'.DOL_URL_ROOT.'/admin/modules.php">'.$langs->trans("BackToModuleList").'</a>';
 print_fiche_titre($langs->trans("stocktransfersSetup"),$linkback,'setup');
@@ -67,18 +67,18 @@ print '<br>';
 $h=0;
 
 $head[$h][0] = 'config.php';
-$head[$h][1] = $langs->trans("Config");
+$head[$h][1] = $langs->trans("STtabConfig");
 $head[$h][2] = 'tabconfig';
 $h++;
 
 $head[$h][0] = 'about.php';
-$head[$h][1] = $langs->trans("About");
+$head[$h][1] = $langs->trans("STtabAbout");
 $head[$h][2] = 'tababout';
 $h++;
 
 $search_query = 'bimex';
 
-dol_fiche_head($head, 'tababout', '');
+dol_fiche_head($head, 'tababout', $langs->trans('stocktransfersMenuTitle2'),-1,'stock');
 
 print $langs->trans("stocktransfersAboutInfo").'<br>';
 print '<br>';

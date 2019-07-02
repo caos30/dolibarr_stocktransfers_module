@@ -94,7 +94,7 @@ $langs->load("stocktransfers");
 ****************************************************/
 
 $help_url='';
-llxHeader('','stocktransfers',$help_url);
+llxHeader('',$langs->trans('stocktransfersMenuTitle2').' :: '.$langs->trans('STtabConfig'),$help_url);
 
 // = first header row (section title & go back link)
 
@@ -106,12 +106,12 @@ llxHeader('','stocktransfers',$help_url);
     $h=0;
 
     $head[$h][0] = 'config.php';
-    $head[$h][1] = $langs->trans("Config");
+    $head[$h][1] = $langs->trans("STtabConfig");
     $head[$h][2] = 'tabconfig';
     $h++;
 
     $head[$h][0] = 'about.php';
-    $head[$h][1] = $langs->trans("About");
+    $head[$h][1] = $langs->trans("STtabAbout");
     $head[$h][2] = 'tababout';
     $h++;
 
@@ -119,7 +119,7 @@ llxHeader('','stocktransfers',$help_url);
 
     $html = new Form($db);
 
-    dol_fiche_head($head, 'tabconfig', 'Stocktransfers',-1,'stock');
+    dol_fiche_head($head, 'tabconfig', $langs->trans('stocktransfersMenuTitle2'),-1,'stock');
 
 ?>
 

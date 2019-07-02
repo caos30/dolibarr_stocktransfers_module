@@ -133,11 +133,13 @@
                             <br />
                             <span style=""><?= html_entity_decode($langs->trans('stocktransfersDate1')).': '. dol_print_date($transfer->date1) ?></span>
                             <br />
-                        <?php if (empty($conf->global->STOCKTRANSFERS_MODULE_SETT_03) || $conf->global->STOCKTRANSFERS_MODULE_SETT_03!='N'){ ?>
+                        <?php if ((!empty($conf->global->STOCKTRANSFERS_MODULE_SETT_03) && $conf->global->STOCKTRANSFERS_MODULE_SETT_03=='Y')
+                                    || (!empty($conf->global->STOCKTRANSFERS_MODULE_SETT_03) && $conf->global->STOCKTRANSFERS_MODULE_SETT_03=='M' && !empty($transfer->shipper))){ ?>
                             <span style=""><?= html_entity_decode($langs->trans('stocktransfersShipper')).': '. $transfer->shipper ?></span>
                             <br />
                         <?php } ?>
-                        <?php if (empty($conf->global->STOCKTRANSFERS_MODULE_SETT_04) || $conf->global->STOCKTRANSFERS_MODULE_SETT_04!='N'){ ?>
+                        <?php if ((!empty($conf->global->STOCKTRANSFERS_MODULE_SETT_04) && $conf->global->STOCKTRANSFERS_MODULE_SETT_04=='Y')
+                                    || (!empty($conf->global->STOCKTRANSFERS_MODULE_SETT_04) && $conf->global->STOCKTRANSFERS_MODULE_SETT_04=='M' && !empty($transfer->n_package))){ ?>
                             <span style=""><?= html_entity_decode($langs->trans('stocktransfersNPackages')).': '. $transfer->n_package ?></span>
                             <br />
                         <?php } ?>

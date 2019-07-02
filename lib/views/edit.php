@@ -401,14 +401,14 @@
         /* check product */
         var msg = '';
         if (isNaN(pid) || pid<1) {
-            msg += "<?= str_replace('"','',$langs->trans('STErrorMsg05')) ?> ";
+            msg += "<?= html_entity_decode(str_replace('"','',$langs->trans('STErrorMsg05'))) ?> ";
             $('#transfer_product_form span[role=combobox]').css('background-color','yellow');
             $('#transfer_product_form .select2').addClass('alertedcontainer');
         }
 
         /* check quantity */
         if (isNaN(qty) || qty<1) {
-            msg += "<?= str_replace('"','',$langs->trans('STErrorMsg06')) ?> ";
+            msg += "<?= html_entity_decode(str_replace('"','',$langs->trans('STErrorMsg06'))) ?> ";
             $('#transfer_product_form input[name=n]').addClass('alertedfield');
         }
 
@@ -416,7 +416,7 @@
         <?php if ($conf->productbatch->enabled) { ?>
             var batch = $('#transfer_product_form input[name=batch]').val();
             if (batch.trim()=='') {
-                msg += "<?= str_replace('"','',$langs->trans('STErrorMsg08')) ?> ";
+                msg += "<?= html_entity_decode(str_replace('"','',$langs->trans('STErrorMsg08'))) ?> ";
                 $('#transfer_product_form input[name=batch]').addClass('alertedfield');
             }
         <?php } ?>
@@ -444,7 +444,7 @@
     function js_set_as_sent(){
         if ($('#transfer_card_form input[name=date1]').val()==''){
             $('#transfer_card_form input[name=date1]').addClass('alertedfield');
-            alert("<?= str_replace('"','\"',$langs->trans('stocktransfersErrorMsg01')) ?>");
+            alert("<?= html_entity_decode(str_replace('"','\"',$langs->trans('stocktransfersErrorMsg01'))) ?>");
         }else{
             $('#transfer_card_form input[name=status]').val('1');
             js_validate_form('transfer_card_form');
@@ -454,7 +454,7 @@
     function js_set_as_received(){
         if ($('#transfer_card_form input[name=date2]').val()==''){
             $('#transfer_card_form input[name=date2]').addClass('alertedfield');
-            alert("<?= str_replace('"','\"',$langs->trans('stocktransfersErrorMsg02')) ?>");
+            alert("<?= html_entity_decode(str_replace('"','\"',$langs->trans('stocktransfersErrorMsg02'))) ?>");
         }else{
             $('#transfer_card_form input[name=status]').val('2');
             js_validate_form('transfer_card_form');

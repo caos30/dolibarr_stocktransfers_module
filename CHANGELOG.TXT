@@ -2,6 +2,10 @@
    STOCKTRANSFERS MODULE CHANGELOG
 =====================================
 
+== v 1.11 [2019-07-03]
+- Made compatible with new Dolibarr 10.0.0
+- Minor bugfixes too.
+
 == v 1.10 [2019-06-29]
 - Fixed an issue when enabled lot/batch serial numbers on Dolibarr
 

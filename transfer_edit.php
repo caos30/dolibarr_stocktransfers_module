@@ -132,16 +132,16 @@ if ($action == 'delete_transfer') {
         else if (empty($transfer->label))
             $transfer->label = $langs->trans("StockTransfer").' '.dol_print_date($now,'%Y-%m-%d %H:%M');
 
-        if (!empty($_POST['fk_project']))
+        if (isset($_POST['fk_project']))
         $transfer->fk_project = intval($_POST['fk_project']);
 
-        if (!empty($_POST['inventorycode']))
+        if (isset($_POST['inventorycode']))
         $transfer->inventorycode = $_POST['inventorycode'];
 
-        if (!empty($_POST['fk_depot1']))
+        if (isset($_POST['fk_depot1']))
         $transfer->fk_depot1 = intval($_POST['fk_depot1']);
 
-        if (!empty($_POST['fk_depot2']))
+        if (isset($_POST['fk_depot2']))
         $transfer->fk_depot2 = intval($_POST['fk_depot2']);
 
         if (!empty($_POST['date1year'])) // == d/m/Y -> %Y%m%d%H%M%S
@@ -150,10 +150,10 @@ if ($action == 'delete_transfer') {
         if (!empty($_POST['date2year'])) // == d/m/Y -> %Y%m%d%H%M%S
         $transfer->date2 = $_POST['date2year'].substr('0'.$_POST['date2month'],-2).substr('0'.$_POST['date2day'],-2);
 
-        if (!empty($_POST['shipper']))
+        if (isset($_POST['shipper']))
         $transfer->shipper = $_POST['shipper'];
 
-        if (!empty($_POST['n_package']))
+        if (isset($_POST['n_package']))
         $transfer->n_package = $_POST['n_package'];
 
         if (isset($_POST['status']))
