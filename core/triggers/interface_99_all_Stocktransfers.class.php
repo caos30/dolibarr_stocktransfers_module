@@ -34,27 +34,18 @@
         define('STOCKTRANSFERS_MODULE_URL_ROOT',DOL_URL_ROOT.'/stocktransfers');
     }
 
-require_once DOL_DOCUMENT_ROOT.'/core/triggers/dolibarrtriggers.class.php';
-require_once STOCKTRANSFERS_MODULE_DOCUMENT_ROOT."/lib/stocktransfers_transfer.class.php";
-
-// == STOCKTRANSFERS_MODULE DOCUMENT_ROOT & URL_ROOT
-    if (file_exists(DOL_DOCUMENT_ROOT.'/custom/stocktransfers/core/modules/modStocktransfers.class.php')){
-        define('STOCKTRANSFERS_MODULE_DOCUMENT_ROOT',DOL_DOCUMENT_ROOT.'/custom/stocktransfers');
-        define('STOCKTRANSFERS_MODULE_URL_ROOT',DOL_URL_ROOT.'/custom/stocktransfers');
-    }else{
-        define('STOCKTRANSFERS_MODULE_DOCUMENT_ROOT',DOL_DOCUMENT_ROOT.'/stocktransfers');
-        define('STOCKTRANSFERS_MODULE_URL_ROOT',DOL_URL_ROOT.'/stocktransfers');
-    }
+dol_include_once('/core/triggers/dolibarrtriggers.class.php');
+dol_include_once('/stocktransfers/lib/stocktransfers_transfer.class.php');
 
 //ini_set('display_errors',1);ini_set('display_startup_errors',1);error_reporting(-1); // == ACTIVATE the ERROR reporting
 
 /**
  *  Class of triggers for demo module
- * 
+ *
  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
  *  IT REALLY DON'T WORK YET !! i unknow what's wrong with it :(
  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *
- * 
+ *
  */
 class InterfaceStockTransfers extends DolibarrTriggers
 {
@@ -80,12 +71,12 @@ class InterfaceStockTransfers extends DolibarrTriggers
             global $db;
 		// Put here code you want to execute when a Dolibarr business events occurs.
         // Data and type of action are stored into $object and $action
-        
+
 	    switch ($action) {
-		    
+
                 case 'STOCK_MOVEMENT':
-                    
-                    /* this event is triggerd when a movement is added during 
+
+                    /* this event is triggered when a movement is added during
                      * a massive stock movement insertion
                      * so we take measures to avoid add 2 the same transfer: $_POST['token']
                      */
@@ -94,18 +85,17 @@ class InterfaceStockTransfers extends DolibarrTriggers
 
                         if (empty($_SESSION['massstockmove'])) break;
                         $listofdata = json_decode($_SESSION['massstockmove'],true);
-                        
-                        require_once(DOL_DOCUMENT_ROOT."/stocktransfers/lib/stocktransfers_transfer.class.php");
+                        dol_include_once('/stocktransfers/lib/stocktransfers_transfer.class.php');
                         $transfer = new StockTransfer($db);
-                        $transfer->label = 'Guaiii';
+                        $transfer->label = 'Alert: massive stock movement';
                         $transfer->s = 'GET= '.var_export($_GET,true).' | POST= '.var_export($_POST,true).' | _SESSION[massstockmove]= '.var_export($listofdata,true);
                         $result = $transfer->create(NULL);
                         if ($result < 0) dol_print_error($db,$transfer->error);
-                        
+
                         $_SESSION['last_stocktransfer_token'] = $_POST['token'];
                     }
                     break;
-			    
+
 	    }
 
         return 0;

@@ -259,7 +259,7 @@
 
                         // = part number / serial code
                             if (!empty($conf->global->STOCKTRANSFERS_MODULE_SETT_08) && $conf->global->STOCKTRANSFERS_MODULE_SETT_08!='N'){
-                                if ($conf->global->STOCKTRANSFERS_MODULE_SETT_08=='Y' || !empty($p['b'])){
+                                if ($conf->global->STOCKTRANSFERS_MODULE_SETT_08=='Y' || (!empty($p['b']) && mb_strlen($p['b'])>1)){
                                         $label = '('.$p['b'].') '.$label;
                                 }
                             }
@@ -267,31 +267,31 @@
                         // = barcode
                             if (!empty($conf->global->STOCKTRANSFERS_MODULE_SETT_09) && $conf->global->STOCKTRANSFERS_MODULE_SETT_09!='N'){
                                 if ($conf->global->STOCKTRANSFERS_MODULE_SETT_08=='Y' ||
-                                        (!empty($products[$p['id']]) && !empty($products[$p['id']]['barcode']))){
+                                        (!empty($products[$p['id']]) && !empty($products[$p['id']]['barcode']) && mb_strlen($products[$p['id']]['barcode'])>1)){
                                         $label = '['.$products[$p['id']]['barcode'].'] '.$label;
                                 }
                             }
 
-                        $n = !empty($p['n']) ? floatval($p['n']) : '&nbsp;';
+                        $n = !empty($p['n']) ? floatval($p['n']) : '';
                 ?>
                 <tr>
                     <?php if (!empty($conf->global->STOCKTRANSFERS_MODULE_SETT_05) && $conf->global->STOCKTRANSFERS_MODULE_SETT_05!='N'){
-                        $price = '&nbsp;'; $subtotal = '';
+                        $price = ''; $subtotal = '';
                         if ($conf->global->STOCKTRANSFERS_MODULE_SETT_05=='Y'){
                             $price = !empty($products[$p['id']]) && !empty($products[$p['id']]['price']) ? floatval($products[$p['id']]['price']) : '';
                         }else if ($conf->global->STOCKTRANSFERS_MODULE_SETT_05=='T'){
                             $price = !empty($products[$p['id']]) && !empty($products[$p['id']]['price_ttc']) ? floatval($products[$p['id']]['price_ttc']) : '';
                         }
-                        $subtotal = !empty($price) && $price!='' && !empty($n) ? price($price * $n) : '';
-                        if (!empty($subtotal)) $total += $subtotal;
+                        $subtotal = $price!='' && $n!='' ? $price * $n : '';
+                        if ($subtotal!='') $total += $subtotal; else $total = '';
                     ?>
                         <td width="59%" style="border:0.5px #000000 solid;text-align:left;"><?= $label ?></td>
-                        <td width="14%" style="border:0.5px #000000 solid;text-align:right;"><?= !empty($price) ? _price($price) : '&nbsp;' ?></td>
-                        <td width="10%" style="border:0.5px #000000 solid;text-align:right;"><?= $n ?></td>
-                        <td width="17%" style="border:0.5px #000000 solid;text-align:right;"><?= !empty($subtotal) ? _price($subtotal) : '&nbsp;' ?></td>
+                        <td width="14%" style="border:0.5px #000000 solid;text-align:right;"><?= $price!='' ? _price($price) : '&nbsp;' ?></td>
+                        <td width="10%" style="border:0.5px #000000 solid;text-align:right;"><?= $n!='' ? $n : '&nbsp;' ?></td>
+                        <td width="17%" style="border:0.5px #000000 solid;text-align:right;"><?= $subtotal!='' ? _price($subtotal) : '&nbsp;' ?></td>
                     <?php }else{ ?>
                         <td width="80%" style="border:0.5px #000000 solid;text-align:left;"><?= $label ?></td>
-                        <td width="20%" style="border:0.5px #000000 solid;text-align:center;"><?= $n ?></td>
+                        <td width="20%" style="border:0.5px #000000 solid;text-align:center;"><?= $n!='' ? $n : '&nbsp;' ?></td>
                     <?php } ?>
                 </tr>
                 <?php } ?>
@@ -323,7 +323,7 @@
                     <td width="59%" style="border-left:0.5px #000000 solid;border-top:2px #000000 solid;border-bottom:2px #000000 solid;text-align:left;"
                         ><b><?= html_entity_decode($langs->trans('STtotal')) ?></b></td>
                     <td width="41%" style="border-right:0.5px #000000 solid;border-top:2px #000000 solid;border-bottom:2px #000000 solid;text-align:right;"
-                        ><?= _price($total) ?></td>
+                        ><?= $total!='' ? _price($total) : '&nbsp;' ?></td>
                 </tr>
                 <?php } ?>
             </table>
@@ -331,7 +331,7 @@
     </tr>
 
 
-    <!-- === HEADER 2 === -->
+    <!-- === SIGNATURES === -->
 
     <tr><td><p>&nbsp;<br />&nbsp;</p><p>&nbsp;<br />&nbsp;</p></td></tr>
 

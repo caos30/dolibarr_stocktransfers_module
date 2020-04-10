@@ -209,14 +209,14 @@ if ($action == 'delete_transfer') {
 
 }else if ($action == 'add_line') {
 
-    if (empty($_POST['pid'])){
+    if (empty($_POST['add_pid'])){
         $_SESSION['EventMessages'][] = array($langs->trans("ErrorGlobalVariableUpdater2",'product'),null,'errors');
     }else if (empty($_POST['n'])){
         $_SESSION['EventMessages'][] = array($langs->trans("ErrorGlobalVariableUpdater2",'n'),null,'errors');
     }else{
 
-        $transfer->products[$_POST['pid']] = array(
-            'id'=>$_POST['pid'],
+        $transfer->products[$_POST['add_pid']] = array(
+            'id'=>$_POST['add_pid'],
             'n'=>intval($_POST['n']),
             'b'=>isset($_POST['batch']) ? $_POST['batch'] : '');
         $transfer->n_prducts = count($transfer->products);

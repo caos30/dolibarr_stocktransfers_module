@@ -269,6 +269,7 @@
         <input type="hidden" name="rowid" value="<?= !empty($transfer->rowid) ? $transfer->rowid : '' ?>" />
         <input type="hidden" name="action" value="add_line">
         <input type="hidden" name="del_pid" value="">
+        <input type="hidden" name="add_pid" value="">
 
         <div class="div-table-responsive-no-max">
             <table class="liste">
@@ -393,17 +394,30 @@
     });
 
     function js_check_submit_add_line(){
-
         /* read form values */
-        var pid = parseInt($('#transfer_product_form select[name=pid]').val());
+        if ($('#transfer_product_form select[name=pid]').length==1)
+            var pid = parseInt($('#transfer_product_form select[name=pid]').val());
+        else if ($('#transfer_product_form input[name=pid]').length==1)
+            var pid = parseInt($('#transfer_product_form input[name=pid]').val());
+        else if ($('#transfer_product_form select[name=search_pid]').length==1)
+            var pid = parseInt($('#transfer_product_form select[name=search_pid]').val());
+        else if ($('#transfer_product_form input[name=search_pid]').length==1)
+            var pid = parseInt($('#transfer_product_form input[name=search_pid]').val());
+        else{
+            alert('Product select box not found, please contact developer.');
+            return;
+        }
         var qty = parseInt($('#transfer_product_form input[name=n]').val());
 
         /* check product */
         var msg = '';
         if (isNaN(pid) || pid<1) {
+            $('#transfer_product_form input[name=add_pid]').val('');
             msg += "<?= html_entity_decode(str_replace('"','',$langs->trans('STErrorMsg05'))) ?> ";
             $('#transfer_product_form span[role=combobox]').css('background-color','yellow');
             $('#transfer_product_form .select2').addClass('alertedcontainer');
+        }else{
+            $('#transfer_product_form input[name=add_pid]').val(pid);
         }
 
         /* check quantity */
