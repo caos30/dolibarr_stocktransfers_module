@@ -12,7 +12,7 @@ The module allows the download of a PDF file with the list of products to be tra
 
 ## Interface language translations
 
-Until now: English / Catalan / Castillian (spanish) / Italian
+Until now: English / Catalan / Castillian (spanish) / Italian / German
 
 ## Slide presentation
 
@@ -66,6 +66,7 @@ As developers & translators:
 
  - DEV & translation to CA, EN, ES: Sergi Rodrigues (from 2017)
  - Italian translation: Marco Civra (2019)
+ - German translation: Hans-Dieter Schondelmaier (2020)
 
 ## Versions Log
 
