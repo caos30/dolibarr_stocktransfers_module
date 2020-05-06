@@ -121,18 +121,58 @@ llxHeader('',$langs->trans('stocktransfersMenuTitle2').' :: '.$langs->trans('STt
 
     dol_fiche_head($head, 'tabconfig', $langs->trans('stocktransfersMenuTitle2'),-1,'stock');
 
+    print "\n<div style='padding:0 1.5em;'>";
 ?>
 
 <form id="stocktransfersForm" name="stocktransfersForm" action="<?= $_SERVER["PHP_SELF"] ?>" method="post">
+
+    <!-- ** PDF GENERAL ** SETTINGS -->
+
+    <?= load_fiche_titre($langs->trans("STsettTit00"),'','') ?>
+
+    <table class="noborder" style="width:auto;min-width:60%;">
+        <tr class="liste_titre">
+            <td width="35%"><?= $langs->trans("Name") ?></td>
+            <td width="65%"><?= $langs->trans("Value") ?></td>
+        </tr>
+        <!-- base font-size -->
+        <tr>
+            <td><?= $langs->trans("STsettLab10") ?></td>
+            <td>
+                <?php $value = !empty($conf->global->STOCKTRANSFERS_MODULE_SETT_10) ? $conf->global->STOCKTRANSFERS_MODULE_SETT_10 : '10' ?>
+                <select name="config[STOCKTRANSFERS_MODULE_SETT_10]">
+                    <option value="7" <?= $value=='7' ? "selected='selected'":"" ?>>7 px</option>
+                    <option value="8" <?= $value=='8' ? "selected='selected'":"" ?>>8 px</option>
+                    <option value="9" <?= $value=='9' ? "selected='selected'":"" ?>>9 px</option>
+                    <option value="10" <?= $value=='10' ? "selected='selected'":"" ?>>10 px</option>
+                    <option value="11" <?= $value=='11' ? "selected='selected'":"" ?>>11 px</option>
+                    <option value="12" <?= $value=='12' ? "selected='selected'":"" ?>>12 px</option>
+                    <option value="13" <?= $value=='13' ? "selected='selected'":"" ?>>13 px</option>
+                    <option value="14" <?= $value=='14' ? "selected='selected'":"" ?>>14 px</option>
+                </select>
+            </td>
+        </tr>
+        <!-- font-family -->
+        <tr>
+            <td><?= $langs->trans("STsettLab11") ?></td>
+            <td>
+                <?php $value = !empty($conf->global->STOCKTRANSFERS_MODULE_SETT_11) ? $conf->global->STOCKTRANSFERS_MODULE_SETT_11 : 'sans-serif' ?>
+                <select name="config[STOCKTRANSFERS_MODULE_SETT_11]">
+                    <option value="sans-serif" <?= $value=='sans-serif' ? "selected='selected'":"" ?>>sans-serif</option>
+                    <option value="serif" <?= $value=='serif' ? "selected='selected'":"" ?>>serif</option>
+                </select>
+            </td>
+        </tr>
+    </table>
 
     <!-- ** PDF HEADER ** SETTINGS -->
 
     <?= load_fiche_titre($langs->trans("STsettTit01"),'','') ?>
 
-    <table class="noborder" width="100%">
+    <table class="noborder" style="width:auto;min-width:60%;">
         <tr class="liste_titre">
-            <td><?= $langs->trans("Name") ?></td>
-            <td><?= $langs->trans("Value") ?></td>
+            <td width="35%"><?= $langs->trans("Name") ?></td>
+            <td width="65%"><?= $langs->trans("Value") ?></td>
         </tr>
         <!-- document title -->
         <tr>
@@ -188,16 +228,27 @@ llxHeader('',$langs->trans('stocktransfersMenuTitle2').' :: '.$langs->trans('STt
                 </select>
             </td>
         </tr>
+        <!-- position of warehouse's boxes -->
+        <tr>
+            <td><?= $langs->trans("STsettLab13") ?></td>
+            <td>
+                <?php $value = !empty($conf->global->STOCKTRANSFERS_MODULE_SETT_13) ? $conf->global->STOCKTRANSFERS_MODULE_SETT_13 : 'A-B' ?>
+                <select name="config[STOCKTRANSFERS_MODULE_SETT_13]">
+                    <option value="A-B" <?= $value=='A-B' ? "selected='selected'":"" ?>><?= strip_tags($langs->trans("STsettLab13opt1")) ?></option>
+                    <option value="B-A" <?= $value=='B-A' ? "selected='selected'":"" ?>><?= strip_tags($langs->trans("STsettLab13opt2")) ?></option>
+                </select>
+            </td>
+        </tr>
     </table>
 
     <!-- ** PDF PODUCT LIST ** SETTINGS -->
 
     <br /><?= load_fiche_titre($langs->trans("STsettTit02"),'','') ?>
 
-    <table class="noborder" width="100%">
+    <table class="noborder" style="width:auto;min-width:60%;">
         <tr class="liste_titre">
-            <td><?= $langs->trans("Name") ?></td>
-            <td><?= $langs->trans("Value") ?></td>
+            <td width="35%"><?= $langs->trans("Name") ?></td>
+            <td width="65%"><?= $langs->trans("Value") ?></td>
         </tr>
         <!-- show price -->
         <tr>
@@ -241,10 +292,10 @@ llxHeader('',$langs->trans('stocktransfersMenuTitle2').' :: '.$langs->trans('STt
 
     <br /><?= load_fiche_titre($langs->trans("STsettTit03"),'','') ?>
 
-    <table class="noborder" width="100%">
+    <table class="noborder" style="width:auto;min-width:60%;">
         <tr class="liste_titre">
-            <td><?= $langs->trans("Name") ?></td>
-            <td><?= $langs->trans("Value") ?></td>
+            <td width="35%"><?= $langs->trans("Name") ?></td>
+            <td width="65%"><?= $langs->trans("Value") ?></td>
         </tr>
         <!-- show signatures -->
         <?php for ($ii=1;$ii<4;$ii++){ ?>
@@ -257,12 +308,22 @@ llxHeader('',$langs->trans('stocktransfersMenuTitle2').' :: '.$langs->trans('STt
                 &nbsp; <em><?= $langs->trans("STsettEmpty") ?></em>
             </td>
         </tr>
-    <?php } ?>
+        <?php } ?>
+        <!-- 3 line page footer -->
+        <tr>
+            <td><?= $langs->trans("STsettLab12") ?></td>
+            <td>
+                <textarea name="config[STOCKTRANSFERS_MODULE_SETT_12]" class="" style="width:95%;height:4em;"
+                    ><?= isset($conf->global->STOCKTRANSFERS_MODULE_SETT_12) ? $conf->global->STOCKTRANSFERS_MODULE_SETT_12 : '' ?></textarea>
+                <br />&nbsp; <em><?= $langs->trans("STsettLab12desc") ?></em>
+            </td>
+        </tr>
+
     </table>
 
     <!-- SUBMIT button -->
 
-    <p style="text-align:center;margin:4rem;">
+    <p style="text-align:left;margin:3rem 0;">
         <a href="#" onclick="$('#stocktransfersForm').submit();return false;" class="button"><?= dol_escape_htmltag($langs->trans("Save")) ?></a>
     </p>
 
@@ -366,7 +427,7 @@ llxHeader('',$langs->trans('stocktransfersMenuTitle2').' :: '.$langs->trans('STt
 dol_fiche_end();
 
 print "</form>\n";
-
+print "</div>\n";
 
 clearstatcache();
 

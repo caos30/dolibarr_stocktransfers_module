@@ -1,6 +1,6 @@
 # [dolibarr_stocktransfers_module](https://github.com/caos30/dolibarr_stocktransfers_module)
 
-## Current version: 1.13 [2020-02-08]
+## Current version: 1.14 [2020-04-29]
 
 Compatible with Dolibarr v. 5.X-11.X
 
@@ -30,9 +30,9 @@ Note: if you are updating your existing module -already using it- go to Settings
 
 Complete information at: https://imasdeweb.com/index.php?pag=m_blog&gad=detalle_entrada&entry=39
 
-## Install new version of the module
+## Install new version of the module (update)
 
-Simply copy all the files of the module replacing the existing ones on /htdocs/custom/stocktransfers or /htdocs/stocktransfers depending on where you installed it. You will need to deactivate && re-activate the module on Settings > Modules if it's mentioned in the CHANGELOG file for your update. Usually it is not needed.
+Simply copy all the files of the module replacing the existing ones on /htdocs/custom/stocktransfers or /htdocs/stocktransfers depending on where you installed it. You will need to deactivate && re-activate the module on Setup > Modules if it's mentioned in the CHANGELOG file for your update. Usually it is not needed, but it's recommended.
 
 ## License
 

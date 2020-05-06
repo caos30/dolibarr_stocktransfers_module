@@ -1,0 +1,66 @@
+/* === some extra styles for stocktransfers module */
+
+.note_textarea{
+    width:100%;
+    max-width:500px;
+    height:80px;
+}
+
+/* --- simplified skeleton columns grid ---- */
+
+.sk-container {
+  position: relative;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+    .sk-container::after {
+        display:block;
+        content:'';
+        float:none;
+        clear:both;
+    }
+.sk-column,
+.sk-columns {
+  position:relative;
+  width: 100%;
+  float: left;
+  box-sizing: border-box; }
+
+/* For devices larger than 400px */
+@media (min-width: 400px) {
+  .sk-container {
+    padding: 0; }
+}
+
+/* For devices larger than 800px */
+@media (min-width: 1000px) {
+  .sk-container {}
+  .sk-column,
+  .sk-columns {
+    margin-left: 4%; }
+  .sk-column:first-child,
+  .sk-columns:first-child {
+    margin-left: 0; }
+
+  .sk-one.sk-column,
+  .sk-one.sk-columns                    { width: 4.66666666667%; }
+  .sk-two.sk-columns                    { width: 13.3333333333%; }
+  .sk-three.sk-columns                  { width: 22%;            }
+  .sk-four.sk-columns                   { width: 30.6666666667%; }
+  .sk-five.sk-columns                   { width: 39.3333333333%; }
+  .sk-six.sk-columns                    { width: 48%;            }
+  .sk-seven.sk-columns                  { width: 56.6666666667%; }
+  .sk-eight.sk-columns                  { width: 65.3333333333%; }
+  .sk-nine.sk-columns                   { width: 74.0%;          }
+  .sk-ten.sk-columns                    { width: 82.6666666667%; }
+  .sk-eleven.sk-columns                 { width: 91.3333333333%; }
+  .sk-twelve.sk-columns                 { width: 100%; margin-left: 0; }
+
+  .sk-one-third.sk-column               { width: 30.6666666667%; }
+  .sk-two-thirds.sk-column              { width: 65.3333333333%; }
+
+  .sk-one-half.sk-column                { width: 48%; }
+
+}

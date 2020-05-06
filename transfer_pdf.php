@@ -85,6 +85,10 @@ $langs->load("stocktransfers@stocktransfers");
         $ret = $transfer->fetch($transfer_id);
     }
 
+// == some style settings
+    $fontsize = !empty($conf->global->STOCKTRANSFERS_MODULE_SETT_10) ? intval($conf->global->STOCKTRANSFERS_MODULE_SETT_10) : 10;
+    $fontfamily = !empty($conf->global->STOCKTRANSFERS_MODULE_SETT_11) ? $conf->global->STOCKTRANSFERS_MODULE_SETT_11 : 'serif';
+
 /***************************************************
  *
  *	Generate and output PDF
@@ -94,8 +98,23 @@ $langs->load("stocktransfers@stocktransfers");
 // == load PDF class
     require_once TCPDF_PATH.'tcpdf.php';
 
+// == Extend the TCPDF class to create custom Footer
+    class MYPDF extends TCPDF {
+
+        public function Footer() {
+            global $conf;
+            $fontsize = !empty($conf->global->STOCKTRANSFERS_MODULE_SETT_10) ? intval($conf->global->STOCKTRANSFERS_MODULE_SETT_10) : 10;
+            $fontfamily = !empty($conf->global->STOCKTRANSFERS_MODULE_SETT_11) ? $conf->global->STOCKTRANSFERS_MODULE_SETT_11 : 'serif';
+            $text = !empty($conf->global->STOCKTRANSFERS_MODULE_SETT_12) ? $conf->global->STOCKTRANSFERS_MODULE_SETT_12 : '';
+
+            $this->SetY(-25);
+            $footer_text = "<span style=\"font-family:$fontfamily;font-size:".($fontsize - 1)."px;\">".nl2br($text)."</div>";
+            $this->writeHTMLCell(0, 0, '', '', $footer_text, 0, 0, 0, true, 'C', false);
+        }
+    }
+
 // == create new PDF document
-    $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+    $pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
     $pdf->setJPEGQuality(75);
 
@@ -109,7 +128,8 @@ $langs->load("stocktransfers@stocktransfers");
 // == set default header data
     //$pdf->SetHeaderData('../../../../UserFiles/admin/modulo_'.$modulo.'/fondo_bitllet.jpg', 180, 'Bitllet per a  '.$nombre.' - Colònia: '.$evento['titulo'], '');
     //$pdf->SetHeaderData('', 180, $title, '');
-    $pdf->setPrintFooter(false);
+    $pdf->setPrintHeader(false);
+    $pdf->setPrintFooter(true);
 
 // == set header and footer fonts
     $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
@@ -119,7 +139,7 @@ $langs->load("stocktransfers@stocktransfers");
     $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 
 // == set margins
-    $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+    $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP / 1.5, PDF_MARGIN_RIGHT);
     $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
     $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
 

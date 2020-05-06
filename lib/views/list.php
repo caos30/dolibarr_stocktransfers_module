@@ -179,6 +179,9 @@
         $new_button = '<a href="transfer_edit.php?mainmenu=products&leftmenu=" class="button">'.$langs->trans('stocktransfersNewTransfer').'</a>';
 
 ?>
+
+    <style><?= str_replace(array(" ","\n","\t"),'',file_get_contents(__DIR__.'/styles.css')) ?></style>
+
     <!-- ========= header with section title & pagination controls ========= -->
 
     <form method="POST" id="transfer_searchFormList" name="searchFormList" action="<?= $_SERVER["PHP_SELF"] ?>">

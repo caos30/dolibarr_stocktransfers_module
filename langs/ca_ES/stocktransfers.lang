@@ -59,7 +59,7 @@ STProductRef=Producte
 STBatch=Lot
 STQty=Quantitat
 STStock=Stock
-STAdd=Afegir producte
+STAdd=Afegir
 STID=Transferència n°
 STDate=Data
 STLabel=Etiqueta
@@ -74,9 +74,9 @@ STErrorMsg07=Avís: aquest producte ja havia estat afegit. Les dades que ara ind
 STwarehouse=Magatzem
 STsettExampleAbbrv=Ex:
 STsettEmpty=Deixeu en blanc per a no mostrar-ho.
-STsettTit01=Preferències de la caçalera del PDF
-STsettTit02=Preferències del llistat de productes del PDF
-STsettTit03=Preferències del peu del PDF
+STsettTit01=Configuració de la caçalera del PDF
+STsettTit02=Configuració del llistat de productes del PDF
+STsettTit03=Configuració del peu del PDF
 STsettLab01=Títol visible del document
 STsettLab01def=Ordre d'enviament
 STsettLab02=Etiqueta per a la referència
@@ -103,3 +103,22 @@ STyes=Sí
 STno=No
 STtabAbout=Quant a
 STtabConfig=Configuració
+
+##### version 1.14 #####
+
+STnote=Nota
+STprivateNote=Nota privada:
+STpdfNote=Nota a incloure al PDF:
+STconfirmDEL=Aquesta acció no es pot desfer, voleu continuar?
+STedit=Editar
+STtotalProducts=({n1} productes)
+STtotalProductsUnits=({n1} productes, {n2} unitats)
+STsettTit00=Configuració general del PDF
+STsettLab10=Tamany de la lletra
+STsettLab11=Tipus de lletra
+STsettLab12=Text lliure a peu de plana
+STsettLab12desc=S'accepta etiquetes HTML de format. Màx. 3 línies. Com Nom de l'empresa, telèfon...
+
+STsettLab13=Posició dels requadres dels magatzems
+STsettLab13opt1=Sortida ➡ Arribada
+STsettLab13opt2=Arribada ⬅ Sortida

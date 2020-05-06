@@ -80,6 +80,7 @@ $search_query = 'bimex';
 
 dol_fiche_head($head, 'tababout', $langs->trans('stocktransfersMenuTitle2'),-1,'stock');
 
+print "<div style='padding:1em 2em;'>";
 print $langs->trans("stocktransfersAboutInfo").'<br>';
 print '<br>';
 
@@ -88,6 +89,7 @@ print '&nbsp; &nbsp; &nbsp; '.$langs->trans("stocktransfersMoreModulesLink",$sea
 print '<a href="http://www.dolistore.com/search.php?search_query='.$search_query.'" target="_blank"><img border="0" width="180" src="'.DOL_URL_ROOT.'/theme/dolistore_logo.png"></a><br><br><br>';
 
 print '<br>';
+print "</div>";
 
 dol_fiche_end();
 

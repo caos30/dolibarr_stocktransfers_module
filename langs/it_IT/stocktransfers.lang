@@ -59,7 +59,7 @@ STProductRef=Prodotto
 STBatch=Batch
 STQty=Quantità
 STStock=Stock
-STAdd=Aggiungi prodotto
+STAdd=Aggiungi
 STID=Documento n°
 STDate=Data
 STLabel=Etichetta
@@ -103,3 +103,22 @@ STyes=Sì
 STno=No
 STtabAbout=Info
 STtabConfig=Impostazioni
+
+##### version 1.14 #####
+
+STnote=Note
+STprivateNote=Private note:
+STpdfNote=Note to be included in PDF:
+STconfirmDEL=This action cannot be undone, do you want to continue?
+STedit=Edit
+STtotalProducts=({n1} products)
+STtotalProductsUnits=({n1} products, {n2} units)
+STsettTit00=General settings of PDF
+STsettLab10=Font size
+STsettLab11=Font family
+STsettLab12=Free text for page footer
+STsettLab12desc=Accepted HTML format tags. Max 3 lines. Like company name, phone number...
+
+STsettLab13=Position of warehouses' boxes
+STsettLab13opt1=Departure ➡ Destination
+STsettLab13opt2=Destination ⬅ Departure

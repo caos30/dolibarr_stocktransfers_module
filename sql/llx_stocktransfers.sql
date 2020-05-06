@@ -14,6 +14,8 @@ CREATE TABLE `llx_stocktransfers_transfers` (
   `status` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
   `s_products` text COLLATE utf8_unicode_ci NULL,
   `n_products` tinyint(4) NOT NULL DEFAULT '0',
-  `n_items` smallint(6) NOT NULL DEFAULT '0', 
+  `n_items` smallint(6) NOT NULL DEFAULT '0',
+  `private_note` text COLLATE utf8_unicode_ci NULL,
+  `pdf_note` text COLLATE utf8_unicode_ci NULL,
   PRIMARY KEY  (`rowid`)
 ) ENGINE=innodb AUTO_INCREMENT=1 ;

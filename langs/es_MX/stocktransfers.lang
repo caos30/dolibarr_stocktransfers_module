@@ -59,7 +59,7 @@ STProductRef=Producto
 STBatch=Lote
 STQty=Cantidad
 STStock=Valores
-STAdd=Agregar producto
+STAdd=Añadir
 STID=Transferir N°
 STDate=Fecha
 STLabel=Etiqueta
@@ -103,3 +103,22 @@ STyes=Sí
 STno=No
 STtabAbout=Sobre
 STtabConfig=Configuración
+
+##### version 1.14 #####
+
+STnote=Nota
+STprivateNote=Nota privada:
+STpdfNote=Nota a incluir en el PDF:
+STconfirmDEL=Esta acción no se puede deshacer, quiere continuar?
+STedit=Editar
+STtotalProducts=({n1} productos)
+STtotalProductsUnits=({n1} productos, {n2} unidades)
+STsettTit00=Configuración general del PDF
+STsettLab10=Tamaño de la letra
+STsettLab11=Tipo de letra
+STsettLab12=Texto libre en el pie de página
+STsettLab12desc=Se acepta etiquetas HTML de formato. Màx. 3 línias. Como Nombre de la empresa, teléfono...
+
+STsettLab13=Posición de los recuadros de los almacenes
+STsettLab13opt1=Salida ➡ Llegada
+STsettLab13opt2=Llegada ⬅ Salida

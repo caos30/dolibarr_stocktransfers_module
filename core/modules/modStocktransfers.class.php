@@ -43,7 +43,7 @@ class modStockTransfers extends DolibarrModules
 	 */
 	function __construct($db)
 	{
-                global $langs,$conf;
+        global $langs,$conf;
 		$this->db = $db;
 
 		// Id for module (must be unique).
@@ -59,11 +59,11 @@ class modStockTransfers extends DolibarrModules
 		$this->name = preg_replace('/^mod/i','',str_replace('_',' ',get_class($this)));
 		// Module description used if translation string 'ModuleXXXDesc' not found (XXX is value MyModule)
 		$this->description = 'stocktransfersDescription';
-                $this->editor_name = 'Imasdeweb';
-                $this->editor_url = 'https://imasdeweb.com';
+        $this->editor_name = 'Imasdeweb';
+        $this->editor_url = 'https://imasdeweb.com';
 		$this->editor_web = 'imasdeweb.com';
 		// Possible values for version are: 'development', 'experimental', 'dolibarr' or version
-		$this->version = '1.13 [Dolibarr 5-11.0.x]';
+		$this->version = '1.14 [Dolibarr 5-11.0.x]';
 		// Key used in llx_const table to save module status enabled/disabled (where MYMODULE is value of property name of module in uppercase)
 		$this->const_name = 'MAIN_MODULE_'.strtoupper($this->name);
 		// Where to store the module in setup page (0=common,1=interface,2=others,3=very specific)
@@ -84,7 +84,7 @@ class modStockTransfers extends DolibarrModules
 		//			'menus' => 0,                                    // Set this to 1 if module has its own menus handler directory
 		//			'barcode' => 0,                                  // Set this to 1 if module has its own barcode directory
 		//			'models' => 0,                                   // Set this to 1 if module has its own models directory
-					'css' => '/stocktransfers/css/stocktransfers.css.php',       // Set this to relative path of css if module has its own css file
+		//			'css' => '/stocktransfers/css/stocktransfers.css.php',       // Set this to relative path of css if module has its own css file
 		//			'hooks' => array('hookcontext1','hookcontext2')  // Set here all hooks context managed by module
         );
 
@@ -129,31 +129,31 @@ class modStockTransfers extends DolibarrModules
 		// 'stock'            to add a tab in stock view
 		// 'thirdparty'       to add a tab in third party view
 		// 'user'             to add a tab in user view
-                //$this->tabs = array('product:+stocktransfers:stocktransfersBriefTitle:stocktransfers@stocktransfers:true:stocktransfers/index.php');
+            //$this->tabs = array('product:+stocktransfers:stocktransfersBriefTitle:stocktransfers@stocktransfers:true:stocktransfers/index.php');
 
-                if (!isset($conf->stocktransfers) || !isset($conf->stocktransfers->enabled))
-                {
-                        $conf->stocktransfers=new stdClass();
-                        $conf->stocktransfers->enabled=0;
-                }
+            if (!isset($conf->stocktransfers) || !isset($conf->stocktransfers->enabled))
+            {
+                    $conf->stocktransfers=new stdClass();
+                    $conf->stocktransfers->enabled=0;
+            }
 
-                // Dictionaries
-                        $this->dictionaries=array();
+            // Dictionaries
+                    $this->dictionaries=array();
 
-                /* Example:
-                $this->dictionaries=array(
-                    'langs'=>'mylangfile@mymodule',
-                    'tabname'=>array(MAIN_DB_PREFIX."table1",MAIN_DB_PREFIX."table2",MAIN_DB_PREFIX."table3"),		// List of tables we want to see into dictonnary editor
-                    'tablib'=>array("Table1","Table2","Table3"),													// Label of tables
-                    'tabsql'=>array('SELECT f.rowid as rowid, f.code, f.label, f.active FROM '.MAIN_DB_PREFIX.'table1 as f','SELECT f.rowid as rowid, f.code, f.label, f.active FROM '.MAIN_DB_PREFIX.'table2 as f','SELECT f.rowid as rowid, f.code, f.label, f.active FROM '.MAIN_DB_PREFIX.'table3 as f'),	// Request to select fields
-                    'tabsqlsort'=>array("label ASC","label ASC","label ASC"),																					// Sort order
-                    'tabfield'=>array("code,label","code,label","code,label"),																					// List of fields (result of select to show dictionary)
-                    'tabfieldvalue'=>array("code,label","code,label","code,label"),																				// List of fields (list of fields to edit a record)
-                    'tabfieldinsert'=>array("code,label","code,label","code,label"),																			// List of fields (list of fields for insert)
-                    'tabrowid'=>array("rowid","rowid","rowid"),																									// Name of columns with primary key (try to always name it 'rowid')
-                    'tabcond'=>array($conf->mymodule->enabled,$conf->mymodule->enabled,$conf->mymodule->enabled)												// Condition to show each dictionary
-                );
-                */
+            /* Example:
+            $this->dictionaries=array(
+                'langs'=>'mylangfile@mymodule',
+                'tabname'=>array(MAIN_DB_PREFIX."table1",MAIN_DB_PREFIX."table2",MAIN_DB_PREFIX."table3"),		// List of tables we want to see into dictonnary editor
+                'tablib'=>array("Table1","Table2","Table3"),													// Label of tables
+                'tabsql'=>array('SELECT f.rowid as rowid, f.code, f.label, f.active FROM '.MAIN_DB_PREFIX.'table1 as f','SELECT f.rowid as rowid, f.code, f.label, f.active FROM '.MAIN_DB_PREFIX.'table2 as f','SELECT f.rowid as rowid, f.code, f.label, f.active FROM '.MAIN_DB_PREFIX.'table3 as f'),	// Request to select fields
+                'tabsqlsort'=>array("label ASC","label ASC","label ASC"),																					// Sort order
+                'tabfield'=>array("code,label","code,label","code,label"),																					// List of fields (result of select to show dictionary)
+                'tabfieldvalue'=>array("code,label","code,label","code,label"),																				// List of fields (list of fields to edit a record)
+                'tabfieldinsert'=>array("code,label","code,label","code,label"),																			// List of fields (list of fields for insert)
+                'tabrowid'=>array("rowid","rowid","rowid"),																									// Name of columns with primary key (try to always name it 'rowid')
+                'tabcond'=>array($conf->mymodule->enabled,$conf->mymodule->enabled,$conf->mymodule->enabled)												// Condition to show each dictionary
+            );
+            */
 
 		// Boxes
 		$this->boxes = array(
@@ -231,7 +231,7 @@ class modStockTransfers extends DolibarrModules
 	function init($options='')
 	{
 
-        	$sql = array();
+    	$sql = array();
 
 		$result = $this->_load_tables('/stocktransfers/sql/');
 

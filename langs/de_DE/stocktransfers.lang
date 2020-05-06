@@ -1,7 +1,7 @@
 # Dolibarr language file - de_DE - stocktransfers
 CHARSET= UTF-8
-Module570002Name=Lager Warentransfer 
-stocktransfersMenuTitle1=Neuer Warentransfer zw. Lager
+Module570002Name=Lager Warentransfer
+stocktransfersMenuTitle1=Neuer Warentransfer
 stocktransfersMenuTitle2=Lager Warentransfer
 stocktransfersBriefTitle=Lager Warentransfer
 stocktransfersTransfer=Lager Warentransfer
@@ -20,8 +20,8 @@ stocktransfersStatus0=Entwurf
 stocktransfersStatus1=gesendet
 stocktransfersStatus2=erhalten
 stocktransfersShipper=Fahrer
-stocktransfersNPackages=Anzahl der Positionen
-stocktransfersPDFdownload=Download PDF
+stocktransfersNPackages=Anzahl der Pakete
+stocktransfersPDFdownload=PDF erzeugen
 stocktransfersSetStatusSent=Markieren als <b>gesendet</b>
 stocktransfersSetStatusReceived=Markieren als <b>erhalten</b>
 stocktransfersSetStatusDraft=Zurück zu <b>Entwurf</b>
@@ -59,7 +59,7 @@ STProductRef=Product
 STNotes=Hinweise
 STQty=Anzahl/Menge
 STStock=Lager
-STAdd=hinzufügen
+STAdd=Hinzufügen
 STID=Transfer ID
 STDate=Datum
 STLabel=Label
@@ -87,7 +87,7 @@ STsettLab04=Anzahl der Pakete anzeigen
 STsettLab05=Preis anzeigen
 STsettLab05opt2=Ja, ohne Steuern
 STsettLab05opt3=Ja, mit Steuern
-STsettLab061=Feld für Unterschrift links 
+STsettLab061=Feld für Unterschrift links
 STsettLab062=Feld für Unterschrift mittig
 STsettLab063=Feld für Unterschrift rechts
 STsettLab07=Name des Lagers
@@ -103,3 +103,22 @@ STyes=Ja
 STno=Nein
 STtabAbout=Über
 STtabConfig=Konfiguration
+
+##### version 1.14 #####
+
+STnote=Warentransfer Anmerkungen
+STprivateNote=Private Notiz:
+STpdfNote=Notizen für das PDF Dokument
+STconfirmDEL= Diese Aktion kann nicht rückgängig gemacht werden. Möchten Sie fortfahren?
+STedit=editieren
+STtotalProducts=({n1} Produkte)
+STtotalProductsUnits=({n1} Produkte, {n2} Pakete)
+STsettTit00=General Einstellungen für das PDF-Dokument
+STsettLab10=Schriftgröße
+STsettLab11=Schriftart
+STsettLab12=Freitext für die PDF Fusszeile
+STsettLab12desc=HTML Format Tags sind erlaubt. Max 3 Zeilen wie z.B. Firmenname, Telefonnummer...
+
+STsettLab13=Position of warehouses' boxes
+STsettLab13opt1=Departure ➡ Destination
+STsettLab13opt2=Destination ⬅ Departure

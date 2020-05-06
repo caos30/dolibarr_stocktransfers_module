@@ -153,6 +153,12 @@ if ($action == 'delete_transfer') {
         if (isset($_POST['shipper']))
         $transfer->shipper = $_POST['shipper'];
 
+        if (isset($_POST['private_note']))
+        $transfer->private_note = $_POST['private_note'];
+
+        if (isset($_POST['pdf_note']))
+        $transfer->pdf_note = $_POST['pdf_note'];
+
         if (isset($_POST['n_package']))
         $transfer->n_package = $_POST['n_package'];
 
@@ -214,11 +220,13 @@ if ($action == 'delete_transfer') {
     }else if (empty($_POST['n'])){
         $_SESSION['EventMessages'][] = array($langs->trans("ErrorGlobalVariableUpdater2",'n'),null,'errors');
     }else{
-
+        //echo _var_export($_POST,'$_POST');die();
         $transfer->products[$_POST['add_pid']] = array(
             'id'=>$_POST['add_pid'],
             'n'=>intval($_POST['n']),
-            'b'=>isset($_POST['batch']) ? $_POST['batch'] : '');
+            'b'=>isset($_POST['batch']) ? $_POST['batch'] : '',
+            'm'=>isset($_POST['m']) ? $_POST['m'] : '',
+        );
         $transfer->n_prducts = count($transfer->products);
         $result = $transfer->update();
 

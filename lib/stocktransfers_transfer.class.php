@@ -52,6 +52,8 @@ class StockTransfer extends CommonObject
     var $label;
     var $inventorycode;
     var $shipper;
+    var $private_note;
+    var $pdf_note;
     var $n_package = 1;
     var $status = '0'; // 0->draft, 1->validated-not-delivered, 2->delivered
 
@@ -112,6 +114,8 @@ class StockTransfer extends CommonObject
             $sql.= "date1,";
             $sql.= "date2,";
             $sql.= "shipper,";
+            $sql.= "private_note,";
+            $sql.= "pdf_note,";
             $sql.= "n_package";
 
             $sql.= ") VALUES (";
@@ -125,6 +129,8 @@ class StockTransfer extends CommonObject
             $sql.= " ".($this->date1 ? "'".$this->date1."'" : 'NULL').",";
             $sql.= " ".($this->date2 ? "'".$this->date2."'" : 'NULL').",";
             $sql.= " ".($this->shipper ? "'".$this->db->escape($this->shipper)."'" : 'NULL').",";
+            $sql.= " ".($this->private_note ? "'".$this->db->escape($this->private_note)."'" : 'NULL').",";
+            $sql.= " ".($this->pdf_note ? "'".$this->db->escape($this->pdf_note)."'" : 'NULL').",";
             $sql.= " ".($this->n_package ? "'".$this->db->escape($this->n_package)."'" : 'NULL');
 
             $sql.= ")";
@@ -237,8 +243,10 @@ class StockTransfer extends CommonObject
             $sql.= "date2=STR_TO_DATE('".str_replace('-','',$this->date2)."','%Y%m%d'), "; // 20190613
             $sql.= "shipper=".($this->shipper ? "'".$this->db->escape($this->shipper)."'" : 'NULL').",";
             $sql.= "n_package=".($this->n_package ? "'".$this->db->escape($this->n_package)."'" : 'NULL').",";
-            $sql.= "s_products=".(is_array($this->products) ? "'".serialize($this->products)."'" : "'".serialize(array())."'").",";
+            $sql.= "s_products='".$this->db->escape(is_array($this->products) ? serialize($this->products) : serialize(array()))."',";
             $sql.= "status='".$this->status."',";
+            $sql.= "private_note='".$this->db->escape($this->private_note)."',";
+            $sql.= "pdf_note='".$this->db->escape($this->pdf_note)."',";
             $sql.= "n_products='".count($this->products)."'";
 
             $sql.= " WHERE rowid=".$this->rowid;
@@ -563,6 +571,35 @@ class StockTransfer extends CommonObject
     }
 
     /*
+     * return an array with current stock of products in the origin depot
+     */
+    function getStockOneProduct($product_id,$warehouse_id1,$warehouse_id2){
+        $stock = array();
+        if (intval($product_id) > 0 && intval($warehouse_id1) > 0 && intval($warehouse_id2) > 0){
+                $sql = "SELECT fk_product,reel,fk_entrepot ";
+        		$sql.= " FROM ".MAIN_DB_PREFIX."product_stock";
+        		$sql.= " WHERE fk_entrepot IN ('".$warehouse_id1."','".$warehouse_id2."')";
+        		$sql.= " AND fk_product = ".$product_id;
+                $resql = $this->db->query($sql);
+                if ($resql){
+                    if ($this->db->num_rows($resql)){
+                        while ($row = $resql->fetch_assoc()){
+                            if (is_array($row) && $row['fk_entrepot']==$warehouse_id1)
+                                    $stock['stock1'] = intval($row['reel']);
+                            if (is_array($row) && $row['fk_entrepot']==$warehouse_id2)
+                                    $stock['stock2'] = intval($row['reel']);
+                        }
+                    }
+                    $this->db->free($resql);
+                }else{
+                    $this->error="Error ".$this->db->lasterror();
+                    dol_syslog(get_class($this)."::getStock ".$this->error, LOG_ERR);
+                }
+        }
+        return $stock;
+    }
+
+    /*
      * Returns the last $max transfers
      */
     function getLatestTransfers($vars)
@@ -599,4 +636,3 @@ class StockTransfer extends CommonObject
     }
 
 }
-?>
