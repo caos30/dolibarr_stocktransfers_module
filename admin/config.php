@@ -47,8 +47,8 @@ if (! $res) die("Include of main fails");
         define('STOCKTRANSFERS_MODULE_URL_ROOT',DOL_URL_ROOT.'/stocktransfers');
     }
 
-require_once(DOL_DOCUMENT_ROOT."/core/lib/admin.lib.php");
-require_once(DOL_DOCUMENT_ROOT.'/core/class/html.formadmin.class.php');
+dol_include_once("core/lib/admin.lib.php");
+dol_include_once("core/class/html.formadmin.class.php");
 
 if (!$user->admin) accessforbidden();
 
