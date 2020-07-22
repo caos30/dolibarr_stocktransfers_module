@@ -19,7 +19,7 @@
  */
 
 /**
- *	\file       htdocs/stocktransfers/admin/config.php
+ *		\file       htdocs/stocktransfers/admin/config.php
  *      \defgroup   stocktransfers Module Stock transfers
  *      \brief      Settings page
  *      \version    v 1.0 2017/11/20

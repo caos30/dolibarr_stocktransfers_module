@@ -2,6 +2,9 @@
    STOCKTRANSFERS MODULE CHANGELOG
 -------------------------------------
 
+## v 1.15 [2020-07-21]
+- Added french translation.
+
 ## v 1.14 [2020-04-29]
 - Fixed the alert message when saving changes on a product already added to the transfer.
 - Changed the PDF layout to be more similar to the Dolibarr's default PDF theme

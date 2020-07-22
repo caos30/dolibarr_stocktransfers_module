@@ -1,6 +1,6 @@
 # [dolibarr_stocktransfers_module](https://github.com/caos30/dolibarr_stocktransfers_module)
 
-## Current version: 1.14 [2020-04-29]
+## Current version: 1.15 [2020-07-21]
 
 Compatible with Dolibarr v. 5.X-11.X
 
@@ -12,7 +12,7 @@ The module allows the download of a PDF file with the list of products to be tra
 
 ## Interface language translations
 
-Until now: English / Catalan / Castillian (spanish) / Italian / German
+Until now: English / Catalan / Castillian (spanish) / Italian / German / French
 
 ## Slide presentation
 
@@ -67,6 +67,7 @@ As developers & translators:
  - DEV & translation to CA, EN, ES: Sergi Rodrigues (from 2017)
  - Italian translation: Marco Civra (2019)
  - German translation: Hans-Dieter Schondelmaier (2020)
+ - French translation: Laurent Lebleu (2020)
 
 ## Versions Log
 
