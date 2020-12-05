@@ -63,7 +63,7 @@ class modStockTransfers extends DolibarrModules
         $this->editor_url = 'https://imasdeweb.com';
 		$this->editor_web = 'imasdeweb.com';
 		// Possible values for version are: 'development', 'experimental', 'dolibarr' or version
-		$this->version = '1.15 [Dolibarr 5-11.0.x]';
+		$this->version = '1.16';
 		// Key used in llx_const table to save module status enabled/disabled (where MYMODULE is value of property name of module in uppercase)
 		$this->const_name = 'MAIN_MODULE_'.strtoupper($this->name);
 		// Where to store the module in setup page (0=common,1=interface,2=others,3=very specific)
@@ -71,7 +71,7 @@ class modStockTransfers extends DolibarrModules
 		// Name of image file used for this module.
 		// If file is in theme/yourtheme/img directory under name object_pictovalue.png, use this->picto='pictovalue'
 		// If file is in module/img directory under name object_pictovalue.png, use this->picto='pictovalue@module'
-		$this->picto='stocktransfers@stocktransfers';
+		$this->picto='dolly';//'stocktransfers@stocktransfers';
 
 		// Defined all module parts (triggers, login, substitutions, menus, css, etc...)
 		// for default path (eg: /mymodule/core/xxxxx) (0=disable, 1=enable)

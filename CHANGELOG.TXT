@@ -2,6 +2,12 @@
    STOCKTRANSFERS MODULE CHANGELOG
 -------------------------------------
 
+## v 1.16 [2020-12-04]
+- Checked compatibility with Dolibarr 12.X
+- Improved appearance on Settings > Module List (changed logo).
+- Fixed the company logo picture on PDF header (it was missing).
+- Fixed an issue with accented vowels on PDF.
+
 ## v 1.15 [2020-07-21]
 - Added french translation.
 

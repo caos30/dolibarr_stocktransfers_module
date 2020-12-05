@@ -22,11 +22,10 @@
  *		\file       htdocs/stocktransfers/admin/config.php
  *      \defgroup   stocktransfers Module Stock transfers
  *      \brief      Settings page
- *      \version    v 1.0 2017/11/20
  */
 
 // == ACTIVATE the ERROR reporting
-ini_set('display_errors',1);ini_set('display_startup_errors',1);error_reporting(-1);
+//ini_set('display_errors',1);ini_set('display_startup_errors',1);error_reporting(-1);
 
 define('NOCSRFCHECK',1);
 
@@ -180,7 +179,7 @@ llxHeader('',$langs->trans('stocktransfersMenuTitle2').' :: '.$langs->trans('STt
             <td>
                 <input name="config[STOCKTRANSFERS_MODULE_SETT_01]" type="text" class=""
                     value="<?= $conf->global->STOCKTRANSFERS_MODULE_SETT_01 ?>"
-                    placeholder="<?= htmlentities($langs->trans("STsettExampleAbbrv").' '.$langs->trans("STsettLab01def")) ?>" />
+                    placeholder="<?= str_replace('"','',$langs->trans("STsettExampleAbbrv").' '.$langs->trans("STsettLab01def")) ?>" />
                 &nbsp; <em><?= $langs->trans("STsettEmpty") ?></em>
             </td>
         </tr>
@@ -190,7 +189,7 @@ llxHeader('',$langs->trans('stocktransfersMenuTitle2').' :: '.$langs->trans('STt
             <td>
                 <input name="config[STOCKTRANSFERS_MODULE_SETT_02]" type="text" class="fieldrequired"
                     value="<?= !empty($conf->global->STOCKTRANSFERS_MODULE_SETT_02) ? $conf->global->STOCKTRANSFERS_MODULE_SETT_02 : $langs->trans('stocktransfersPDF1') ?>"
-                    placeholder="<?= htmlentities($langs->trans("STsettExampleAbbrv").' '.$langs->trans("STsettLab02def")) ?>" />
+                    placeholder="<?= str_replace('"','',$langs->trans("STsettExampleAbbrv").' '.$langs->trans("STsettLab02def")) ?>" />
             </td>
         </tr>
         <!-- show the shipper name -->
@@ -304,7 +303,7 @@ llxHeader('',$langs->trans('stocktransfersMenuTitle2').' :: '.$langs->trans('STt
             <td>
                 <input name="config[STOCKTRANSFERS_MODULE_SETT_06<?= $ii ?>]" type="text" class=""
                     value="<?= $conf->global->{'STOCKTRANSFERS_MODULE_SETT_06'.$ii} ?>"
-                    placeholder="<?= htmlentities($langs->trans("STsettExampleAbbrv").' '.$langs->trans("stocktransfersPDF".($ii+7))) ?>" />
+                    placeholder="<?= str_replace('"','',$langs->trans("STsettExampleAbbrv").' '.$langs->trans("stocktransfersPDF".($ii+7))) ?>" />
                 &nbsp; <em><?= $langs->trans("STsettEmpty") ?></em>
             </td>
         </tr>

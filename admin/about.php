@@ -22,8 +22,10 @@
  *	\file       htdocs/stocktransfers/admin/about.php
  *      \defgroup   stocktransfers Module Stock transfers
  *      \brief      About page
- *      \version    v 1.0 2017/11/20
  */
+
+ // == ACTIVATE the ERROR reporting
+ //ini_set('display_errors',1);ini_set('display_startup_errors',1);error_reporting(-1);
 
 define('NOCSRFCHECK',1);
 

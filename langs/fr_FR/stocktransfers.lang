@@ -1,6 +1,6 @@
 # Dolibarr language file - es_ES - stocktransfers
 CHARSET= UTF-8
-Module570002Name=Produits - Transfert de stock
+Module570002Name=StockTransfers
 stocktransfersMenuTitle1=Nouveau transfert
 stocktransfersMenuTitle2=Transferts
 stocktransfersBriefTitle=Transferts de stock
