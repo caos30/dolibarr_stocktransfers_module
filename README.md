@@ -1,6 +1,6 @@
 # [dolibarr_stocktransfers_module](https://github.com/caos30/dolibarr_stocktransfers_module)
 
-## Current version: 1.16 [2020-12-04]
+## Current version: 1.17 [2020-12-10]
 
 Compatible with Dolibarr v. 5.X-12.X
 
@@ -71,4 +71,4 @@ As developers & translators:
 
 ## Versions Log
 
-See [CHANGELOG.TXT](https://github.com/caos30/dolibarr_stocktransfers_module/blob/master/CHANGELOG.TXT) file.
+See file **CHANGELOG.TXT** or see [CHANGELOG.TXT](https://github.com/caos30/dolibarr_stocktransfers_module/blob/master/CHANGELOG.TXT) file.

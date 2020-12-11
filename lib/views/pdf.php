@@ -90,8 +90,8 @@
         }
 
     // == prepare logo
-        if ( $mysoc->logo && file_exists($conf->mycompany->dir_output.'/logos/thumbs/'.$mysoc->logo_small) ) {
-            $logo_path = DOL_DOCUMENT_ROOT.'/../documents/mycompany/logos/thumbs/'.$mysoc->logo_small;
+        if ($mysoc->logo && file_exists($conf->mycompany->dir_output.'/logos/thumbs/'.$mysoc->logo_small) ) {
+			$logo_path = $conf->mycompany->dir_output.'/logos/thumbs/'.$mysoc->logo_small;
         }else if (is_readable(DOL_DOCUMENT_ROOT.'/theme/dolibarr_logo.png')){
             $logo_path = DOL_DOCUMENT_ROOT.'/theme/dolibarr_logo.png';
         }else{
@@ -121,7 +121,7 @@
                 <tr>
                     <td style="text-align:left;">
                         <?php if ($logo_path!=''){  ?>
-                        <img height="60" src="<?= $logo_path ?>" />
+                        <img height="60" src="@<?= base64_encode(file_get_contents($logo_path))?>" />
                         <?php } ?>
                     </td>
                     <td><p style="text-align:right;">
