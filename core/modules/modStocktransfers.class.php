@@ -43,7 +43,7 @@ class modStockTransfers extends DolibarrModules
 	 */
 	function __construct($db)
 	{
-        global $langs,$conf;
+	        global $langs,$conf;
 		$this->db = $db;
 
 		// Id for module (must be unique).
@@ -59,11 +59,11 @@ class modStockTransfers extends DolibarrModules
 		$this->name = preg_replace('/^mod/i','',str_replace('_',' ',get_class($this)));
 		// Module description used if translation string 'ModuleXXXDesc' not found (XXX is value MyModule)
 		$this->description = 'stocktransfersDescription';
-        $this->editor_name = 'Imasdeweb';
-        $this->editor_url = 'https://imasdeweb.com';
+	        $this->editor_name = 'Imasdeweb';
+	        $this->editor_url = 'https://imasdeweb.com';
 		$this->editor_web = 'imasdeweb.com';
 		// Possible values for version are: 'development', 'experimental', 'dolibarr' or version
-		$this->version = '1.17';
+		$this->version = '1.18 [ Dolibarr 5 - 13.0.x ]';
 		// Key used in llx_const table to save module status enabled/disabled (where MYMODULE is value of property name of module in uppercase)
 		$this->const_name = 'MAIN_MODULE_'.strtoupper($this->name);
 		// Where to store the module in setup page (0=common,1=interface,2=others,3=very specific)
@@ -231,7 +231,7 @@ class modStockTransfers extends DolibarrModules
 	function init($options='')
 	{
 
-    	$sql = array();
+    		$sql = array();
 
 		$result = $this->_load_tables('/stocktransfers/sql/');
 

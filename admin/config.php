@@ -19,7 +19,7 @@
  */
 
 /**
- *		\file       htdocs/stocktransfers/admin/config.php
+ *	\file       htdocs/stocktransfers/admin/config.php
  *      \defgroup   stocktransfers Module Stock transfers
  *      \brief      Settings page
  */
@@ -46,8 +46,8 @@ if (! $res) die("Include of main fails");
         define('STOCKTRANSFERS_MODULE_URL_ROOT',DOL_URL_ROOT.'/stocktransfers');
     }
 
-dol_include_once("core/lib/admin.lib.php");
-dol_include_once("core/class/html.formadmin.class.php");
+require_once(DOL_DOCUMENT_ROOT."/core/lib/admin.lib.php");
+require_once(DOL_DOCUMENT_ROOT.'/core/class/html.formadmin.class.php');
 
 if (!$user->admin) accessforbidden();
 
@@ -112,6 +112,11 @@ llxHeader('',$langs->trans('stocktransfersMenuTitle2').' :: '.$langs->trans('STt
     $head[$h][0] = 'about.php';
     $head[$h][1] = $langs->trans("STtabAbout");
     $head[$h][2] = 'tababout';
+    $h++;
+
+    $head[$h][0] = 'changelog.php';
+    $head[$h][1] = 'Changelog';
+    $head[$h][2] = 'tabchangelog';
     $h++;
 
 // = init current tab

@@ -2,8 +2,13 @@
    STOCKTRANSFERS MODULE CHANGELOG
 -------------------------------------
 
+## v 1.18 [2021-02-08]
+- Checked compatibility with Dolibarr 13.X
+- Fixed a couple of translations in spanish and catalan
+- Added tab CHANGELOG to Settings
+
 ## v 1.17 [2020-12-10]
-- Solved an issue on PDF generation related to the company embedded logo.
+- Solved an issue on PDF generation related to the company embedded logo
 
 ## v 1.16 [2020-12-04]
 - Checked compatibility with Dolibarr 12.X

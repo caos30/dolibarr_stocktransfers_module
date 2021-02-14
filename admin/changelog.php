@@ -19,9 +19,9 @@
  */
 
 /**
- *	\file       htdocs/stocktransfers/admin/about.php
+ *	\file       htdocs/stocktransfers/admin/changelog.php
  *      \defgroup   stocktransfers Module Stock transfers
- *      \brief      About page
+ *      \brief      Changelog page
  */
 
  // == ACTIVATE the ERROR reporting
@@ -36,7 +36,7 @@ if (! $res && file_exists("../../../main.inc.php")) $res=@include("../../../main
 if (! $res && file_exists("../../../../main.inc.php")) $res=@include("../../../../main.inc.php");
 if (! $res && preg_match('/\/imasdeweb([^\/]*)\//',$_SERVER["PHP_SELF"],$reg)) $res=@include("../../../../dolibarr".$reg[1]."/htdocs/main.inc.php"); // Used on dev env only
 if (! $res) die("Include of main fails");
-require_once(DOL_DOCUMENT_ROOT."/core/lib/admin.lib.php");
+dol_include_once("core/lib/admin.lib.php");
 
 // == STOCKTRANSFERS_MODULE DOCUMENT_ROOT & URL_ROOT
     if (file_exists(DOL_DOCUMENT_ROOT.'/custom/stocktransfers/core/modules/modStocktransfers.class.php')){
@@ -60,7 +60,7 @@ $langs->load("stocktransfers");
  */
 
 $help_url='';
-llxHeader('',$langs->trans('stocktransfersMenuTitle2').' :: '.$langs->trans('STtabAbout'),$help_url);
+llxHeader('',$langs->trans('stocktransfersMenuTitle2').' :: CHANGELOG','');
 
 $linkback='<a href="'.DOL_URL_ROOT.'/admin/modules.php">'.$langs->trans("BackToModuleList").'</a>';
 print_fiche_titre($langs->trans("stocktransfersSetup"),$linkback,'setup');
@@ -85,15 +85,26 @@ $h++;
 
 $search_query = 'imasdeweb';
 
-dol_fiche_head($head, 'tababout', $langs->trans('stocktransfersMenuTitle2'),-1,'stock');
+dol_fiche_head($head, 'tabchangelog', $langs->trans('stocktransfersMenuTitle2'),-1,'stock');
 
+/* CHANGELOG */
 print "<div style='padding:1em 2em;'>";
-print $langs->trans("stocktransfersAboutInfo").'<br>';
-print '<br>';
-
-print $langs->trans("stocktransfersMoreModules",$search_query).'<br /><br />';
-print '<a href="http://www.dolistore.com/search.php?search_query='.$search_query.'" target="_blank"><img border="0" width="180" src="'.DOL_URL_ROOT.'/theme/dolistore_logo.png"></a>';
-
+$fh = fopen(__DIR__.'/../CHANGELOG.TXT',"r");
+while ($line = fgets($fh)){
+    $line = trim($line);
+    $ini = substr($line,0,2);
+    if ($line==''){
+        print "<br />";
+    }else if ($ini=='--'){
+        print "<hr />";
+    }else if ($ini=='##'){
+        print '<b>'.$line.'</b><br /><br />';
+    }else{
+        print '&nbsp; &nbsp; &nbsp; '.$line.'<br />';
+    }
+}
+fclose($fh);
+//print nl2br(file_get_contents(__DIR__.'/../CHANGELOG.TXT'));
 print "</div>";
 
 dol_fiche_end();

@@ -68,8 +68,8 @@ class InterfaceStockTransfers extends DolibarrTriggers
      */
     public function runTrigger($action, $object, User $user, Translate $langs, Conf $conf)
     {
-        global $db;
-		// Put here code you want to execute when a Dolibarr business events occurs.
+	global $db;
+	// Put here code you want to execute when a Dolibarr business events occurs.
         // Data and type of action are stored into $object and $action
 
 	    switch ($action) {
