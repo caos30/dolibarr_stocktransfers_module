@@ -38,6 +38,15 @@ function _price($floatval){
     else
         return number_format(floatval($floatval),2,'.',',');
 }
+function _qty($floatval){
+    global $langs, $db, $conf;
+    $dec = $langs->transnoentitiesnoconv("SeparatorDecimal");
+    $num_decimals = $value = !empty($conf->global->STOCKTRANSFERS_MODULE_SETT_14) ? intval($conf->global->STOCKTRANSFERS_MODULE_SETT_14) : 0;
+    if ($dec==',')
+        return number_format(floatval($floatval),$num_decimals,',','.');
+    else
+        return number_format(floatval($floatval),$num_decimals,'.',',');
+}
 
 function _render_view($viewname,Array $vars){
     global $langs, $db, $conf;

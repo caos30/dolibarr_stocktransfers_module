@@ -223,7 +223,7 @@ if ($action == 'delete_transfer') {
         //echo _var_export($_POST,'$_POST');die();
         $transfer->products[$_POST['add_pid']] = array(
             'id'=>$_POST['add_pid'],
-            'n'=>intval($_POST['n']),
+            'n'=>floatval($_POST['n']),
             'b'=>isset($_POST['batch']) ? $_POST['batch'] : '',
             'm'=>isset($_POST['m']) ? $_POST['m'] : '',
         );

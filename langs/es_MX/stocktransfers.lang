@@ -69,7 +69,7 @@ STRemove=Retirar
 STFilename=Transferencia
 STFilterThis=Filtrar elementos con este valor en esta columna
 STErrorMsg05=Ha de seleccionar un producto.
-STErrorMsg06=La cantidad ha de ser un número entero positivo.
+STErrorMsg06=La cantidad ha de ser un número entero o decimal positivo.
 STErrorMsg07=Aviso: este producto ya había sido añadido. Los datos que ahora indica reemplazarán a los que habían. ¿Quiere continuar?
 STwarehouse=Almacén
 STsettExampleAbbrv=Ej:
@@ -122,3 +122,8 @@ STsettLab12desc=Se acepta etiquetas HTML de formato. Màx. 3 línias. Como Nombr
 STsettLab13=Posición de los recuadros de los almacenes
 STsettLab13opt1=Salida ➡ Llegada
 STsettLab13opt2=Llegada ⬅ Salida
+
+##### version 1.15 #####
+
+STsettTit04=Miscelánea
+STsettLab14=Núm. de decimales para cantidades de stock

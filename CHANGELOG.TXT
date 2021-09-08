@@ -2,6 +2,14 @@
    STOCKTRANSFERS MODULE CHANGELOG
 -------------------------------------
 
+## v 1.20 [2021-09-07]
+- Checked compatibility with Dolibarr 14.X
+- Improved the filters (by date, by project, by depot) on the transfer list
+- Added some FontAwesome icons on some buttons (visual improvement only)
+
+## v 1.19 [2021-06-20]
+- Settings: added the possibility to define number of decimal positions in stock quantities.
+
 ## v 1.18 [2021-02-08]
 - Checked compatibility with Dolibarr 13.X
 - Fixed a couple of translations in spanish and catalan

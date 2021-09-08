@@ -333,7 +333,7 @@ class StockTransfer extends CommonObject
         foreach($this->products as $pid => $p)
         {
                 $batch = $p['b'];
-                $qty   = intval($p['n']);
+                $qty   = floatval($p['n']);
                 if ($qty==0) continue;
 
                 if ($reverse && empty($p['m'.$depot])) continue; // we check that this product really has a stock movement ID, if not then we do nothing. It shouldn't be match never... so it's a redundant checking, by the way :)
@@ -550,9 +550,9 @@ class StockTransfer extends CommonObject
         $stock = array();
         if ($this->fk_depot1 > 0 && count($this->products) > 0){
                 $sql = "SELECT fk_product,reel ";
-		$sql.= " FROM ".MAIN_DB_PREFIX."product_stock";
-		$sql.= " WHERE fk_entrepot = ".$this->fk_depot1;
-		$sql.= " AND fk_product IN (".implode(',', array_keys($this->products)).")";
+        		$sql.= " FROM ".MAIN_DB_PREFIX."product_stock";
+        		$sql.= " WHERE fk_entrepot = ".$this->fk_depot1;
+        		$sql.= " AND fk_product IN (".implode(',', array_keys($this->products)).")";
                 $resql = $this->db->query($sql);
                 if ($resql){
                     if ($this->db->num_rows($resql)){
@@ -585,9 +585,9 @@ class StockTransfer extends CommonObject
                     if ($this->db->num_rows($resql)){
                         while ($row = $resql->fetch_assoc()){
                             if (is_array($row) && $row['fk_entrepot']==$warehouse_id1)
-                                    $stock['stock1'] = intval($row['reel']);
+                                    $stock['stock1'] = _qty($row['reel']);
                             if (is_array($row) && $row['fk_entrepot']==$warehouse_id2)
-                                    $stock['stock2'] = intval($row['reel']);
+                                    $stock['stock2'] = _qty($row['reel']);
                         }
                     }
                     $this->db->free($resql);

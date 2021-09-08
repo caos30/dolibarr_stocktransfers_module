@@ -69,7 +69,7 @@ STRemove=Treure
 STFilename=Transferencia
 STFilterThis=Filtrar elements amb aquest valor en aquesta columna
 STErrorMsg05=Heu de seleccionar un producte.
-STErrorMsg06=La quantitat ha de ser un nombre sencer positiu.
+STErrorMsg06=La quantitat ha de ser un nombre positiu sencer o decimal.
 STErrorMsg07=Avís: aquest producte ja havia estat afegit. Les dades que ara indiqueu reemplaçaran a les que hi havien. Voleu continuar?
 STwarehouse=Magatzem
 STsettExampleAbbrv=Ex:
@@ -122,3 +122,8 @@ STsettLab12desc=S'accepta etiquetes HTML de format. Màx. 3 línies. Com Nom de 
 STsettLab13=Posició dels requadres dels magatzems
 STsettLab13opt1=Sortida ➡ Arribada
 STsettLab13opt2=Arribada ⬅ Sortida
+
+##### version 1.15 #####
+
+STsettTit04=Miscel·lània
+STsettLab14=Núm. de decimals per quantitats d'estoc

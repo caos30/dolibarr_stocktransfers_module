@@ -69,7 +69,7 @@ STRemove=Remove
 STFilename=StockTransfer
 STFilterThis=Filter elements with this value in this column
 STErrorMsg05=You have to select a product.
-STErrorMsg06=The quantity must be a positive integer.
+STErrorMsg06=The quantity must be a whole positive decimal or integer.
 STErrorMsg07=Warning: this product has already been added. The data you now indicates will replace the existing data. Do you want to continue?
 STwarehouse=Warehouse
 STsettExampleAbbrv=Ex:
@@ -122,3 +122,8 @@ STsettLab12desc=Accepted HTML format tags. Max 3 lines. Like company name, phone
 STsettLab13=Position of warehouses' boxes
 STsettLab13opt1=Departure ➡ Destination
 STsettLab13opt2=Destination ⬅ Departure
+
+##### version 1.15 #####
+
+STsettTit04=Miscellanea
+STsettLab14=No. of decimals for stock quantities

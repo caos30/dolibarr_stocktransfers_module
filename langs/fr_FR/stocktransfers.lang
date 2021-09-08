@@ -47,7 +47,7 @@ stocktransfersConfig01=Pour qu'un utilisateur ait accès à ce module, il doit a
 stocktransfersBoxTitle=%s derniers transferts de stock
 stocktransfersProject=Projet
 stocktransfersUserGuide=Manuel de l'utilsateur
-purchasesMenuTitle3=Liste des transferts 
+purchasesMenuTitle3=Liste des transferts
 WarehouseSource=Entrepôt origine
 WarehouseTarget=Entrepôt destination
 STLabelMovement=Etiquette du transfert
@@ -69,7 +69,7 @@ STRemove=Quitter
 STFilename=TransfertDeStock
 STFilterThis=Filtrer les éléments de cette colonne
 STErrorMsg05=Il faut sélectionner un produit.
-STErrorMsg06=La quantité doit être un nombre entier positif.
+STErrorMsg06=La quantité doit être un nombre entier ou un nombre décimal positif.
 STErrorMsg07=Remarque: ce produit a déjà été ajouté. Les données que vous indiquez maintenant remplaceront ce que vous aviez. Voulez-vous continuer?
 STwarehouse=Entrepôt
 STsettExampleAbbrv=Ex:
@@ -91,7 +91,7 @@ STsettLab061=Afficher la signature à gauche
 STsettLab062=Afficher la signature au centre
 STsettLab063=Afficher la signature à droite
 STsettLab07=Champ pour le nom de l'entrepôt
-STsettLab07opt1=Nombre 
+STsettLab07opt1=Nombre
 STsettLab07opt2=Référence
 STsettLab08=Afficher le n° de lot ou le n° de série
 STErrorMsg08=Le n° de lot ou de série ne peut pas être vide.
@@ -122,3 +122,8 @@ STsettLab12desc=Les balises au format HTML sont acceptées. Max. 3 lignes. Comme
 STsettLab13=Position des entrepôts
 STsettLab13opt1=Sortie ➡ Entrée
 STsettLab13opt2=Entrée ⬅ Sortie
+
+##### version 1.15 #####
+
+STsettTit04=Recueil
+STsettLab14=Nombre de décimales pour les quantités en stock

@@ -50,7 +50,7 @@
 
     // == object fields
         $arrayfields=array(
-            'rowid'=>array('label'=>$langs->trans("STID"), 'checked'=>1, 'style'=>'width:4rem;'),
+            //'rowid'=>array('label'=>$langs->trans("STID"), 'checked'=>1, 'style'=>'width:4rem;'),
             'ts_create'=>array('label'=>$langs->trans("STDate"), 'checked'=>1),
             'label'=>array('label'=>$langs->trans("STLabel"), 'checked'=>1),
             'inventorycode'=>array('label'=>$langs->trans("STinventorycode"), 'checked'=>0),
@@ -69,17 +69,48 @@
     // == load transfers
 
         $sql = "SELECT * FROM ".MAIN_DB_PREFIX."stocktransfers_transfers";
+        
+        // == clean some date filters "not wanted"
+			foreach (array('ts_create','date1','date2') as $aa){
+				foreach (array('_start','_end') as $bb){
+					if (isset($fsearch[$aa.$bb.'day']))   unset($fsearch[$aa.$bb.'day']); // example: ts_create_startday
+					if (isset($fsearch[$aa.$bb.'month'])) unset($fsearch[$aa.$bb.'month']);
+					if (isset($fsearch[$aa.$bb.'year']))  unset($fsearch[$aa.$bb.'year']);
+				}
+			}
+        
         // == WHERE filter
             $where = array();
             foreach ($fsearch as $ff=>$vv){
-                 if ($ff=='status')
+				 $nsearch = '';
+                 if ($ff=='status'){
                     $nsearch = "(status LIKE '%$vv%')";
-                 else
+                 }else if ($ff=='fk_project' || $ff=='fk_depot1' || $ff=='fk_depot2'){
+					if (!empty($vv) && $vv!='-1'){
+						$nsearch = natural_search($ff, $vv, 0, 1);
+					}
+				 // --- START DATES filters
+				 }else if ($ff=='ts_create_start' || $ff=='date1_start' || $ff=='date2_start'){
+					if (!empty($vv) && $vv!='-1'){
+						$fieldname = str_replace('_start','',$ff); // ts_create_start -> ts_create
+						$ex = explode('-',str_replace('/','-',$vv)); // 31/12/2021
+						$ts = mktime(0,0,0,intval($ex[1]),intval($ex[0]),intval($ex[2]));
+						$nsearch = $fieldname." > '".date('Y-m-d H:i:s',$ts)."'";
+					}	
+				 }else if ($ff=='ts_create_end' || $ff=='date1_end' || $ff=='date2_end'){
+					if (!empty($vv) && $vv!='-1'){
+						$fieldname = str_replace('_end','',$ff); // ts_create_end -> ts_create
+						$ex = explode('-',str_replace('/','-',$vv)); // 31/12/2021
+						$ts = mktime(23,59,59,intval($ex[1]),intval($ex[0]),intval($ex[2]));
+						$nsearch = $fieldname." < '".date('Y-m-d H:i:s',$ts)."'";
+					}	
+                 }else{
                     $nsearch = natural_search($ff, $vv, 0, 1);
+				 }
                  if (!empty($nsearch) && $nsearch != '()') $where[] =  $nsearch;
             }
             if (count($where)>0) $sql .= ' WHERE '.implode(' AND ',$where);
-
+			
         // == ORDER
             $sql.= ' ORDER BY ';
             $listfield = explode(',',$sortfield);
@@ -97,7 +128,7 @@
                     $row = $resql->fetch_assoc();
                 else
                     $row = array();
-                $nbtotalofrecords = isset($row['n']) ? intval($row['n']) : 0;
+                $nbtotalofrecords = isset($row['n']) ? floatval($row['n']) : 0;
             }
 
         // == LIMIT
@@ -110,19 +141,32 @@
                 //while($obj = $db->fetch_object($resql)) $transfers[$obj->rowid] = $obj;
                 while($row = $resql->fetch_assoc()) $transfers[] = $row;
             }
+			//echo _var_export($fsearch,'$fsearch')._var_export($sql,'$sql')._var_export($transfers,'$transfers');
 
     // == load depots
         $depots = array();
         $resql = $db->query("SELECT * FROM ".MAIN_DB_PREFIX."entrepot");
+        $depots_select_options = array();
         if ($resql) {
-            while($row = $resql->fetch_assoc()) $depots[$row['rowid']] = $row;
+            while($row = $resql->fetch_assoc()){
+				$depots[$row['rowid']] = $row;
+				$depot_label = !empty($row['ref']) ? $row['ref']
+                                    : (!empty($row['lieu']) ? $row['lieu']
+                                    : (!empty($row['label']) ? $row['label']
+                                    : '#'.$row['rowid'] ));
+				$depots_select_options[$row['rowid']] = $depot_label;
+			}
         }
 
     // == load projects
         $projects = array();
         $resql = $db->query("SELECT rowid,title FROM ".MAIN_DB_PREFIX."projet");
+        $projects_select_options = array();
         if ($resql) {
-            while($row = $resql->fetch_assoc()) $projects[$row['rowid']] = $row;
+            while($row = $resql->fetch_assoc()) {
+				$projects[$row['rowid']] = $row;
+				$projects_select_options[$row['rowid']] = $row['title'];
+			}
         }
 
     // == load products names, if needed
@@ -176,7 +220,9 @@
 
     // == misc
         $moreforfilter = true;
-        $new_button = '<a href="transfer_edit.php?mainmenu=products&leftmenu=" class="button">'.$langs->trans('stocktransfersNewTransfer').'</a>';
+        $new_button = '<a href="transfer_edit.php?mainmenu=products&leftmenu=" class="button">'
+						.(DOL_VERSION >= 12 && !defined('DISABLE_FONT_AWSOME') ? '<i class="fa fa-plus-square"></i>&nbsp; ' : '')
+						.$langs->trans('stocktransfersNewTransfer').'</a>';
 
 ?>
 
@@ -234,10 +280,11 @@
                 // == field columns
                 foreach($arrayfields as $f=>$field){
                     if (!empty($field['checked'])){
-                        print_liste_field_titre($field['label'],$_SERVER["PHP_SELF"],$f,'',$param,'',$sortfield,$sortorder);
+						$moreattrib = 'style="white-space:normal;"';
+                        print_liste_field_titre($field['label'],$_SERVER["PHP_SELF"],$f,'',$param,$moreattrib,$sortfield,$sortorder);
                     }
                 }
-
+				
                 // == action column
                 print print_liste_field_titre($selectedfields, $_SERVER["PHP_SELF"],"",'','','align="center"',$sortfield,$sortorder,'maxwidthsearch ');
 
@@ -254,18 +301,42 @@
                     if (!empty($field['checked'])){
                         print '<td class="liste_titre" align="left">';
 
-                        if ($f=='n_products')
+                        if ($f=='n_products'){
                             print '';
-                        else if ($f=='rowid')
+                        }else if ($f=='rowid'){
                             print '<input class="flat" style="'.(!empty($field['style']) ? $field['style']:'width:80%;').'" type="text" name="search_'.$f.'" value="'.(!empty($fsearch[$f]) ? dol_escape_htmltag($fsearch[$f]) : '').'" '.(!empty($field['param']) ? $field['param'].' ' : '').'/>';
-                        else if ($f=='status')
+                        }else if ($f=='status'){
                             print $form->selectarray('search_'.$f,
                                             array(  '0'=>$langs->trans("stocktransfersStatus0"),
                                                     '1'=>$langs->trans("stocktransfersStatus1"),
                                                     '2'=>$langs->trans("stocktransfersStatus2"))
                                             ,$fsearch['status'], 1);
-                        else
+						}else if ($f=='fk_project'){
+							print $form->selectarray('search_fk_project', $projects_select_options, $fsearch['fk_project'], 1, '', '', '', '',12);
+						}else if ($f=='fk_depot1'){
+							print $form->selectarray('search_fk_depot1', $depots_select_options, $fsearch['fk_depot1'], 1, '', '', '', '',12);
+						}else if ($f=='fk_depot2'){
+							print $form->selectarray('search_fk_depot2', $depots_select_options, $fsearch['fk_depot2'], 1, '', '', '', '',12);
+						}else if ($f=='ts_create' || $f=='date1' || $f=='date2'){
+							$ts_start = -1; 
+							$ts_end = -1;
+							if (!empty($fsearch[$f.'_start'])){
+								$ex = explode('-',str_replace('/','-',$fsearch[$f.'_start']));
+								$ts_start = mktime(0,0,1,intval($ex[1]),intval($ex[0]),intval($ex[2]));
+							}
+							if (!empty($fsearch[$f.'_end'])){
+								$ex = explode('-',str_replace('/','-',$fsearch[$f.'_end']));
+								$ts_end = mktime(0,0,1,intval($ex[1]),intval($ex[0]),intval($ex[2]));
+							}
+							print '<div class="nowrap">';
+							print $form->selectDate($ts_start, 'search_'.$f.'_start', 0, 0, 1, '', 1, 0, 0, '', '', '', '', 1, '', $langs->trans('From'));
+							print '</div>';
+							print '<div class="nowrap">';
+							print $form->selectDate($ts_end, 'search_'.$f.'_end', 0, 0, 1, '', 1, 0, 0, '', '', '', '', 1, '', $langs->trans('to'));
+							print '</div>';
+                        }else{
                             print '<input class="flat" style="'.(!empty($field['style']) ? $field['style']:'width:80%;').'" type="text" name="search_'.$f.'" value="'.(!empty($fsearch[$f]) ? dol_escape_htmltag($fsearch[$f]) : '').'" '.(!empty($field['param']) ? $field['param'].' ' : '').'/>';
+						}
 
                         print '</td>';
                     }
@@ -292,7 +363,7 @@
                     $html_list_products = '';
                     if (!empty($ele['n_products']) && !empty($arrayfields['n_products']['checked'])){
                         $a_products = unserialize($ele['s_products']);
-                        foreach ($a_products as $p) $html_list_products .= '<li>'.intval($p['n']).' <b>x</b> '.(isset($products[$p['id']]) ? str_replace('"','',$products[$p['id']]) :'pid #'.$p['id']).'</li>';
+                        foreach ($a_products as $p) $html_list_products .= '<li>'._qty($p['n']).' <b>x</b> '.(isset($products[$p['id']]) ? str_replace('"','',$products[$p['id']]) :'pid #'.$p['id']).'</li>';
                         $html_list_products = '<ul style="margin:0;padding:0;">'.$html_list_products.'</ul>';
                     }
     ?>
@@ -323,8 +394,16 @@
                                     : (!empty($depots[$ele[$f]]['label']) ? $depots[$ele[$f]]['label']
                                     : '#'.$depots[$ele[$f]]['rowid'] ));
                                 $wh_tooltip = str_replace('"','',$depots[$ele[$f]]['lieu'].' ('.$depots[$ele[$f]]['town'].')');
-                                print '<td><a href="#" onclick="js_filter_by(\''.$f.'\',\''.$ele[$f].'\');return false;" title="'.str_replace('"','',$langs->trans("STFilterThis")).'"><img src="'.DOL_URL_ROOT.'/theme/'.$conf->theme.'/img/filter.png" border="0"></a>';
-                                print ' <a href="'.DOL_URL_ROOT.'/product/stock/card.php?id='.$ele[$f].'" title="'.$wh_tooltip.'"><img src="'.DOL_URL_ROOT.'/theme/'.$conf->theme.'/img/object_company.png" border="0"></a>';
+                                print '<td>';
+                                
+                                if (DOL_VERSION >= 12 && !defined('DISABLE_FONT_AWSOME')){ // we can use fontwawesome icons
+									print '<a href="'.DOL_URL_ROOT.'/product/stock/card.php?id='.$ele[$f].'" title="'.$wh_tooltip.'"'
+										 .'		><span class="fa fa-box-open"></span></a>';
+								}else{
+									print ' <a href="'.DOL_URL_ROOT.'/product/stock/card.php?id='.$ele[$f].'" title="'.$wh_tooltip.'">'
+										 .'		<img src="'.DOL_URL_ROOT.'/theme/'.$conf->theme.'/img/object_company.png" border="0" /></a>';
+								}
+								
                                 print ' <a href="'.DOL_URL_ROOT.'/product/stock/card.php?id='.$ele[$f].'" title="'.$wh_tooltip.'">'.$depot_label.'</a></td>';
                             }else{
                                 print '<td>#'.$ele[$f].'</td>';
@@ -337,8 +416,15 @@
                             if (empty($ele[$f])){
                                 print '<td>&nbsp;</td>';
                             }else if (isset($projects[$ele[$f]])){
-                                print '<td><a href="#" onclick="js_filter_by(\''.$f.'\',\''.$ele[$f].'\');return false;"><img src="'.DOL_URL_ROOT.'/theme/'.$conf->theme.'/img/filter.png" border="0"></a>';
-                                print ' <a href="'.DOL_URL_ROOT.'/projet/card.php?id='.$ele[$f].'"><img src="'.DOL_URL_ROOT.'/theme/'.$conf->theme.'/img/object_project.png" border="0"></a>';
+								print '<td>';
+								
+								if (DOL_VERSION >= 12 && !defined('DISABLE_FONT_AWSOME')){ // we can use fontwawesome icons
+									print ' <a href="'.DOL_URL_ROOT.'/projet/card.php?id='.$ele[$f].'" '
+										 .'		><span class="fa fa-project-diagram"></span></a>';
+								}else{
+									print ' <a href="'.DOL_URL_ROOT.'/projet/card.php?id='.$ele[$f].'" '
+										 .'		><img src="'.DOL_URL_ROOT.'/theme/'.$conf->theme.'/img/object_project.png" border="0"></a>';
+								}
                                 print ' <a href="'.DOL_URL_ROOT.'/projet/card.php?id='.$ele[$f].'">'.$projects[$ele[$f]]['title'].'</a></td>';
                             }else{
                                 print '<td>#'.$ele[$f].'</td>';
@@ -348,11 +434,26 @@
                             if (!isset($ele[$f]))
                                 print '<td>&nbsp;</td>';
                             else if ($ele[$f]=='0')
-                                print '<td style="text-align:center;">'.img_picto($langs->trans('stocktransfersStatus0'),'statut0').'</td>';
+                                print '<td style="text-align:center;">'
+										.(DOL_VERSION >= 12 && !defined('DISABLE_FONT_AWSOME') 
+											? '<i class="fa fa-lg fa-file-o" title="'.$langs->trans('stocktransfersStatus0').'" style="opacity:0.7;color:inherit;"></i>'
+											: img_picto($langs->trans('stocktransfersStatus0'),'statut0')
+										 )
+										.'</td>';
                             else if ($ele[$f]=='1')
-                                print '<td style="text-align:center;">'.img_picto($langs->trans('stocktransfersStatus1'),'statut3').'</td>';
+                                print '<td style="text-align:center;">'
+										.(DOL_VERSION >= 12 && !defined('DISABLE_FONT_AWSOME') 
+											? '<i class="fa fa-lg fa-truck" title="'.$langs->trans('stocktransfersStatus1').'" style="opacity:0.7;color:inherit;"></i>'
+											: img_picto($langs->trans('stocktransfersStatus1'),'statut3')
+										 )
+										.'</td>';
                             else if ($ele[$f]=='2')
-                                print '<td style="text-align:center;">'.img_picto($langs->trans('stocktransfersStatus2'),'statut4').'</td>';
+                                print '<td style="text-align:center;">'
+										.(DOL_VERSION >= 12 && !defined('DISABLE_FONT_AWSOME') 
+											? '<i class="fa fa-lg fa-check-circle" title="'.$langs->trans('stocktransfersStatus2').'" style="opacity:0.7;color:inherit;"></i>'
+											: img_picto($langs->trans('stocktransfersStatus2'),'statut4')
+										 )
+										.'</td>';
                             else
                                 print '<td>&nbsp;</td>';
 
@@ -363,8 +464,13 @@
                                 print '<td style="text-align:center;white-space:nowrap;">'
                                         .(isset($ele[$f]) ? intval($ele[$f]) : '')
                                         //.' <img src="'.DOL_URL_ROOT.'/theme/'.$conf->theme.'/img/info.png" title="'.str_replace('"','',  htmlentities($html_list_products)).'" class="classfortooltip" style="margin-bottom:-5px;" /> '
-                                        .' <a href="transfer_pdf.php?id='.$ele['rowid'].'" target="_blank" title="'.str_replace('"','',  htmlentities($html_list_products)).'" class="classfortooltip"><img src="img/pdf.png" style="margin-bottom: -2px;" /></a>'
-                                        .'</td>';
+                                        .' &nbsp; <a href="transfer_pdf.php?id='.$ele['rowid'].'" target="_blank" title="'.str_replace('"','',  htmlentities($html_list_products)).'" '
+                                        .'			class="classfortooltip button" style="min-width:0;">'
+                                        .		(DOL_VERSION >= 12 && !defined('DISABLE_FONT_AWSOME') ? 
+													'<i class="fa fa-lg fa-file-pdf"></i>' :
+													'<img src="img/pdf.png" style="margin-bottom: -2px;" />'
+												)
+                                        .'	</a></td>';
                             }
 
                         }else{
@@ -405,9 +511,21 @@
             $('#transfer_searchFormList input[name=search_'+fieldname+']').val(fieldvalue);
             $('#transfer_searchFormList').submit();
         }
+
+        <!-- JS CODE TO ENABLE Tooltips on all object with class classfortooltip -->
+        jQuery(document).ready(function () {
+            jQuery(".classfortooltip").tooltip({
+                show: { collision: "flipfit", effect:'toggle', delay:50 },
+                hide: { delay: 50 }, 	/* If I enable effect:'toggle' here, a bug appears: the tooltip is shown when collpasing a new dir if it was shown before */
+                tooltipClass: "mytooltip",
+                content: function () {
+                    return $(this).prop('title'); /* To force to get title as is */
+                }
+            });
+        });
     </script>
     <?php
 
     // End of page
     $db->close();
-    llxFooter('$Date: 2009/03/09 11:28:12 $ - $Revision: 1.8 $');
+    //llxFooter('$Date: 2009/03/09 11:28:12 $ - $Revision: 1.8 $');

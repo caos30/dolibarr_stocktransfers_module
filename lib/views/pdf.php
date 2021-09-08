@@ -28,7 +28,7 @@
 
     // == ACTIVATE the ERROR reporting
     //ini_set('display_errors',1);ini_set('display_startup_errors',1);error_reporting(-1);
-	
+
 /***************************************************
  *
  *	Prepare data
@@ -337,13 +337,13 @@
                     ?>
                         <td width="59%" style="border:0.5px #000000 solid;text-align:left;"><?php
                                 echo "<p style=\"padding:0;margin:0;\">".$label;
-                                if (!empty($p['m'])){
+                                if (!empty($p['m']) && trim(strip_tags($p['m']))!=''){
                                     echo "<br /><span style=\"font-size:0.9em;font-family:monospace;\">".nl2br($p['m'])."</span>";
                                 }
                                 echo "</p>";
                             ?></td>
                         <td width="14%" style="border:0.5px #000000 solid;text-align:right;"><?= $price!='' ? _price($price) : '&nbsp;' ?></td>
-                        <td width="10%" style="border:0.5px #000000 solid;text-align:right;"><?= $n!='' ? $n : '&nbsp;' ?></td>
+                        <td width="10%" style="border:0.5px #000000 solid;text-align:right;"><?= $n!='' ? _qty($n) : '&nbsp;' ?></td>
                         <td width="17%" style="border:0.5px #000000 solid;text-align:right;"><?= $subtotal!='' ? _price($subtotal) : '&nbsp;' ?></td>
                     <?php }else{ ?>
                         <td width="80%" style="border:0.5px #000000 solid;text-align:left;"><?php
@@ -384,7 +384,7 @@
                     <tr>
                         <td width="64%" style="border-left:0.5px #000000 solid;border-top:2px #000000 solid;border-bottom:2px #000000 solid;text-align:left;"
                             ><b><?= $langs->trans('STtotal')
-                                    ."</b> ".str_replace(array('{n1}','{n2}'),array($n_rows,$n_units),$langs->trans('STtotalProductsUnits')) ?></td>
+                                    ."</b> ".str_replace(array('{n1}','{n2}'),array($n_rows,_qty($n_units)),$langs->trans('STtotalProductsUnits')) ?></td>
                         <td width="36%" style="border-right:0.5px #000000 solid;border-top:2px #000000 solid;border-bottom:2px #000000 solid;text-align:right;"
                             ><?= $total!='' ? _price($total) : '&nbsp;' ?></td>
                     </tr>
@@ -394,7 +394,7 @@
                             ><b><?= $langs->trans('STtotal')
                                     ."</b> ".str_replace('{n1}',$n_rows,$langs->trans('STtotalProducts')) ?></td>
                         <td width="20%" style="border-right:0.5px #000000 solid;border-top:2px #000000 solid;border-bottom:2px #000000 solid;text-align:center;"
-                            ><?= $n_units!='' ? $n_units : '&nbsp;' ?></td>
+                            ><?= $n_units!='' ? _qty($n_units) : '&nbsp;' ?></td>
                     </tr>
                 <?php } ?>
             </table>

@@ -46,8 +46,8 @@ if (! $res) die("Include of main fails");
         define('STOCKTRANSFERS_MODULE_URL_ROOT',DOL_URL_ROOT.'/stocktransfers');
     }
 
-require_once(DOL_DOCUMENT_ROOT."/core/lib/admin.lib.php");
-require_once(DOL_DOCUMENT_ROOT.'/core/class/html.formadmin.class.php');
+dol_include_once("core/lib/admin.lib.php");
+dol_include_once("core/class/html.formadmin.class.php");
 
 if (!$user->admin) accessforbidden();
 
@@ -129,6 +129,31 @@ llxHeader('',$langs->trans('stocktransfersMenuTitle2').' :: '.$langs->trans('STt
 ?>
 
 <form id="stocktransfersForm" name="stocktransfersForm" action="<?= $_SERVER["PHP_SELF"] ?>" method="post">
+
+    <!-- ** PDF GENERAL ** SETTINGS -->
+
+    <?= load_fiche_titre($langs->trans("STsettTit04"),'','') ?>
+
+    <table class="noborder" style="width:auto;min-width:60%;">
+        <tr class="liste_titre">
+            <td width="50%"><?= $langs->trans("Name") ?></td>
+            <td width="50%"><?= $langs->trans("Value") ?></td>
+        </tr>
+        <!-- number of decimals for stock quantities -->
+        <tr>
+            <td><?= $langs->trans("STsettLab14") ?></td>
+            <td>
+                <?php $value = !empty($conf->global->STOCKTRANSFERS_MODULE_SETT_14) ? $conf->global->STOCKTRANSFERS_MODULE_SETT_14 : '0' ?>
+                <select name="config[STOCKTRANSFERS_MODULE_SETT_14]">
+                    <option value="0" <?= $value=='0' ? "selected='selected'":"" ?>>0</option>
+                    <option value="1" <?= $value=='1' ? "selected='selected'":"" ?>>1</option>
+                    <option value="2" <?= $value=='2' ? "selected='selected'":"" ?>>2</option>
+                    <option value="3" <?= $value=='3' ? "selected='selected'":"" ?>>3</option>
+                    <option value="4" <?= $value=='4' ? "selected='selected'":"" ?>>4</option>
+                </select>
+            </td>
+        </tr>
+    </table>
 
     <!-- ** PDF GENERAL ** SETTINGS -->
 

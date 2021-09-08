@@ -72,3 +72,9 @@ As developers & translators:
 ## Versions Log
 
 See file **CHANGELOG.TXT** or see [CHANGELOG.TXT](https://github.com/caos30/dolibarr_stocktransfers_module/blob/master/CHANGELOG.TXT) file.
+
+## ToDo list
+
+ - Good batch/lot management
+ - increase user virtual stock for products "in transit" between 2 warehouses
+ - add "entity" field at "transfers" table to make the module compatible with "multi-company" Dolibarr use

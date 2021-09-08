@@ -69,7 +69,7 @@ STRemove=Rimuovi
 STFilename=StockTransfer
 STFilterThis=Filtra elementi con questo valore in questa colonna
 STErrorMsg05=Devi selezionare un prodotto.
-STErrorMsg06=La quantità deve essere un numero intero positivo.
+STErrorMsg06=La quantità deve essere un numero intero o un decimale positivo.
 STErrorMsg07=ATTENZIONE: questo TITOLO è già stato inserito. Il quantitativo inserito ORA andrà a SOSTITUIRE il quantitativo precedente. Sicuro di voler continuare?
 STwarehouse=Magazzino
 STsettExampleAbbrv=Ex:
@@ -122,3 +122,8 @@ STsettLab12desc=Accepted HTML format tags. Max 3 lines. Like company name, phone
 STsettLab13=Position of warehouses' boxes
 STsettLab13opt1=Departure ➡ Destination
 STsettLab13opt2=Destination ⬅ Departure
+
+##### version 1.15 #####
+
+STsettTit04=Miscellanea
+STsettLab14=N. di decimali per quantità di stock

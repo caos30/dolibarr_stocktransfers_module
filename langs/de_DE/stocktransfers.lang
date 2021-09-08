@@ -69,7 +69,7 @@ STRemove=Entfernen
 STFilename=Lagerwarentransfer
 STFilterThis=Filtern aller Elemente mit diesem Wert in dieser Spalte
 STErrorMsg05=Sie müssen ein Produkt auswählen.
-STErrorMsg06=Die Menge muss eine positive Ganzzahl sein.
+STErrorMsg06=Die Menge muss eine ganze Zahl oder eine positive Dezimalzahl sein.
 STErrorMsg07=Warning: Dieses Produkt wurde bereits ausgewählt. Die ausgewählten Daten ersetzen die bereits existierenden. Möchten Sie wirklich fortfahren?
 STwarehouse=Warenlager
 STsettExampleAbbrv=Bsp:
@@ -122,3 +122,8 @@ STsettLab12desc=HTML Format Tags sind erlaubt. Max 3 Zeilen wie z.B. Firmenname,
 STsettLab13=Position of warehouses' boxes
 STsettLab13opt1=Departure ➡ Destination
 STsettLab13opt2=Destination ⬅ Departure
+
+##### version 1.15 #####
+
+STsettTit04=Verschiedenes
+STsettLab14=Anzahl Dezimalstellen für Lagermengen

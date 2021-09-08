@@ -68,9 +68,9 @@ class InterfaceStockTransfers extends DolibarrTriggers
      */
     public function runTrigger($action, $object, User $user, Translate $langs, Conf $conf)
     {
-	global $db;
-	// Put here code you want to execute when a Dolibarr business events occurs.
-        // Data and type of action are stored into $object and $action
+		global $db;
+		// Put here code you want to execute when a Dolibarr business events occurs.
+		// Data and type of action are stored into $object and $action
 
 	    switch ($action) {
 
@@ -84,6 +84,7 @@ class InterfaceStockTransfers extends DolibarrTriggers
                             || $_SESSION['last_stocktransfer_token']!=$_POST['token']){
 
                         if (empty($_SESSION['massstockmove'])) break;
+
                         $listofdata = json_decode($_SESSION['massstockmove'],true);
                         dol_include_once('/stocktransfers/lib/stocktransfers_transfer.class.php');
                         $transfer = new StockTransfer($db);
