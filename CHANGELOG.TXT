@@ -2,6 +2,20 @@
    STOCKTRANSFERS MODULE CHANGELOG
 -------------------------------------
 
+## v 1.23 [2022-01-01]
+- Bufix: the logo disapeared from PDF header on the last version.
+- Added the possibility to choose the language used in PDF for translated texts of the module.
+- The module remember the language used the last time to generate the PDF of each transfer.
+- So added a multi-language translation ability for some customizable texts on module's settings.
+- Bugfixed a minor incompatibility with DATE selector on versions previous to Dolibarr 9.x
+- Added the possibility to define a DATE format for the PDF header (departure date), depending of the language.
+
+## v 1.22 [2021-10-02]
+- Added a new setting to render or not the logo on the PDF (it sometimes cause technical problems).
+
+## v 1.21 [2021-09-22]
+- Bugfixed double stock movement insertion when making double click on changing state of a transfer.
+
 ## v 1.20 [2021-09-07]
 - Checked compatibility with Dolibarr 14.X
 - Improved the filters (by date, by project, by depot) on the transfer list

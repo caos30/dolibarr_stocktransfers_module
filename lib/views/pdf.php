@@ -35,6 +35,12 @@
  *
 ****************************************************/
 
+    // == load module settings
+        $fontsize      = !empty($conf->global->STOCKTRANSFERS_MODULE_SETT_10) ? intval($conf->global->STOCKTRANSFERS_MODULE_SETT_10) : 10;
+        $fontfamily    = !empty($conf->global->STOCKTRANSFERS_MODULE_SETT_11) ? $conf->global->STOCKTRANSFERS_MODULE_SETT_11 : 'serif';
+        $warehouses_AB = !empty($conf->global->STOCKTRANSFERS_MODULE_SETT_13) ? $conf->global->STOCKTRANSFERS_MODULE_SETT_13 : 'A-B';
+		$show_logo     = !empty($conf->global->STOCKTRANSFERS_MODULE_SETT_15) ? $conf->global->STOCKTRANSFERS_MODULE_SETT_15 : 'Y';
+
     // == misc
         $now=dol_now();
         $socid = $user->societe_id > 0 ? $user->societe_id : 0;
@@ -90,7 +96,9 @@
         }
 
     // == prepare logo
-        if ($mysoc->logo && file_exists($conf->mycompany->dir_output.'/logos/thumbs/'.$mysoc->logo_small) ) {
+		if ($show_logo == 'N'){
+			$logo_path = '';
+		}else if ($mysoc->logo && file_exists($conf->mycompany->dir_output.'/logos/thumbs/'.$mysoc->logo_small) ) {
 			$logo_path = $conf->mycompany->dir_output.'/logos/thumbs/'.$mysoc->logo_small;
         }else if (is_readable(DOL_DOCUMENT_ROOT.'/theme/dolibarr_logo.png')){
             $logo_path = DOL_DOCUMENT_ROOT.'/theme/dolibarr_logo.png';
@@ -98,10 +106,15 @@
             $logo_path = '';
         }
 
-    // == miscellanea
-        $fontsize      = !empty($conf->global->STOCKTRANSFERS_MODULE_SETT_10) ? intval($conf->global->STOCKTRANSFERS_MODULE_SETT_10) : 10;
-        $fontfamily    = !empty($conf->global->STOCKTRANSFERS_MODULE_SETT_11) ? $conf->global->STOCKTRANSFERS_MODULE_SETT_11 : 'serif';
-        $warehouses_AB = !empty($conf->global->STOCKTRANSFERS_MODULE_SETT_13) ? $conf->global->STOCKTRANSFERS_MODULE_SETT_13 : 'A-B';
+	// == prepare languages translated for this module and get the translation for some keys
+		
+		$PDF_langcode = $langs->getDefaultLang();
+		$ex_lang = explode('_',$PDF_langcode);
+		$PDFlang = $ex_lang[0];
+		
+		$languages = scandir(STOCKTRANSFERS_MODULE_DOCUMENT_ROOT.'/langs');
+		$multi_translations = _multi_translation(array('STsettLab01def','stocktransfersPDF1','stocktransfersPDF8','stocktransfersPDF9','stocktransfersPDF10'),$languages);
+		//echo var_export($multi_translations,true);
 
 /***************************************************
  *
@@ -125,16 +138,23 @@
                         <?php } ?>
                     </td>
                     <td><p style="text-align:right;">
-                        <?php if (!empty($conf->global->STOCKTRANSFERS_MODULE_SETT_01)){ ?>
-                            <span style="font-weight:bold;font-size:<?= $fontsize + 3 ?>px;"><?= $conf->global->STOCKTRANSFERS_MODULE_SETT_01 ?></span>
+                        <?php 
+							$s_translations = _json_decode_translation('STOCKTRANSFERS_MODULE_SETT_01',$defaultLang);
+							if (!empty($s_translations[$PDFlang])){ ?>
+                            <span style="font-weight:bold;font-size:<?= $fontsize + 3 ?>px;"><?= $s_translations[$PDFlang] ?></span>
                             <br />
                         <?php } ?>
+							<?php $s_translations = _json_decode_translation('STOCKTRANSFERS_MODULE_SETT_02',$defaultLang); ?>
                             <span style="font-size:<?= $fontsize + 1 ?>px;">
-                                <?= !empty($conf->global->STOCKTRANSFERS_MODULE_SETT_02) ? $conf->global->STOCKTRANSFERS_MODULE_SETT_02 : $langs->trans('stocktransfersPDF1') ?>:
+                                <?= !empty($s_translations[$PDFlang]) ? $s_translations[$PDFlang] : ( !empty($multi_translations['stocktransfersPDF1'][$PDFlang]) ? $multi_translations['stocktransfersPDF1'][$PDFlang] : $langs->trans('stocktransfersPDF1')) ?>:
                                 <span style="color:red;font-weight:bold;">#<?= substr('0000'.$transfer->rowid,-4) ?></span>
                             </span>
+                            <?php 
+								  $s_translations = _json_decode_translation('STOCKTRANSFERS_MODULE_SETT_17',$defaultLang);
+								  $date_format = isset($s_translations[$PDFlang]) ? $s_translations[$PDFlang] : (isset($s_translations[$defaultLang]) ? $s_translations[$defaultLang] : '');
+                            ?>
                             <br />
-                            <span style=""><?= $langs->trans('stocktransfersDate1').': '. dol_print_date($transfer->date1) ?></span>
+                            <span style=""><?= $langs->trans('stocktransfersDate1').': &nbsp;'. dol_print_date($transfer->date1 .' 13:01',$date_format) ?></span> 
                             <br />
                         <?php if ((!empty($conf->global->STOCKTRANSFERS_MODULE_SETT_03) && $conf->global->STOCKTRANSFERS_MODULE_SETT_03=='Y')
                                     || (!empty($conf->global->STOCKTRANSFERS_MODULE_SETT_03) && $conf->global->STOCKTRANSFERS_MODULE_SETT_03=='M' && !empty($transfer->shipper))){ ?>
@@ -404,27 +424,30 @@
     <!-- === SIGNATURES === -->
 
     <tr><td><p>&nbsp;<br />&nbsp;</p><p>&nbsp;<br />&nbsp;</p></td></tr>
-
+    
     <tr>
         <td>
             <table border="0" cellpadding="5">
                 <tr>
                     <td style="text-align:center;">
-                        <?php if (!empty($conf->global->{'STOCKTRANSFERS_MODULE_SETT_061'})){ ?>
+						<?php $s_translations = _json_decode_translation('STOCKTRANSFERS_MODULE_SETT_061',$defaultLang); ?>
+                        <?php if (!empty($s_translations[$PDFlang])){ ?>
                         _____________________
-                        <br /><b><?= $conf->global->{'STOCKTRANSFERS_MODULE_SETT_061'} ?></b>
+                        <br /><b><?= $s_translations[$PDFlang] ?></b>
                         <?php } ?>
                     </td>
                     <td style="text-align:center;">
-                        <?php if (!empty($conf->global->{'STOCKTRANSFERS_MODULE_SETT_062'})){ ?>
+						<?php $s_translations = _json_decode_translation('STOCKTRANSFERS_MODULE_SETT_062',$defaultLang); ?>
+                        <?php if (!empty($s_translations[$PDFlang])){ ?>
                         _____________________
-                        <br /><b><?= $conf->global->{'STOCKTRANSFERS_MODULE_SETT_062'} ?></b>
+                        <br /><b><?= $s_translations[$PDFlang] ?></b>
                         <?php } ?>
                     </td>
                     <td style="text-align:center;">
-                        <?php if (!empty($conf->global->{'STOCKTRANSFERS_MODULE_SETT_063'})){ ?>
+						<?php $s_translations = _json_decode_translation('STOCKTRANSFERS_MODULE_SETT_063',$defaultLang); ?>
+                        <?php if (!empty($s_translations[$PDFlang])){ ?>
                         _____________________
-                        <br /><b><?= $conf->global->{'STOCKTRANSFERS_MODULE_SETT_063'} ?></b>
+                        <br /><b><?= $s_translations[$PDFlang] ?></b>
                         <?php } ?>
                     </td>
                 </tr>

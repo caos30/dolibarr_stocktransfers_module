@@ -127,3 +127,12 @@ STsettLab13opt2=Llegada ⬅ Salida
 
 STsettTit04=Miscelánea
 STsettLab14=Núm. de decimales para cantidades de stock
+
+##### version 1.22 #####
+STsettLab15=Mostrar el logo
+
+##### version 1.23 #####
+STsettLab16=Idioma por defecto
+STsettLab16opt1=El del usuario generando el PDF
+STsettLab17=Formato de la fecha
+STsettLab17opt1=El formato definido en el sistema

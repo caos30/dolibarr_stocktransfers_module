@@ -127,3 +127,12 @@ STsettLab13opt2=Destination ⬅ Departure
 
 STsettTit04=Verschiedenes
 STsettLab14=Anzahl Dezimalstellen für Lagermengen
+
+##### version 1.22 #####
+STsettLab15=Zeigen Sie das Logo
+
+##### version 1.23 #####
+STsettLab16=Standardsprache
+STsettLab16opt1=Derjenige des Benutzers, der das PDF erstellt
+STsettLab17=Datumsformat
+STsettLab17opt1=Das im System definierte Format

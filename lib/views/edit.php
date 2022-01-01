@@ -276,14 +276,41 @@
 			</a>
             <?php } ?>
 
-            <!-- pdf button -->
+            <!-- hidden language selector for PDF -->
+			<?php 
+				$languages = scandir(STOCKTRANSFERS_MODULE_DOCUMENT_ROOT.'/langs'); 
+				$def_lang = !empty($conf->global->STOCKTRANSFERS_MODULE_SETT_16) ? $conf->global->STOCKTRANSFERS_MODULE_SETT_16 : 'auto';
+				if ($def_lang=='auto') $def_lang = $langs->getDefaultLang();
+				$PDFlang = !empty($transfer->lang) ? $transfer->lang : $def_lang;
+				$langs->load("languages"); 
+			?>
+			<select id="sel_pdf_langcode" style="text-align:center;display:none;"
+					onclick="$('#bt_download_pdf').attr('href','transfer_pdf.php?id=<?= $transfer->rowid ?>&l='+$(this).val());">
+				<?php foreach ($languages as $langcode){ 
+						if ($langcode=='.' || $langcode=='..') continue;
+				?>
+				<option value="<?= $langcode ?>" <?= $langcode==$PDFlang ? "selected='selected'":"" ?>><?= $langs->trans('Language_'.$langcode) ?></option>
+				<?php } ?>
+			</select>
+
+            <!-- pdf download button -->
             <?php if ($transfer->rowid > 0 && count($transfer->products) > 0){ ?>
-            <a href="transfer_pdf.php?id=<?= $transfer->rowid ?>" class="button" target="_blank">
+            <a  id="bt_download_pdf"
+				href="transfer_pdf.php?id=<?= $transfer->rowid ?>&l=<?= $PDFlang ?>" 
+				class="button" target="_blank">
 				<?= DOL_VERSION >= 12 && !defined('DISABLE_FONT_AWSOME')  
 								? '<i class="fa fa-file-pdf"></i>&nbsp; '
 								: '<img src="img/pdf.png" style="margin-bottom: -2px;" />' ?>
 				<?= dol_escape_htmltag($langs->trans('stocktransfersPDFdownload')) ?>
 			</a>
+			
+            <!-- pdf language button -->
+            <a  href="#" onclick="$('#sel_pdf_langcode').toggle();return false;" style="display:inline-block;vertical-align:middle;">
+				<?= DOL_VERSION >= 12 && !defined('DISABLE_FONT_AWSOME')  
+								? '<i class="fa fa-2x fa-language"></i>'
+								: '<img src="img/lang.png" style="margin-bottom: -2px;" />' ?>
+			</a>
+            
             <?php } ?>
             <!-- purchase proceed button -->
             <?php if ($buy_stock!='' && $conf->purchases->enabled){
@@ -293,8 +320,9 @@
                         else
                             $purchases_root = DOL_URL_ROOT.'/purchases';
             ?>
-            <a href="<?= $purchases_root ?>/purchase_edit.php?mainmenu=commercial&leftmenu=&products=<?= $buy_stock . $fk_project ?>" class="classfortooltip button butActionDelete"
-               title="<?= htmlentities($langs->trans('stocktransfersTooltip1')) ?>"><?= $langs->trans('stocktransfersGoShopping') ?></a>
+            <a  href="<?= $purchases_root ?>/purchase_edit.php?mainmenu=commercial&leftmenu=&products=<?= $buy_stock . $fk_project ?>" 
+				class="classfortooltip button butActionDelete"
+                title="<?= htmlentities($langs->trans('stocktransfersTooltip1')) ?>"><?= $langs->trans('stocktransfersGoShopping') ?></a>
             <?php } ?>
 
             <!-- =========== easter egg - to show the raw data of the element (mainly for dev debug) ======== -->

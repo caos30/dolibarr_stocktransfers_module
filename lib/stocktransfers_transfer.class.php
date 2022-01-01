@@ -247,7 +247,8 @@ class StockTransfer extends CommonObject
             $sql.= "status='".$this->status."',";
             $sql.= "private_note='".$this->db->escape($this->private_note)."',";
             $sql.= "pdf_note='".$this->db->escape($this->pdf_note)."',";
-            $sql.= "n_products='".count($this->products)."'";
+            $sql.= "n_products='".count($this->products)."',";
+            $sql.= "lang='".$this->db->escape($this->lang)."'";
 
             $sql.= " WHERE rowid=".$this->rowid;
 

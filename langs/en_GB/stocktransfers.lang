@@ -127,3 +127,12 @@ STsettLab13opt2=Destination ⬅ Departure
 
 STsettTit04=Miscellanea
 STsettLab14=No. of decimals for stock quantities
+
+##### version 1.22 #####
+STsettLab15=Show the logo
+
+##### version 1.23 #####
+STsettLab16=Default language
+STsettLab16opt1=The one of the user generating the PDF
+STsettLab17=Date format
+STsettLab17opt1=The format defined in the system

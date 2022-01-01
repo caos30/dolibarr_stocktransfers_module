@@ -66,18 +66,18 @@
         );
         if (empty($conf->projet->enabled)) unset($arrayfields['fk_project']);
 
+	// == clean some date filters "not wanted"
+		foreach (array('ts_create','date1','date2') as $aa){
+			foreach (array('_start','_end') as $bb){
+				if (isset($fsearch[$aa.$bb.'day']))   unset($fsearch[$aa.$bb.'day']); // example: ts_create_startday
+				if (isset($fsearch[$aa.$bb.'month'])) unset($fsearch[$aa.$bb.'month']);
+				if (isset($fsearch[$aa.$bb.'year']))  unset($fsearch[$aa.$bb.'year']);
+			}
+		}
+	
     // == load transfers
 
         $sql = "SELECT * FROM ".MAIN_DB_PREFIX."stocktransfers_transfers";
-        
-        // == clean some date filters "not wanted"
-			foreach (array('ts_create','date1','date2') as $aa){
-				foreach (array('_start','_end') as $bb){
-					if (isset($fsearch[$aa.$bb.'day']))   unset($fsearch[$aa.$bb.'day']); // example: ts_create_startday
-					if (isset($fsearch[$aa.$bb.'month'])) unset($fsearch[$aa.$bb.'month']);
-					if (isset($fsearch[$aa.$bb.'year']))  unset($fsearch[$aa.$bb.'year']);
-				}
-			}
         
         // == WHERE filter
             $where = array();
@@ -184,6 +184,12 @@
         $extralabels = $extrafields->fetch_name_optionals_label('projet');
         $search_array_options=$extrafields->getOptionalsFromPost($extralabels,'','search_');
         */
+        
+	// == prepare languages
+		$languages = scandir(STOCKTRANSFERS_MODULE_DOCUMENT_ROOT.'/langs'); 
+		$def_lang = !empty($conf->global->STOCKTRANSFERS_MODULE_SETT_16) ? $conf->global->STOCKTRANSFERS_MODULE_SETT_16 : 'auto';
+		if ($def_lang=='auto') $def_lang = $langs->getDefaultLang();
+		$langs->load("languages"); 
 
     // == param for Action bar
         $param='';
@@ -317,7 +323,7 @@
 							print $form->selectarray('search_fk_depot1', $depots_select_options, $fsearch['fk_depot1'], 1, '', '', '', '',12);
 						}else if ($f=='fk_depot2'){
 							print $form->selectarray('search_fk_depot2', $depots_select_options, $fsearch['fk_depot2'], 1, '', '', '', '',12);
-						}else if ($f=='ts_create' || $f=='date1' || $f=='date2'){
+						}else if (($f=='ts_create' || $f=='date1' || $f=='date2') && DOL_VERSION >= 9){
 							$ts_start = -1; 
 							$ts_end = -1;
 							if (!empty($fsearch[$f.'_start'])){
@@ -366,6 +372,8 @@
                         foreach ($a_products as $p) $html_list_products .= '<li>'._qty($p['n']).' <b>x</b> '.(isset($products[$p['id']]) ? str_replace('"','',$products[$p['id']]) :'pid #'.$p['id']).'</li>';
                         $html_list_products = '<ul style="margin:0;padding:0;">'.$html_list_products.'</ul>';
                     }
+				// = prepare PDFlang
+					$PDFlang = !empty($ele['lang']) ? $ele['lang'] : $def_lang;
     ?>
         <tr>
             <!-- action column for buttons (edit...) -->
@@ -410,7 +418,7 @@
                             }
 
                         }else if ($f=='date1' || $f=='date2'){
-                            print '<td style="text-align:center;">'.dol_print_date($ele[$f]).'</td>';
+                            print '<td style="text-align:center;">'.dol_print_date($ele[$f].' 13:01').'</td>';
 
                         }else if ($f=='fk_project'){
                             if (empty($ele[$f])){
@@ -462,15 +470,36 @@
                                 print '<td style="text-align:center;white-space:nowrap;">--</td>';
                             }else{
                                 print '<td style="text-align:center;white-space:nowrap;">'
-                                        .(isset($ele[$f]) ? intval($ele[$f]) : '')
-                                        //.' <img src="'.DOL_URL_ROOT.'/theme/'.$conf->theme.'/img/info.png" title="'.str_replace('"','',  htmlentities($html_list_products)).'" class="classfortooltip" style="margin-bottom:-5px;" /> '
-                                        .' &nbsp; <a href="transfer_pdf.php?id='.$ele['rowid'].'" target="_blank" title="'.str_replace('"','',  htmlentities($html_list_products)).'" '
+                                        .(isset($ele[$f]) ? intval($ele[$f]) : '');
+								// PDF button
+                                print ' &nbsp; <a id="bt_download_pdf_'.$ele['rowid'].'" '
+										.'			href="transfer_pdf.php?id='.$ele['rowid'].'&l='.$PDFlang.'" target="_blank" title="'.str_replace('"','',  htmlentities($html_list_products)).'" '
                                         .'			class="classfortooltip button" style="min-width:0;">'
                                         .		(DOL_VERSION >= 12 && !defined('DISABLE_FONT_AWSOME') ? 
 													'<i class="fa fa-lg fa-file-pdf"></i>' :
 													'<img src="img/pdf.png" style="margin-bottom: -2px;" />'
 												)
-                                        .'	</a></td>';
+                                        .'	</a>';
+								// PDF language button
+                                print '<a href="#" onclick="$(\'#sel_pdf_langcode_'.$ele['rowid'].'\').toggle();return false;" '
+                                        .'			style="display:inline-block;vertical-align:middle;">'
+                                        .		(DOL_VERSION >= 12 && !defined('DISABLE_FONT_AWSOME') ? 
+													'<i class="fa fa-lg fa-language"></i>' :
+													'<img src="img/lang.png" style="margin-bottom: -2px;" />'
+												)
+                                        .'</a>';
+                                        
+								// hidden language selector for PDF
+								print '<br /><select id="sel_pdf_langcode_'.$ele['rowid'].'" '
+										.'			 onchange="$(\'#bt_download_pdf_'.$ele['rowid'].'\').attr(\'href\',\'transfer_pdf.php?id='.$ele['rowid'].'&l=\'+$(this).val());"'
+										.'			 style="text-align:center;display:none;">';
+									foreach ($languages as $langcode){
+										if ($langcode=='.' || $langcode=='..') continue;
+										print '<option value="'.$langcode.'" '.($langcode==$PDFlang ? "selected='selected'":"").'>'.$langs->trans('Language_'.$langcode).'</option>';
+									}
+									
+								print '</td>';
+				
                             }
 
                         }else{

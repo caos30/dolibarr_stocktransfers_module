@@ -59,31 +59,54 @@ if (!empty($conf->projet->enabled)) {
 	require_once DOL_DOCUMENT_ROOT.'/core/class/html.formprojet.class.php';
 }
 
-$langs->load("products");
-$langs->load("stocks");
-$langs->load("orders");
-$langs->load("productbatch");
-$langs->load("projects");
-$langs->load("stocktransfers");
-
 include_once("./lib/stocktransfers.lib.php");
 include_once(DOL_DOCUMENT_ROOT."/core/class/html.formfile.class.php");
 
-$user->getrights('stocktransfers');
-$langs->load("stocktransfers@stocktransfers");
+// == load languages/translations
+	$langs->load("products");
+	$langs->load("stocks");
+	$langs->load("orders");
+	$langs->load("productbatch");
+	$langs->load("projects");
+	$langs->load("stocktransfers");
 
 // == Security check
     $result=restrictedArea($user,'produit|service');
 
-// == Get parameters
-    $transfer_id = GETPOST('id', '0');
-
 // == data object
     global $transfer;
+    $transfer_id = GETPOST('id', '0');
     $transfer = new StockTransfer($db);
     if ($transfer_id > 0) {
         $ret = $transfer->fetch($transfer_id);
     }
+
+// == multilanguage settings
+	$previous_PDFlang = $transfer->lang;
+	if (!empty($_GET['l'])){
+		$PDF_langcode = trim($_GET['l']);
+		$transfer->lang = $PDF_langcode;
+		$transfer->update();
+
+	}else if ($previous_PDFlang!=''){
+		$PDF_langcode = $previous_PDFlang;
+	}else{
+		$PDF_langcode = !empty($conf->global->STOCKTRANSFERS_MODULE_SETT_16) ? $conf->global->STOCKTRANSFERS_MODULE_SETT_16 : 'auto';
+	}
+	
+	$ex_lang = explode('_',$langs->getDefaultLang()); // en_US -- real DefaultLang of this DOlibarr instance
+	$defaultLang = $ex_lang[0];
+
+	if ($PDF_langcode != 'auto'){
+		unset($langs);
+		$langs = new Translate('', $conf);
+		$langs->setDefaultLang($PDF_langcode); // we change the DefaultLang of this Dolibarr instance, to get correct translations
+		$langs->load("main");
+	}
+
+	$user->getrights('stocktransfers');
+	$langs->load("stocktransfers@stocktransfers");
+
 
 // == some style settings
     $fontsize = !empty($conf->global->STOCKTRANSFERS_MODULE_SETT_10) ? intval($conf->global->STOCKTRANSFERS_MODULE_SETT_10) : 10;
@@ -102,10 +125,16 @@ $langs->load("stocktransfers@stocktransfers");
     class MYPDF extends TCPDF {
 
         public function Footer() {
-            global $conf;
+            global $conf, $defaultLang, $langs;
             $fontsize = !empty($conf->global->STOCKTRANSFERS_MODULE_SETT_10) ? intval($conf->global->STOCKTRANSFERS_MODULE_SETT_10) : 10;
             $fontfamily = !empty($conf->global->STOCKTRANSFERS_MODULE_SETT_11) ? $conf->global->STOCKTRANSFERS_MODULE_SETT_11 : 'serif';
-            $text = !empty($conf->global->STOCKTRANSFERS_MODULE_SETT_12) ? $conf->global->STOCKTRANSFERS_MODULE_SETT_12 : '';
+            
+				$PDF_langcode = $langs->getDefaultLang();
+				$ex_lang = explode('_',$PDF_langcode);
+				$PDFlang = $ex_lang[0];
+
+            $s_translations = _json_decode_translation('STOCKTRANSFERS_MODULE_SETT_12',$defaultLang);
+            $text = !empty($s_translations[$PDFlang]) ? $s_translations[$PDFlang] : '';
 
             $this->SetY(-25);
             $footer_text = "<span style=\"font-family:$fontfamily;font-size:".($fontsize - 1)."px;\">".nl2br($text)."</div>";
@@ -174,7 +203,7 @@ $langs->load("stocktransfers@stocktransfers");
     */
 
 // == HTML body of the PDF
-    $html = _render_view('pdf',array('transfer'=>$transfer,'db'=>$db, 'langs'=>$langs, 'mysoc'=>$mysoc));
+    $html = _render_view('pdf',array('transfer'=>$transfer,'db'=>$db, 'langs'=>$langs, 'mysoc'=>$mysoc, 'defaultLang'=>$defaultLang));
     //echo $html; die();
     $pdf->writeHTML($html, true, false, true, false, '');
 

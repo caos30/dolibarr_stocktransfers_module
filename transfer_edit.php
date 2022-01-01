@@ -124,8 +124,9 @@ if ($action == 'delete_transfer') {
 
 }else if ($action == 'save_card') {
 
-    // == prepare transfer card
 
+    // == prepare transfer card
+		$previous_status = $transfer->status; // 0 (draft), 1 (sent), 2 (received)
         $transfer->fk_user_author = $user->id;
         if (!empty($_POST['label']))
             $transfer->label = $_POST['label'];
@@ -166,6 +167,7 @@ if ($action == 'delete_transfer') {
             $transfer->status = $_POST['status'];
 
     // == run query on database
+		
         $new = $transfer->rowid > 0 ? false : true ;
         if ($new)
             $result = $transfer->create(NULL);
@@ -175,24 +177,24 @@ if ($action == 'delete_transfer') {
     // == there is a change of status, then we must to add/remove records about stock movements
 
         // = the transfer is being stated as SENT
-        if ($_POST['old_status']=='0' && $_POST['status']=='1'){
+        if ($previous_status=='0' && $_POST['status']=='1'){
 
             $result = $transfer->create_stock_movements('1');
 
         // = the transfer is being stated as RECEIVED
-        }else if ($_POST['old_status']=='1' && $_POST['status']=='2'){
+        }else if ($previous_status=='1' && $_POST['status']=='2'){
 
             $result = $transfer->create_stock_movements('2');
 
         // = the transfer is being stated AGAIN as DRAFT, from RECEIVED
-        }else if ($_POST['old_status']=='2' && $_POST['status']=='0'){
+        }else if ($previous_status=='2' && $_POST['status']=='0'){
 
             $reverse = 1;
             $result = $transfer->create_stock_movements('2',$reverse);
             $result = $transfer->create_stock_movements('1',$reverse);
 
         // = the transfer is being stated AGAIN as DRAFT, from SENT
-        }else if ($_POST['old_status']=='1' && $_POST['status']=='0'){
+        }else if ($previous_status=='1' && $_POST['status']=='0'){
 
             $reverse = 1;
             $result = $transfer->create_stock_movements('1',$reverse);

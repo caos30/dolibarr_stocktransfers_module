@@ -17,5 +17,6 @@ CREATE TABLE `llx_stocktransfers_transfers` (
   `n_items` smallint(6) NOT NULL DEFAULT '0',
   `private_note` text COLLATE utf8_unicode_ci NULL,
   `pdf_note` text COLLATE utf8_unicode_ci NULL,
+  `lang` varchar(5) COLLATE utf8_unicode_ci DEFAULT '',
   PRIMARY KEY  (`rowid`)
 ) ENGINE=innodb AUTO_INCREMENT=1 ;

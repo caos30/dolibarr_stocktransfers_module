@@ -104,3 +104,46 @@ function _var_export($arr, $title=''){
 	$html .= "</div>";
 	return $html;
 }
+
+function _multi_translation($a_keys,$languages){
+	
+	$translations = array();
+	foreach($a_keys as $key){
+		$translations[$key] = array();
+	}
+	
+	$languages = scandir(STOCKTRANSFERS_MODULE_DOCUMENT_ROOT.'/langs');
+	foreach ($languages as $langcode){ 
+		if ($langcode=='.' || $langcode=='..') continue;
+		$ex_lang = explode('_',$langcode);
+		$lang = $ex_lang[0];
+		$file_path = STOCKTRANSFERS_MODULE_DOCUMENT_ROOT.'/langs/'.$langcode.'/stocktransfers.lang';
+		if (!file_exists($file_path) || !is_readable($file_path)) continue;
+		$fp = @fopen(STOCKTRANSFERS_MODULE_DOCUMENT_ROOT.'/langs/'.$langcode.'/stocktransfers.lang', "r");
+		if (!$fp) continue;
+		while (($line = fgets($fp, 4096)) !== false) {
+			if (trim($line)=='') continue;
+			$ex = explode('=',$line);
+			if (count($ex)<2) continue;
+			if (isset($translations[$ex[0]])){
+				$translations[$ex[0]][$lang] = $ex[1];
+			}
+		}
+	}
+
+	return $translations;
+
+}
+
+function _json_decode_translation($const,$defaultLang){
+	global $conf;
+	
+	$sett = !empty($conf->global->$const) ? $conf->global->$const : '';
+	if (!preg_match('/\{/',$sett)){ // already NOT is a JSON format... so it's a recently updated module to version 1.23
+		$s_translations = array();
+		$s_translations[$defaultLang] = $sett;
+	}else{
+		$s_translations = json_decode($sett,JSON_OBJECT_AS_ARRAY);
+	}
+	return $s_translations;
+}

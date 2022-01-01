@@ -127,3 +127,12 @@ STsettLab13opt2=Entrée ⬅ Sortie
 
 STsettTit04=Recueil
 STsettLab14=Nombre de décimales pour les quantités en stock
+
+##### version 1.22 #####
+STsettLab15=Afficher le logo
+
+##### version 1.23 #####
+STsettLab16=Langage par défaut
+STsettLab16opt1=Celui de l'utilisateur générant le PDF
+STsettLab17=Format de date
+STsettLab17opt1=Le format défini dans le système
