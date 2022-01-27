@@ -1,6 +1,6 @@
 # [dolibarr_stocktransfers_module](https://github.com/caos30/dolibarr_stocktransfers_module)
 
-## Current version: 1.23 [2022-01-01]
+## Current version: 1.24 [2022-01-27]
 
 Compatible with Dolibarr v. 5.X-14.X
 

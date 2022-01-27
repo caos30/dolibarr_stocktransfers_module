@@ -2,6 +2,9 @@
    STOCKTRANSFERS MODULE CHANGELOG
 -------------------------------------
 
+## v 1.24 [2022-01-27]
+- Transfer list: bugfixed the control to enabel/disable columns.
+
 ## v 1.23 [2022-01-01]
 - Bufix: the logo disapeared from PDF header on the last version.
 - Added the possibility to choose the language used in PDF for translated texts of the module.

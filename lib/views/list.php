@@ -204,6 +204,11 @@
         $form = new Form($db);
         $varpage = empty($contextpage)?$_SERVER["PHP_SELF"]:$contextpage;
         $selectedfields = $form->multiSelectArrayWithCheckbox('selectedfields', $arrayfields, $varpage);	// This also change content of $arrayfields
+		/*
+		if ($massactionbutton) {
+			$selectedfields .= $form->showCheckAddButtons('checkforselect', 1);
+		}
+		*/
 
     // == mass actions (i.e. delete a group of lines)
         $arrayofmassactions=array(
@@ -350,7 +355,8 @@
 
                 // == action column
                 print '<td class="liste_titre" align="middle">'
-                        .$form->showFilterAndCheckAddButtons($massactionbutton?1:0, 'checkforselect', 1)
+                        //.$form->showFilterAndCheckAddButtons($massactionbutton?1:0, 'checkforselect', 1)
+                        .$form->showFilterAndCheckAddButtons(0, 'checkforselect', 1)
                         .'</td>';
 
             ?>
@@ -557,4 +563,6 @@
 
     // End of page
     $db->close();
-    //llxFooter('$Date: 2009/03/09 11:28:12 $ - $Revision: 1.8 $');
+    llxFooter('');
+
+	
