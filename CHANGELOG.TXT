@@ -2,8 +2,15 @@
    STOCKTRANSFERS MODULE CHANGELOG
 -------------------------------------
 
+## v 1.25 [2022-04-10]
+- Checked compatibility with Dolibarr 15.X
+- Bugfixed required default values on module's settings.
+- Editing a transfer: added more information about warehouses and a link to the warehouse card.
+- Editing a transfer on draft status: improved information about stock on origin and target warehouses.
+- Bugfixed the target warehouse name on the HOME dashboard BOX with last transfers list.
+
 ## v 1.24 [2022-01-27]
-- Transfer list: bugfixed the control to enabel/disable columns.
+- Transfer list: bugfixed the control to enable/disable columns.
 
 ## v 1.23 [2022-01-01]
 - Bufix: the logo disapeared from PDF header on the last version.

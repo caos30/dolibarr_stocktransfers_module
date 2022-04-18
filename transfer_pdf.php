@@ -110,7 +110,7 @@ include_once(DOL_DOCUMENT_ROOT."/core/class/html.formfile.class.php");
 
 // == some style settings
     $fontsize = !empty($conf->global->STOCKTRANSFERS_MODULE_SETT_10) ? intval($conf->global->STOCKTRANSFERS_MODULE_SETT_10) : 10;
-    $fontfamily = !empty($conf->global->STOCKTRANSFERS_MODULE_SETT_11) ? $conf->global->STOCKTRANSFERS_MODULE_SETT_11 : 'serif';
+    $fontfamily = !empty($conf->global->STOCKTRANSFERS_MODULE_SETT_11) ? $conf->global->STOCKTRANSFERS_MODULE_SETT_11 : 'sans-serif';
 
 /***************************************************
  *

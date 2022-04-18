@@ -1,8 +1,8 @@
 # [dolibarr_stocktransfers_module](https://github.com/caos30/dolibarr_stocktransfers_module)
 
-## Current version: 1.24 [2022-01-27]
+## Current version: 1.25 [2022-04-10]
 
-Compatible with Dolibarr v. 5.X-14.X
+Compatible with Dolibarr v. 5.X-15.X
 
 ## Description
 
@@ -75,6 +75,7 @@ See file **CHANGELOG.TXT** or see [CHANGELOG.TXT](https://github.com/caos30/doli
 
 ## ToDo list
 
- - Good batch/lot management
- - increase user virtual stock for products "in transit" between 2 warehouses
+ - Better batch/lot management, specially regarding stock control
+ - increase user "virtual stock" for products "in transit" between 2 warehouses
  - add "entity" field at "transfers" table to make the module compatible with "multi-company" Dolibarr use
+ 

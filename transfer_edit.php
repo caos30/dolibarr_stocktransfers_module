@@ -102,7 +102,7 @@ $langs->load("stocktransfers@stocktransfers");
     }
     $_SESSION['EventMessages'] = array();
 
-    //if (!empty($_POST)){     echo _var_export($_GET,'$_GET')._var_export($_POST,'$_POST')._var_export($_FILES,'$_FILES'); }
+    //if (!empty($_POST)){     echo _var($_GET,'$_GET')._var($_POST,'$_POST')._var($_FILES,'$_FILES'); }
 
 /***************************************************
  *

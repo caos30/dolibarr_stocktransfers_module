@@ -132,12 +132,7 @@ class box_stocktransfers extends ModeleBoxes
                         // = column: depot 1
                             $url = 'product/stock/card.php?id='.$t['fk_depot1'];
                             $picto_link = "<a href='$url'><img src='theme/".$conf->theme."/img/object_company.png' /></a>";
-							$label = '#'.$t['fk_depot1'];
-							if (!empty($depots[$t['fk_depot1']] && !empty($depots[$t['fk_depot1']]['lieu'])))
-								$label = $depots[$t['fk_depot1']]['lieu'];
-							else if (!empty($depots[$t['fk_depot1']] && !empty($depots[$t['fk_depot1']]['label'])))
-								$label = $depots[$t['fk_depot1']]['label'];
-							$text_link = " <a href='$url'>$label</a>";
+							$text_link = " <a href='$url'>".(!empty($depots[$t['fk_depot1']]) ? $depots[$t['fk_depot1']]['ref'] : '#'.$t['fk_depot1'])."</a>";
                             $this->info_box_contents[$line][] = array(
                                 'td' => 'align="left"',
                                 'text' => $picto_link.$text_link,
@@ -147,7 +142,7 @@ class box_stocktransfers extends ModeleBoxes
                         // = column: depot 2
                             $url = 'product/stock/card.php?id='.$t['fk_depot2'];
                             $picto_link = "<a href='$url'><img src='theme/".$conf->theme."/img/object_company.png' /></a>";
-                            $text_link = " <a href='$url'>".(!empty($depots[$t['fk_depot2']]) ? $depots[$t['fk_depot2']]['label'] : '#'.$t['fk_depot2'])."</a>";
+                            $text_link = " <a href='$url'>".(!empty($depots[$t['fk_depot2']]) ? $depots[$t['fk_depot2']]['ref'] : '#'.$t['fk_depot2'])."</a>";
                             $this->info_box_contents[$line][] = array(
                                 'td' => 'align="left"',
                                 'text' => $picto_link.$text_link,
@@ -157,7 +152,7 @@ class box_stocktransfers extends ModeleBoxes
                         // = column: number of products included
                             $this->info_box_contents[$line][] = array(
                                 'td' => 'align="center"',
-                                'text' => $t['n_products']. ' '. $langs->trans('purchasesProducts')
+                                'text' => $t['n_products']. ' '. $langs->trans('STProducts')
                             );
 
                         // = column: status
@@ -173,7 +168,7 @@ class box_stocktransfers extends ModeleBoxes
 
                             $this->info_box_contents[$line][] = array(
                                 'td' => 'align="center" width="18"',
-                                'text' => $text //img_picto($langs->trans('purchasesStatus'.$t['status']),'statut'.$status_picto[$t['status']])
+                                'text' => $text
                             );
 
                         $line++;

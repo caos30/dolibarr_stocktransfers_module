@@ -550,15 +550,16 @@ class StockTransfer extends CommonObject
     function getStock(){
         $stock = array();
         if ($this->fk_depot1 > 0 && count($this->products) > 0){
-                $sql = "SELECT fk_product,reel ";
+                $sql = "SELECT fk_product,fk_entrepot,reel ";
         		$sql.= " FROM ".MAIN_DB_PREFIX."product_stock";
-        		$sql.= " WHERE fk_entrepot = ".$this->fk_depot1;
-        		$sql.= " AND fk_product IN (".implode(',', array_keys($this->products)).")";
+        		$sql.= " WHERE fk_product IN (".implode(',', array_keys($this->products)).")";
                 $resql = $this->db->query($sql);
                 if ($resql){
                     if ($this->db->num_rows($resql)){
                         while ($row = $resql->fetch_assoc()){
-                            if (is_array($row)) $stock[$row['fk_product']] = $row['reel'];
+							if (!is_array($row)) continue;
+                            if (!isset($stock[$row['fk_entrepot']])) $stock[$row['fk_entrepot']] = array();
+                            $stock[$row['fk_entrepot']][$row['fk_product']] = $row['reel'];
                         }
                     }
                     $this->db->free($resql);
@@ -567,7 +568,7 @@ class StockTransfer extends CommonObject
                     dol_syslog(get_class($this)."::getStock ".$this->error, LOG_ERR);
                 }
         }
-        //echo _var_export($stock,'$stock');die();
+        //echo _var($stock,'$stock');die();
         return $stock;
     }
 

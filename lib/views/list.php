@@ -243,8 +243,8 @@
 
     <form method="POST" id="transfer_searchFormList" name="searchFormList" action="<?= $_SERVER["PHP_SELF"] ?>">
 
-        <input type="hidden" name="token" value="<?= $_SESSION['newtoken'] ?>" />
-	<input type="hidden" name="formfilteraction" id="formfilteraction" value="list" />
+        <input type="hidden" name="token" value="<?= $_SESSION['token'] ?>" />
+		<input type="hidden" name="formfilteraction" id="formfilteraction" value="list" />
         <input type="hidden" name="action" value="list" />
         <input type="hidden" name="sortfield" value="<?= $sortfield ?>" />
         <input type="hidden" name="sortorder" value="<?= $sortorder ?>" />

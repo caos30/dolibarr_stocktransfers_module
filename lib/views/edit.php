@@ -66,19 +66,29 @@
         $depots = array();
         $resql = $db->query("SELECT * FROM ".MAIN_DB_PREFIX."entrepot");
         if ($resql) {
-            //while($obj = $db->fetch_object($resql)) $depots[$obj->rowid] = $obj;
-            while($row = $resql->fetch_assoc()) $depots[] = $row;
+            while($row = $resql->fetch_assoc()){
+				$depots[$row['rowid']] = $row;
+				$depots[$row['rowid']]['tit1'] = !empty($row['ref']) ? $row['ref'] : '#'.$row['rowid'];
+				$depots[$row['rowid']]['tit2'] = !empty($row['lieu']) ? $row['lieu'] : (!empty($row['label']) ? $row['label'] : '');
+				$depots[$row['rowid']]['tit3'] = !empty($row['town']) ? $row['town'] : '';
+				//echo _var($row,'$row');
+			}
         }
 
-    // == load current stock at origin depot
+    // == load current stock at all depots, of the products included in this transfer
         $stock = $transfer->getStock();
 
     // == need to purchase more stock
         $buy_stock = '';
+        $depot1_stock = array();
+        $depot2_stock = array();
         if ($transfer->status == '0' && count($transfer->products) > 0){
             foreach($transfer->products as $pid => $p){
-                $missing_stock = floatval($p['n']) - floatval($stock[$pid]);
-                if (!isset($stock[$pid]) || $missing_stock > 0) {
+				// calculate stocks ond departure and destination 
+					$depot1_stock[$pid] = !empty($stock[$transfer->fk_depot1][$pid]) ? floatval($stock[$transfer->fk_depot1][$pid]) : 0;
+					$depot2_stock[$pid] = !empty($stock[$transfer->fk_depot2][$pid]) ? floatval($stock[$transfer->fk_depot2][$pid]) : 0;
+                $missing_stock = floatval($p['n']) - $depot1_stock[$pid];
+                if ($missing_stock > 0) {
                     if ($buy_stock!='') $buy_stock .= '_';
                     $buy_stock .= $pid.'-'.$missing_stock;
                 }
@@ -121,7 +131,7 @@
     <!-- ========= Form with the transfer details (dates, status, project, etc.) ========= -->
 
     <form action="<?= $_SERVER["PHP_SELF"] ?>" method="POST" name="transfer_card_form" id="transfer_card_form">
-        <input type="hidden" name="token" value="<?= $_SESSION['newtoken'] ?>" />
+        <input type="hidden" name="token" value="<?= $_SESSION['token'] ?>" />
         <input type="hidden" name="rowid" value="<?= !empty($transfer->rowid) ? $transfer->rowid : '' ?>" />
         <input type="hidden" name="action" value="save_card" />
         <input type="hidden" name="status" value="<?= $transfer->status ?>" />
@@ -130,8 +140,12 @@
         <?php
             $codemove=GETPOST('codemove');
             $labelmovement = GETPOST("label") ? GETPOST('label') : $langs->trans("StockTransfer").' '.dol_print_date($now,'%Y-%m-%d %H:%M');
+            if (DOL_VERSION >= 12 && !defined('DISABLE_FONT_AWSOME')){ // we can use fontwawesome icons 
+				$ic_warehouse = '<span class="fa fa-box-open"></span>';
+			}else{ 
+				$ic_warehouse = '<img src="'.DOL_URL_ROOT.'/theme/'.$conf->theme .'/img/object_company.png" border="0" />';
+			}
         ?>
-        
 
         <div class="sk-container">
             <div class="sk-eight sk-columns">
@@ -151,11 +165,51 @@
 						<?php } ?>
 						<tr>
 							<td class="titlefield fieldrequired"><?= $langs->trans('WarehouseSource') ?></td>
-							<td><?= $formproduct->selectWarehouses($transfer->fk_depot1, 'fk_depot1', 'warehouseopen,warehouseinternal', 1, 0, 0, '', 0, 0, array(), 'minwidth200imp') ?></td>
+							<td><?php 
+									if ($transfer->status == '0'){
+										
+										// select control
+										echo $formproduct->selectWarehouses($transfer->fk_depot1, 'fk_depot1', 'warehouseopen,warehouseinternal', 1, 0, 0, '', 0, 0, array(), 'minwidth200imp') ;
+										
+									}else{
+										
+										// hidden input
+										echo "<input type='hidden' name='fk_depot1' id='fk_depot1' value='".$transfer->fk_depot1 ."' />";
+									}
+										
+									// title & link to warehouse
+									if (!empty($transfer->fk_depot1) && !is_null($transfer->fk_depot1)){
+								?>
+									&nbsp; <a href="<?= DOL_URL_ROOT.'/product/stock/card.php?id='.$transfer->fk_depot1 ?>"><?= $ic_warehouse.' '.$depots[$transfer->fk_depot1]['tit1'] ?></a>
+									 · <?= $depots[$transfer->fk_depot1]['tit2'] ?>
+									 <?= !empty($depots[$transfer->fk_depot1]['tit3']) ? ' · <em>'.$depots[$transfer->fk_depot1]['tit3'].'</em>' : '' ?>
+									 
+								 <?php } ?>
+							</td>
 						</tr>
 						<tr>
 							<td class="titlefield fieldrequired"><?= $langs->trans('WarehouseTarget') ?></td>
-							<td><?= $formproduct->selectWarehouses($transfer->fk_depot2, 'fk_depot2', 'warehouseopen,warehouseinternal', 1, 0, 0, '', 0, 0, array(), 'minwidth200imp') ?></td>
+							<td><?php 
+									if ($transfer->status == '0'){
+										
+										// select control
+										echo $formproduct->selectWarehouses($transfer->fk_depot2, 'fk_depot2', 'warehouseopen,warehouseinternal', 1, 0, 0, '', 0, 0, array(), 'minwidth200imp') ;
+										
+									}else{
+										
+										// hidden input
+										echo "<input type='hidden' name='fk_depot2' id='fk_depot2' value='".$transfer->fk_depot2 ."' />";
+									}
+										
+									// title & link to warehouse & hidden input
+									if (!empty($transfer->fk_depot2) && !is_null($transfer->fk_depot2)){
+								?>
+										&nbsp; <a href="<?= DOL_URL_ROOT.'/product/stock/card.php?id='.$transfer->fk_depot2 ?>"><?= $ic_warehouse.' '.$depots[$transfer->fk_depot2]['tit1'] ?></a>
+										 · <?= $depots[$transfer->fk_depot2]['tit2'] ?>
+										 <?= !empty($depots[$transfer->fk_depot2]['tit3']) ? ' · <em>'.$depots[$transfer->fk_depot2]['tit3'].'</em>' : '' ?>
+										 
+								 <?php } ?>
+							</td>
 						</tr>
 						<tr>
 							<td class="titlefield"><?= $langs->trans('stocktransfersDate1') ?></td>
@@ -351,7 +405,7 @@
 
     <br />
     <form action="<?= $_SERVER["PHP_SELF"] ?>" method="POST" id="transfer_product_form">
-        <input type="hidden" name="token" value="<?= $_SESSION['newtoken']  ?>">
+        <input type="hidden" name="token" value="<?= $_SESSION['token'] ?>" />
         <input type="hidden" name="rowid" value="<?= !empty($transfer->rowid) ? $transfer->rowid : '' ?>" />
         <input type="hidden" name="action" value="add_line">
         <input type="hidden" name="del_pid" value="">
@@ -366,9 +420,12 @@
                      print getTitleFieldOfList($langs->trans('STBatch'),0,$_SERVER["PHP_SELF"],'',$param,'','class="tagtd maxwidthonsmartphone"',$sortfield,$sortorder);
                     }
                     print getTitleFieldOfList($langs->trans('STnote'),0,$_SERVER["PHP_SELF"],'',$param,'','align="left" class="tagtd maxwidthonsmartphone"',$sortfield,$sortorder);
-                    print getTitleFieldOfList($langs->trans('STQty'),0,$_SERVER["PHP_SELF"],'',$param,'','align="center" class="tagtd maxwidthonsmartphone"',$sortfield,$sortorder);
+                    $ic_truck = '<i class="fa fa-dolly"></i>';
+                    print getTitleFieldOfList($langs->trans('STQty').'<br />'.$ic_truck,0,$_SERVER["PHP_SELF"],'',$param,'','align="center" class="tagtd maxwidthonsmartphone"',$sortfield,$sortorder);
                     if ($transfer->status == '0'){
-                        print getTitleFieldOfList($langs->trans('STStock'),0,$_SERVER["PHP_SELF"],'',$param,'','align="center" class="tagtd maxwidthonsmartphone"',$sortfield,$sortorder);
+						$ic_house = '<i class="fa fa-home"></i>';
+                        print getTitleFieldOfList($langs->trans('STStock').'<br /><span style="font-size:0.8em;">'.$langs->trans('WarehouseSource').'</span>',0,$_SERVER["PHP_SELF"],'',$param,'','align="center" class="tagtd maxwidthonsmartphone"',$sortfield,$sortorder);
+                        print getTitleFieldOfList($langs->trans('STStock').'<br /><span style="font-size:0.8em;">'.$langs->trans('WarehouseTarget').'</span>',0,$_SERVER["PHP_SELF"],'',$param,'','align="center" class="tagtd maxwidthonsmartphone"',$sortfield,$sortorder);
                     }
                     print getTitleFieldOfList('',0);
                 ?>
@@ -380,7 +437,7 @@
                 <?php foreach($transfer->products as $pid => $p){
 
                     $productstatic->fetch($pid);
-                    $needed_stock_this = !isset($stock[$pid]) || floatval($stock[$pid]) < floatval($p['n']);
+                    $needed_stock_this = $depot1_stock[$pid] < floatval($p['n']);
                 ?>
 
                 <tr <?= $bc[$var] ?> class='product' data-pid='<?= $pid ?>'
@@ -405,13 +462,16 @@
                     </td>
                     <?php if ($transfer->status == '0'){ ?>
                     <td style='text-align:center;'>
-                        <?= isset($stock[$pid]) ? _qty($stock[$pid]) : '-' ?>
+                        <?= $depot1_stock[$pid] > 0 ? _qty($depot1_stock[$pid]) : '-' ?>
                         <?php if ($needed_stock_this){ ?>
                             <a href="<?= DOL_URL_ROOT ?>/product/stock/product.php?id=<?= $pid ?>&action=correction&id_entrepot=<?= $transfer->fk_depot1 ?>"
                                 title="<?= str_replace('"','',($langs->trans('stocktransfersErrorMsg03')).' '.($langs->trans('stocktransfersAdjustStock'))) ?>"
                                 target="_blank" style="display:inline-block;margin:0px 4px;min-width:0;" class="button">
                                 <?= DOL_VERSION >= 12 && !defined('DISABLE_FONT_AWSOME') ? "<i class='fa fa-warning'></i>" : img_warning('') ?></a>
                         <?php } ?>
+                    </td>
+                    <td style='text-align:center;'>
+                        <?= $depot2_stock[$pid] > 0 ? _qty($depot2_stock[$pid]) : '-' ?>
                     </td>
                     <?php } ?>
                     <td>
@@ -460,7 +520,10 @@
 
                     <!-- ========= Automatic Stock ========= -->
                     <td style='text-align:center;' class=''>
-                        <span id='new_line_stock'></span>
+                        <span id='new_line_stock1'></span>
+                    </td>
+                    <td style='text-align:center;' class=''>
+                        <span id='new_line_stock2'></span>
                     </td>
 
                     <!-- ========= Button to add ========= -->
@@ -527,11 +590,8 @@
                 if (data.ok=='1'){
                     var stock1 = data.stock['stock1'] ? data.stock['stock1'] : 0;
                     var stock2 = data.stock['stock2'] ? data.stock['stock2'] : 0;
-                    var html = "";
-                    html += "<a title=\"<?= str_replace('"','',$langs->trans('stocktransfersPDF2')) ?>\"><b>"+stock1+"</b></a>";
-                    html += " / "
-                    html += "<a title=\"<?= str_replace('"','',$langs->trans('stocktransfersPDF3')) ?>\"><b>"+stock2+"</b></a>";
-                    $('#new_line_stock').html(html);
+                    $('#new_line_stock1').html('<b>'+stock1+'</b>');
+                    $('#new_line_stock2').html('<b>'+stock2+'</b>');
                 }
             }
         );

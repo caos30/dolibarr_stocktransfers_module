@@ -147,7 +147,8 @@ llxHeader('',$langs->trans('stocktransfersMenuTitle2').' :: '.$langs->trans('STt
 ?>
 
 <form id="stocktransfersForm" name="stocktransfersForm" action="<?= $_SERVER["PHP_SELF"] ?>" method="post">
-
+	<input type="hidden" name="token" value="<?= $_SESSION['token'] ?>" />
+	
     <!-- ** PDF GENERAL ** SETTINGS -->
 
     <?= load_fiche_titre($langs->trans("STsettTit04"),'','') ?>
@@ -303,8 +304,8 @@ llxHeader('',$langs->trans('stocktransfersMenuTitle2').' :: '.$langs->trans('STt
 							<td style="text-align:right;"><?= preg_replace('/\((.*)\)/','',$langs->trans('Language_'.$langcode)) ?> :</td>
 							<td>
 								<input name="s_translations[STOCKTRANSFERS_MODULE_SETT_02][<?= $langcode0 ?>]" type="text" class="fieldrequired"
-									value="<?= isset($s_translations[$langcode0]) ? $s_translations[$langcode0] : (isset($multi_translations['stocktransfersPDF1'][$langcode0]) ? $multi_translations['stocktransfersPDF1'][$langcode0] : $langs->trans("STsettLab02def")) ?>"
-									placeholder="<?= str_replace('"','',$langs->trans("STsettExampleAbbrv").' '.(isset($multi_translations['stocktransfersPDF1'][$langcode0]) ? $multi_translations['stocktransfersPDF1'][$langcode0] : $langs->trans("STsettLab02def"))) ?>" />
+									value="<?= !empty($s_translations[$langcode0]) ? $s_translations[$langcode0] : (!empty($multi_translations['stocktransfersPDF1'][$langcode0]) ? $multi_translations['stocktransfersPDF1'][$langcode0] : $langs->trans("STsettLab02def")) ?>"
+									placeholder="<?= str_replace('"','',$langs->trans("STsettExampleAbbrv").' '.(!empty($multi_translations['stocktransfersPDF1'][$langcode0]) ? $multi_translations['stocktransfersPDF1'][$langcode0] : $langs->trans("STsettLab02def"))) ?>" />
 							</td>
 						</tr>
 					<?php } ?>
@@ -339,7 +340,7 @@ llxHeader('',$langs->trans('stocktransfersMenuTitle2').' :: '.$langs->trans('STt
 							$ex_lang = explode('_',$langcode);
 							$langcode0 = $ex_lang[0];
 							if (isset($lang_rendered[$langcode0])) continue; else $lang_rendered[$langcode0] = 1;
-							$value = isset($s_translations[$langcode0]) ? $s_translations[$langcode0] : $default_format;
+							$value = !empty($s_translations[$langcode0]) ? $s_translations[$langcode0] : $default_format;
 					?>
 						<tr>
 							<td style="text-align:right;"><?= preg_replace('/\((.*)\)/','',$langs->trans('Language_'.$langcode)) ?> :</td>

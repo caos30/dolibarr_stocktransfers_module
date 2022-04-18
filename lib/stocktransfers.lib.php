@@ -70,6 +70,9 @@ function _render_view($viewname,Array $vars){
         return $render;
 }
 
+function _var($arr, $title=''){
+		return _var_export($arr, $title);
+}
 
 function _var_export($arr, $title=''){
         if ($title!='' && phpversion() > '5.3.0' && class_exists('Tracy\Debugger')){
