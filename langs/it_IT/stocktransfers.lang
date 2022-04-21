@@ -11,7 +11,7 @@ stocktransfersSetup=Settaggi de modulo
 stocktransfersSummary=Tabulato trasferimenti e consegne
 stocktransfersSetupNotComplete=Settaggio non completato.
 stocktransfersAboutInfo=Modulo sviluppato e aggiornato da Sergi Rodrigues (caos30) per IMASDEWEB, <a href="https://imasdeweb.com" title="Opens in a new window">imasdeweb.com</a> (a future Dolibarr Preferred Partner company ;o).
-stocktransfersMoreModules=Altri moduli cellos tesso autore sono disponibili nel market place DoliStore ufficiale…
+stocktransfersMoreModules=Altri moduli dello stesso autore sono disponibili nel market place DoliStore ufficiale…
 stocktransfersMoreModulesLink=<p><a title=“Apre in una nuova finestra“ target="_blank" href="http://www.dolistore.com/search.php?search_query=%s">Clicca qui per la lista completa</a></p>
 stocktransfersNewTransfer=Nuovo trasferimento
 stocktransfersDate1=Data di spedizione
@@ -21,7 +21,7 @@ stocktransfersStatus1=Spedito
 stocktransfersStatus2=Ricevuto
 stocktransfersShipper=Corriere
 stocktransfersNPackages=Numero scatole o pacchi
-stocktransfersPDFdownload=Download PDF
+stocktransfersPDFdownload=Genera PDF
 stocktransfersSetStatusSent=Registra come <b>Spedito</b>
 stocktransfersSetStatusReceived= Registra come <b>Ricevuto</b>
 stocktransfersSetStatusDraft= Riporta allo stato di <b>Bozza</b>
@@ -107,16 +107,16 @@ STtabConfig=Impostazioni
 ##### version 1.14 #####
 
 STnote=Note
-STprivateNote=Private note:
-STpdfNote=Note to be included in PDF:
-STconfirmDEL=This action cannot be undone, do you want to continue?
+STprivateNote=Nota privata:
+STpdfNote=Nota visibile sul PDF:
+STconfirmDEL=Questa azione non può essere annullata. Vuoi proseguire?
 STedit=Edit
-STtotalProducts=({n1} products)
-STtotalProductsUnits=({n1} products, {n2} units)
+STtotalProducts=({n1} prodotti)
+STtotalProductsUnits=({n1} prodotti, {n2} unità)
 STsettTit00=General settings of PDF
-STsettLab10=Font size
-STsettLab11=Font family
-STsettLab12=Free text for page footer
+STsettLab10=Dimensioni font
+STsettLab11=Tipo font
+STsettLab12=Testo libero nel footer
 STsettLab12desc=Accepted HTML format tags. Max 3 lines. Like company name, phone number...
 
 STsettLab13=Position of warehouses' boxes
@@ -133,6 +133,6 @@ STsettLab15=Mostra il logo
 
 ##### version 1.23 #####
 STsettLab16=Lingua di default
-STsettLab16opt1=Quello dell'utente che genera il PDF
+STsettLab16opt1=Quella dell'utente che genera il PDF
 STsettLab17=Formato data
 STsettLab17opt1=Il formato definito nel sistema

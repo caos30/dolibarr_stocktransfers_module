@@ -2,6 +2,9 @@
    STOCKTRANSFERS MODULE CHANGELOG
 -------------------------------------
 
+## v 1.26 [???]
+- Fixed 2 missing translations on italian language.
+
 ## v 1.25 [2022-04-10]
 - Checked compatibility with Dolibarr 15.X
 - Bugfixed required default values on module's settings.
