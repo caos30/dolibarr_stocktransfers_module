@@ -116,6 +116,24 @@
 		$multi_translations = _multi_translation(array('STsettLab01def','stocktransfersPDF1','stocktransfersPDF8','stocktransfersPDF9','stocktransfersPDF10'),$languages);
 		//echo var_export($multi_translations,true);
 
+	// == preferences to render: reference, serial code, barcode
+		$show_prices     = !empty($conf->global->STOCKTRANSFERS_MODULE_SETT_05) ? $conf->global->STOCKTRANSFERS_MODULE_SETT_05 : 'N';
+		$show_reference  = !empty($conf->global->STOCKTRANSFERS_MODULE_SETT_18) ? $conf->global->STOCKTRANSFERS_MODULE_SETT_18 : 'Y';
+		$show_serialcode = !empty($conf->global->STOCKTRANSFERS_MODULE_SETT_08) ? $conf->global->STOCKTRANSFERS_MODULE_SETT_08 : 'N';
+		$show_barcode    = !empty($conf->global->STOCKTRANSFERS_MODULE_SETT_09) ? $conf->global->STOCKTRANSFERS_MODULE_SETT_09 : 'N';
+		
+		// deprecated (to keep compatibility with old settings "if empty value then show on DESC column"=M)
+		if ($show_serialcode=='M') $show_serialcode = 'Y';
+		if ($show_barcode   =='M') $show_barcode    = 'Y';
+		
+		// calculate the % occupied by the visible columns, because this % of space must be substracted to the DESCRIPTION COLUMN
+		$description_col_subtract = 0;
+		if ($show_reference =='Y2') $description_col_subtract += 15;
+		if ($show_serialcode=='Y2') $description_col_subtract += 15;
+		if ($show_barcode   =='Y2') $description_col_subtract += 15;
+		$description_col = $show_prices=='N' ? (80 - $description_col_subtract) : (59 - $description_col_subtract);
+	
+
 /***************************************************
  *
  *	View
@@ -294,8 +312,20 @@
                 <!-- TABLE HEADER -->
 
                 <tr>
-                    <?php if (!empty($conf->global->STOCKTRANSFERS_MODULE_SETT_05) && $conf->global->STOCKTRANSFERS_MODULE_SETT_05!='N'){ ?>
-                        <td width="59%" style="border:0.5px #000000 solid;border-top:2px #000000 solid;border-bottom:2px #000000 solid;text-align:left;"
+					<?php if ($show_reference=='Y2'){ ?>
+                        <td width="15%" style="border:0.5px #000000 solid;border-top:2px #000000 solid;border-bottom:2px #000000 solid;text-align:center;"
+                            ><b><?= $langs->trans('STsettLab07opt2') ?></b></td>
+					<?php } ?>
+					<?php if ($show_serialcode=='Y2'){ ?>
+                        <td width="15%" style="border:0.5px #000000 solid;border-top:2px #000000 solid;border-bottom:2px #000000 solid;text-align:center;"
+                            ><b><?= $langs->trans('STBatch') ?></b></td>
+					<?php } ?>
+					<?php if ($show_barcode=='Y2'){ ?>
+                        <td width="15%" style="border:0.5px #000000 solid;border-top:2px #000000 solid;border-bottom:2px #000000 solid;text-align:center;"
+                            ><b><?= $langs->trans('STpdfBarCode') ?></b></td>
+					<?php } ?>
+                    <?php if ($show_prices!='N'){ ?>
+                        <td width="<?= $description_col ?>%" style="border:0.5px #000000 solid;border-top:2px #000000 solid;border-bottom:2px #000000 solid;text-align:left;"
                             ><b><?= ucfirst(mb_strtolower($langs->trans('stocktransfersPDF7'))) ?></b></td>
                         <td width="14%" style="border:0.5px #000000 solid;border-top:2px #000000 solid;border-bottom:2px #000000 solid;text-align:center;"
                             ><b><?= ucfirst(mb_strtolower(mb_strtoupper($langs->trans('STprice')))) ?></b></td>
@@ -304,7 +334,7 @@
                         <td width="17%" style="border:0.5px #000000 solid;border-top:2px #000000 solid;border-bottom:2px #000000 solid;text-align:center;"
                             ><b><?= ucfirst(mb_strtolower(mb_strtoupper($langs->trans('STtotal')))) ?></b></td>
                     <?php }else{ ?>
-                        <td width="80%" style="border:0.5px #000000 solid;border-top:2px #000000 solid;border-bottom:2px #000000 solid;text-align:left;"
+                        <td width="<?= $description_col ?>%" style="border:0.5px #000000 solid;border-top:2px #000000 solid;border-bottom:2px #000000 solid;text-align:left;"
                             ><b><?= ucfirst(mb_strtolower($langs->trans('stocktransfersPDF7'))) ?></b></td>
                         <td width="20%" style="border:0.5px #000000 solid;border-top:2px #000000 solid;border-bottom:2px #000000 solid;text-align:center;"
                             ><b><?= ucfirst(mb_strtolower($langs->trans('stocktransfersPDF5'))) ?></b></td>
@@ -317,56 +347,61 @@
                     $total = 0; $n_rows=0; $n_units=0;
                     foreach($transfer->products as $p){
                         $n_rows++;
-                        $label = '';
-                        if (!empty($products[$p['id']])){
-                            $a_label = array();
-                            if (!empty($products[$p['id']]['ref'])) $a_label[] = $products[$p['id']]['ref'];
-                            if (!empty($products[$p['id']]['label'])) $a_label[] = $products[$p['id']]['label'];
-                            $label = trim(implode(' - ',$a_label));
-                        }
-                        if ($label=='')$label =  '#'.$p['id'];
+                        $label = ''; 
+                        
+						// = product reference, serial number, barcode
+							$p_reference  = strip_tags(isset($products[$p['id']]) && !empty($products[$p['id']]['ref']) && mb_strlen($products[$p['id']]['ref'])>1 ? $products[$p['id']]['ref'] : '');
+							$p_serialcode = strip_tags(!empty($p['b']) && mb_strlen($p['b'])>1 ? $p['b'] : '');
+							$p_barcode    = strip_tags(isset($products[$p['id']]) && !empty($products[$p['id']]['barcode']) && mb_strlen($products[$p['id']]['barcode'])>1 ? $products[$p['id']]['barcode'] : '');
+                        
+                        // = label
+						// _ ex: [100010011101010] (lot-x) PROD-01 - Product 01  // <--- [SERIAL CODE] (LOT) REF - LABEL
 
-                        // = part number / serial code
-                            if (!empty($conf->global->STOCKTRANSFERS_MODULE_SETT_08) && $conf->global->STOCKTRANSFERS_MODULE_SETT_08!='N'){
-                                if ($conf->global->STOCKTRANSFERS_MODULE_SETT_08=='Y' || (!empty($p['b']) && mb_strlen($p['b'])>1)){
-                                        $label = '('.$p['b'].') '.$label;
-                                }
-                            }
+							$a_label = array();
+							if ($show_barcode   =='Y' && $p_barcode!='')    $a_label[] = '['.$p_barcode.']';
+							if ($show_serialcode=='Y' && $p_serialcode!='') $a_label[] = '('.$p_serialcode.')';
+							if ($show_reference =='Y' && $p_reference!='')  $a_label[] = $p_reference;
+							if (!empty($products[$p['id']]['label']))        $a_label[] = $products[$p['id']]['label'];
+							$label = trim(implode(' - ',$a_label));
+							if ($label=='') $label =  '#'.$p['id'];
 
-                        // = barcode
-                            if (!empty($conf->global->STOCKTRANSFERS_MODULE_SETT_09) && $conf->global->STOCKTRANSFERS_MODULE_SETT_09!='N'){
-                                if ($conf->global->STOCKTRANSFERS_MODULE_SETT_08=='Y' ||
-                                        (!empty($products[$p['id']]) && !empty($products[$p['id']]['barcode']) && mb_strlen($products[$p['id']]['barcode'])>1)){
-                                        $label = '['.$products[$p['id']]['barcode'].'] '.$label;
-                                }
-                            }
-
-                        $n = !empty($p['n']) ? floatval($p['n']) : '';
-                        if ($n!='') $n_units += $n;
+						// = units
+							$n = !empty($p['n']) ? floatval($p['n']) : '';
+							if ($n!='') $n_units += $n;
                 ?>
                 <tr>
-                    <?php if (!empty($conf->global->STOCKTRANSFERS_MODULE_SETT_05) && $conf->global->STOCKTRANSFERS_MODULE_SETT_05!='N'){
-                        $price = ''; $subtotal = '';
-                        if ($conf->global->STOCKTRANSFERS_MODULE_SETT_05=='Y'){
-                            $price = !empty($products[$p['id']]) && !empty($products[$p['id']]['price']) ? floatval($products[$p['id']]['price']) : '';
-                        }else if ($conf->global->STOCKTRANSFERS_MODULE_SETT_05=='T'){
-                            $price = !empty($products[$p['id']]) && !empty($products[$p['id']]['price_ttc']) ? floatval($products[$p['id']]['price_ttc']) : '';
-                        }
+					<?php if ($show_reference=='Y2'){ ?>
+                        <td width="15%" style="border:0.5px #000000 solid;text-align:center;"><?= $p_reference ?></td>
+					<?php } ?>
+					<?php if ($show_serialcode=='Y2'){ ?>
+                        <td width="15%" style="border:0.5px #000000 solid;text-align:center;"><?= $p_serialcode ?></td>
+					<?php } ?>
+					<?php if ($show_barcode=='Y2'){ ?>
+                        <td width="15%" style="border:0.5px #000000 solid;text-align:center;"><?= $p_barcode ?></td>
+					<?php } ?>
+                    <?php 
+						if ($show_prices!='N'){
+							$price = ''; $subtotal = '';
+							if ($conf->global->STOCKTRANSFERS_MODULE_SETT_05=='Y'){
+								$price = !empty($products[$p['id']]) && !empty($products[$p['id']]['price']) ? floatval($products[$p['id']]['price']) : '';
+							}else if ($conf->global->STOCKTRANSFERS_MODULE_SETT_05=='T'){
+								$price = !empty($products[$p['id']]) && !empty($products[$p['id']]['price_ttc']) ? floatval($products[$p['id']]['price_ttc']) : '';
+							}
                         $subtotal = $price!='' && $n!='' ? $price * $n : '';
                         if ($subtotal!='') $total += $subtotal;
                     ?>
-                        <td width="59%" style="border:0.5px #000000 solid;text-align:left;"><?php
+                        <td width="<?= $description_col ?>%" style="border:0.5px #000000 solid;text-align:left;"><?php
                                 echo "<p style=\"padding:0;margin:0;\">".$label;
                                 if (!empty($p['m']) && trim(strip_tags($p['m']))!=''){
                                     echo "<br /><span style=\"font-size:0.9em;font-family:monospace;\">".nl2br($p['m'])."</span>";
                                 }
                                 echo "</p>";
-                            ?></td>
+					  ?></td>
                         <td width="14%" style="border:0.5px #000000 solid;text-align:right;"><?= $price!='' ? _price($price) : '&nbsp;' ?></td>
                         <td width="10%" style="border:0.5px #000000 solid;text-align:right;"><?= $n!='' ? _qty($n) : '&nbsp;' ?></td>
                         <td width="17%" style="border:0.5px #000000 solid;text-align:right;"><?= $subtotal!='' ? _price($subtotal) : '&nbsp;' ?></td>
                     <?php }else{ ?>
-                        <td width="80%" style="border:0.5px #000000 solid;text-align:left;"><?php
+                        <td width="<?= $description_col ?>%" style="border:0.5px #000000 solid;text-align:left;"><?php
                                 echo "<p style=\"padding:0;margin:0;\">".$label;
                                 if (!empty($p['m'])){
                                     echo "<br /><span style=\"font-size:0.9em;font-family:monospace;\">".nl2br($p['m'])."</span>";
@@ -385,13 +420,22 @@
                     for($ii=0 ; $ii < (20 - count($transfer->products)); $ii++){ ?>
 
                 <tr>
-                    <?php if (!empty($conf->global->STOCKTRANSFERS_MODULE_SETT_05) && $conf->global->STOCKTRANSFERS_MODULE_SETT_05!='N'){ ?>
-                        <td width="59%" style="border:0.5px #000000 solid;text-align:left;">&nbsp;</td>
+					<?php if ($show_reference=='Y2'){ ?>
+                        <td width="15%" style="border:0.5px #000000 solid;text-align:center;">&nbsp;</td>
+					<?php } ?>
+					<?php if ($show_serialcode=='Y2'){ ?>
+                        <td width="15%" style="border:0.5px #000000 solid;text-align:center;">&nbsp;</td>
+					<?php } ?>
+					<?php if ($show_barcode=='Y2'){ ?>
+                        <td width="15%" style="border:0.5px #000000 solid;text-align:center;">&nbsp;</td>
+					<?php } ?>
+                    <?php if ($show_prices!='N'){ ?>
+                        <td width="<?= $description_col ?>%" style="border:0.5px #000000 solid;text-align:left;">&nbsp;</td>
                         <td width="14%" style="border:0.5px #000000 solid;text-align:center;">&nbsp;</td>
                         <td width="10%" style="border:0.5px #000000 solid;text-align:center;">&nbsp;</td>
                         <td width="17%" style="border:0.5px #000000 solid;text-align:center;">&nbsp;</td>
                     <?php }else{ ?>
-                        <td width="80%" style="border:0.5px #000000 solid;text-align:center;">&nbsp;</td>
+                        <td width="<?= $description_col ?>%" style="border:0.5px #000000 solid;text-align:center;">&nbsp;</td>
                         <td width="20%" style="border:0.5px #000000 solid;text-align:center;">&nbsp;</td>
                     <?php } ?>
                 </tr>
@@ -400,7 +444,7 @@
 
                 <!-- TABLE FOOTER -->
 
-                <?php if (!empty($conf->global->STOCKTRANSFERS_MODULE_SETT_05) && $conf->global->STOCKTRANSFERS_MODULE_SETT_05!='N'){ ?>
+                <?php if ($show_prices!='N'){ ?>
                     <tr>
                         <td width="64%" style="border-left:0.5px #000000 solid;border-top:2px #000000 solid;border-bottom:2px #000000 solid;text-align:left;"
                             ><b><?= $langs->trans('STtotal')

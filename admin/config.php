@@ -97,7 +97,7 @@ $langs->load("languages");
             /* message to user */
             	if (! $error) {
             		$db->commit();
-            		setEventMessages($langs->trans("SetupSaved"), null, 'mesgs');
+            		setEventMessage($langs->trans("SetupSaved"), 'mesgs');
             	} else {
             		$db->rollback();
             		dol_print_error($db);
@@ -147,7 +147,7 @@ llxHeader('',$langs->trans('stocktransfersMenuTitle2').' :: '.$langs->trans('STt
 ?>
 
 <form id="stocktransfersForm" name="stocktransfersForm" action="<?= $_SERVER["PHP_SELF"] ?>" method="post">
-	<input type="hidden" name="token" value="<?= $_SESSION['token'] ?>" />
+	<input type="hidden" name="token" value="<?= newToken() ?>" />
 	
     <!-- ** PDF GENERAL ** SETTINGS -->
 
@@ -315,9 +315,17 @@ llxHeader('',$langs->trans('stocktransfersMenuTitle2').' :: '.$langs->trans('STt
         
         <!-- date format -->
         <?php 
+			// date wilcards
 			$wildcards = '%Y %y %m %d %e %B %b %A %a';
 			$wildcards_key = explode(' ',$wildcards);
-			$wildcards_res = explode(' ',dol_print_date('2021-12-31 13:01',$wildcards));
+			$wildcards_res = explode(' ',dol_print_date('2021-12-31 23:59:58',$wildcards));
+			
+			// time wilcards ----> @@@ todo: add optional fields DEPARTURE_TIME and ARRIVAL_TIME to the transfer object in database
+			/*
+			$wildcards_t = '%H %I %h %p %M %S';
+			$wildcards_key_t = explode(' ',$wildcards_t);
+			$wildcards_res_t = explode(' ',dol_print_date('2021-12-31 23:59:58',$wildcards_t));
+			*/
 			$s_translations = _json_decode_translation('STOCKTRANSFERS_MODULE_SETT_17',$defaultLang);
 			$default_format = !empty($s_translations[$defaultLang]) ? $s_translations[$defaultLang] : '%d / %m / %Y';
 		?>
@@ -349,7 +357,7 @@ llxHeader('',$langs->trans('stocktransfersMenuTitle2').' :: '.$langs->trans('STt
 									value="<?= $value ?>"
 									placeholder="<?= str_replace('"','',$langs->trans("STsettExampleAbbrv").' '.$default_format) ?>" />
 							</td>
-							<td><em><?= dol_print_date('2021-12-31 13:01',$value) ?></em></td>
+							<td><em><?= dol_print_date('2021-12-31 23:59:58',$value) ?></em></td>
 						</tr>
 					<?php } ?>
 				</table>
@@ -408,7 +416,7 @@ llxHeader('',$langs->trans('stocktransfersMenuTitle2').' :: '.$langs->trans('STt
         </tr>
     </table>
 
-    <!-- ** PDF PODUCT LIST ** SETTINGS -->
+    <!-- ** PDF PRODUCT LIST ** SETTINGS -->
 
     <br /><?= load_fiche_titre($langs->trans("STsettTit02"),'','') ?>
 
@@ -431,15 +439,28 @@ llxHeader('',$langs->trans('stocktransfersMenuTitle2').' :: '.$langs->trans('STt
             </td>
         </tr>
         
+        <!-- show reference -->
+        <tr>
+            <td><?= $langs->trans("STsettLab18") ?></td>
+            <td>
+                <?php $value = !empty($conf->global->STOCKTRANSFERS_MODULE_SETT_18) ? $conf->global->STOCKTRANSFERS_MODULE_SETT_18 : 'Y' ?>
+                <select name="config[STOCKTRANSFERS_MODULE_SETT_18]">
+                    <option value="N"  <?= $value=='N'  ? "selected='selected'":"" ?>><?= $langs->trans('STno') ?></option>
+                    <option value="Y"  <?= $value=='Y'  ? "selected='selected'":"" ?>><?= strip_tags($langs->trans("STsettLab08opt2")) ?></option>
+                    <option value="Y2" <?= $value=='Y2' ? "selected='selected'":"" ?>><?= strip_tags($langs->trans("STsettLab08opt2b")) ?></option>
+                </select>
+            </td>
+        </tr>
+        
         <!-- show num. part / serial code -->
         <tr>
             <td><?= $langs->trans("STsettLab08") ?></td>
             <td>
                 <?php $value = !empty($conf->global->STOCKTRANSFERS_MODULE_SETT_08) ? $conf->global->STOCKTRANSFERS_MODULE_SETT_08 : 'M' ?>
                 <select name="config[STOCKTRANSFERS_MODULE_SETT_08]">
-                    <option value="N" <?= $value=='N' ? "selected='selected'":"" ?>><?= $langs->trans('STno') ?></option>
-                    <option value="Y" <?= $value=='Y' ? "selected='selected'":"" ?>><?= $langs->trans('STyes') ?></option>
-                    <option value="M" <?= $value=='M' ? "selected='selected'":"" ?>><?= strip_tags($langs->trans("STsettLab03opt3")) ?></option>
+                    <option value="N"  <?= $value=='N'  ? "selected='selected'":"" ?>><?= $langs->trans('STno') ?></option>
+                    <option value="Y"  <?= $value=='Y' || $value=='M' ? "selected='selected'":"" ?>><?= strip_tags($langs->trans("STsettLab08opt2")) ?></option>
+                    <option value="Y2" <?= $value=='Y2' ? "selected='selected'":"" ?>><?= strip_tags($langs->trans("STsettLab08opt2b")) ?></option>
                 </select>
             </td>
         </tr>
@@ -450,9 +471,9 @@ llxHeader('',$langs->trans('stocktransfersMenuTitle2').' :: '.$langs->trans('STt
             <td>
                 <?php $value = !empty($conf->global->STOCKTRANSFERS_MODULE_SETT_09) ? $conf->global->STOCKTRANSFERS_MODULE_SETT_09 : 'M' ?>
                 <select name="config[STOCKTRANSFERS_MODULE_SETT_09]">
-                    <option value="N" <?= $value=='N' ? "selected='selected'":"" ?>><?= $langs->trans('STno') ?></option>
-                    <option value="Y" <?= $value=='Y' ? "selected='selected'":"" ?>><?= $langs->trans('STyes') ?></option>
-                    <option value="M" <?= $value=='M' ? "selected='selected'":"" ?>><?= strip_tags($langs->trans("STsettLab03opt3")) ?></option>
+                    <option value="N"  <?= $value=='N'  ? "selected='selected'":"" ?>><?= $langs->trans('STno') ?></option>
+                    <option value="Y"  <?= $value=='Y' || $value=='M'  ? "selected='selected'":"" ?>><?= strip_tags($langs->trans("STsettLab08opt2")) ?></option>
+                    <option value="Y2" <?= $value=='Y2' ? "selected='selected'":"" ?>><?= strip_tags($langs->trans("STsettLab08opt2b")) ?></option>
                 </select>
             </td>
         </tr>

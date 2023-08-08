@@ -113,6 +113,13 @@
         $b_batch_enabled = $conf->productbatch->enabled
                             && (empty($conf->global->STOCKTRANSFERS_MODULE_SETT_08)
                                 || $conf->global->STOCKTRANSFERS_MODULE_SETT_08 != 'N') ? true : false;
+
+	// == include JS library to render HTML tooltips
+		if (!empty($conf->use_javascript_ajax)) {
+			print "\n".'<!-- Includes JS Footer of Dolibarr -->'."\n";
+			$ext = 'layout='.$conf->browser->layout.'&version='.urlencode(DOL_VERSION);
+			print '<script src="'.DOL_URL_ROOT.'/core/js/lib_foot.js.php?lang='.$langs->defaultlang.($ext ? '&'.$ext : '').'"></script>'."\n";
+		}
 ?>
 
 <style><?= str_replace(array(" ","\n","\t"),'',file_get_contents(__DIR__.'/styles.css')) ?></style>
@@ -131,7 +138,7 @@
     <!-- ========= Form with the transfer details (dates, status, project, etc.) ========= -->
 
     <form action="<?= $_SERVER["PHP_SELF"] ?>" method="POST" name="transfer_card_form" id="transfer_card_form">
-        <input type="hidden" name="token" value="<?= $_SESSION['token'] ?>" />
+        <input type="hidden" name="token" value="<?= newToken() ?>" />
         <input type="hidden" name="rowid" value="<?= !empty($transfer->rowid) ? $transfer->rowid : '' ?>" />
         <input type="hidden" name="action" value="save_card" />
         <input type="hidden" name="status" value="<?= $transfer->status ?>" />
@@ -405,7 +412,7 @@
 
     <br />
     <form action="<?= $_SERVER["PHP_SELF"] ?>" method="POST" id="transfer_product_form">
-        <input type="hidden" name="token" value="<?= $_SESSION['token'] ?>" />
+        <input type="hidden" name="token" value="<?= newToken() ?>" />
         <input type="hidden" name="rowid" value="<?= !empty($transfer->rowid) ? $transfer->rowid : '' ?>" />
         <input type="hidden" name="action" value="add_line">
         <input type="hidden" name="del_pid" value="">
@@ -464,7 +471,7 @@
                     <td style='text-align:center;'>
                         <?= $depot1_stock[$pid] > 0 ? _qty($depot1_stock[$pid]) : '-' ?>
                         <?php if ($needed_stock_this){ ?>
-                            <a href="<?= DOL_URL_ROOT ?>/product/stock/product.php?id=<?= $pid ?>&action=correction&id_entrepot=<?= $transfer->fk_depot1 ?>"
+                            <a href="<?= DOL_URL_ROOT ?>/product/stock/product.php?id=<?= $pid ?>&action=correction&id_entrepot=<?= $transfer->fk_depot1 ?>&token=<?= newToken() ?>"
                                 title="<?= str_replace('"','',($langs->trans('stocktransfersErrorMsg03')).' '.($langs->trans('stocktransfersAdjustStock'))) ?>"
                                 target="_blank" style="display:inline-block;margin:0px 4px;min-width:0;" class="button">
                                 <?= DOL_VERSION >= 12 && !defined('DISABLE_FONT_AWSOME') ? "<i class='fa fa-warning'></i>" : img_warning('') ?></a>
@@ -581,7 +588,8 @@
         var url_json = 'json.php?action=get_stock'
                         +'&pid='+pid
                         +'&wid1=<?= $transfer->fk_depot1 ?>'
-                        +'&wid2=<?= $transfer->fk_depot2 ?>';
+                        +'&wid2=<?= $transfer->fk_depot2 ?>'
+                        +'&token=<?= currentToken() ?>';
         console.log(url_json);
         $.getJSON(
             url_json,
@@ -651,7 +659,7 @@
 
     function js_delete_transfer(){
         if (confirm("<?= str_replace('"','',html_entity_decode($langs->trans('stocktransfersDelSure','',0))) ?>")){
-            document.location = 'transfer_edit.php?mainmenu=products&action=delete_transfer&rowid=<?= $transfer->rowid ?>';
+            document.location = 'transfer_edit.php?mainmenu=products&action=delete_transfer&rowid=<?= $transfer->rowid ?>&token=<?= newToken() ?>';
         }
     }
 
@@ -668,7 +676,7 @@
             $('#new_line input[name=batch]').val(tr.attr('data-batch'));
         }
         $('#new_line input[name=n]').val(tr.attr('data-n'));
-        $('#new_line textarea[name=m]').val($('#ST_pid_'+pid+'_m').html());
+        $('#new_line textarea[name=m]').val($('#ST_pid_'+pid+'_m').html().replace('&amp;','&'));
         /* exchange save buttons */
         $('#ST_add').hide();
         $('#ST_save').hide().fadeIn();
@@ -790,4 +798,4 @@
 <?php
     // End of page
     $db->close();
-    //llxFooter('$Date: 2009/03/09 11:28:12 $ - $Revision: 1.8 $');
+    llxFooter('');

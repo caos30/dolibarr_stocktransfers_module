@@ -1,0 +1,140 @@
+-------------------------------------
+   STOCKTRANSFERS MODULE CHANGELOG
+-------------------------------------
+
+## v 1.31 [2023-08-07]
+- New PDF settings: you can choose to render product reference, serial code, or barcode in different columns, instead of including all of them in the Description column.
+
+## v 1.30 [2023-06-22]
+- Bugfixed an issue showing error/confirmation messages to user after try an action. 
+
+## v 1.29 [2023-05-01]
+- Checked compatibility with Dolibarr 17.X
+
+## v 1.28 [2023-02-20]
+- Fixed a compatibility issue with safety TOKEN system used in Dolibarr since Dolibarr 12.X
+
+## v 1.27 [2022-09-30]
+- Checked compatibility with Dolibarr 16.X
+
+## v 1.26 [2022-05-11]
+- Fixed 2 missing translations on italian language.
+- Added column Ref (rowid) in the transfer list, and converted to button replacing old cog button.
+- Fixed the tooltip of the product when passing mouse over the label of a product included in a transfer.
+
+## v 1.25 [2022-04-10]
+- Checked compatibility with Dolibarr 15.X
+- Bugfixed required default values on module's settings.
+- Editing a transfer: added more information about warehouses and a link to the warehouse card.
+- Editing a transfer on draft status: improved information about stock on origin and target warehouses.
+- Bugfixed the target warehouse name on the HOME dashboard BOX with last transfers list.
+
+## v 1.24 [2022-01-27]
+- Transfer list: bugfixed the control to enable/disable columns.
+
+## v 1.23 [2022-01-01]
+- Bufix: the logo disapeared from PDF header on the last version.
+- Added the possibility to choose the language used in PDF for translated texts of the module.
+- The module remember the language used the last time to generate the PDF of each transfer.
+- So added a multi-language translation ability for some customizable texts on module's settings.
+- Bugfixed a minor incompatibility with DATE selector on versions previous to Dolibarr 9.x
+- Added the possibility to define a DATE format for the PDF header (departure date), depending of the language.
+
+## v 1.22 [2021-10-02]
+- Added a new setting to render or not the logo on the PDF (it sometimes cause technical problems).
+
+## v 1.21 [2021-09-22]
+- Bugfixed double stock movement insertion when making double click on changing state of a transfer.
+
+## v 1.20 [2021-09-07]
+- Checked compatibility with Dolibarr 14.X
+- Improved the filters (by date, by project, by depot) on the transfer list
+- Added some FontAwesome icons on some buttons (visual improvement only)
+
+## v 1.19 [2021-06-20]
+- Settings: added the possibility to define number of decimal positions in stock quantities.
+
+## v 1.18 [2021-02-08]
+- Checked compatibility with Dolibarr 13.X
+- Fixed a couple of translations in spanish and catalan
+- Added tab CHANGELOG to Settings
+
+## v 1.17 [2020-12-10]
+- Solved an issue on PDF generation related to the company embedded logo
+
+## v 1.16 [2020-12-04]
+- Checked compatibility with Dolibarr 12.X
+- Improved appearance on Settings > Module List (changed logo).
+- Fixed the company logo picture on PDF header (it was missing).
+- Fixed an issue with accented vowels on PDF.
+
+## v 1.15 [2020-07-21]
+- Added french translation.
+
+## v 1.14 [2020-04-29]
+- Fixed the alert message when saving changes on a product already added to the transfer.
+- Changed the PDF layout to be more similar to the Dolibarr's default PDF theme
+- Added new settings to choose the base font-size and family-font used in the PDF.
+- Added new setting to set a tiny footer at bottom of each page in the PDF (company name, address, phone number?).
+- Added new setting to choose if Departure warehouse must be put on left or right of the Destination warehouse in the PDF.
+- Added a private free text note for a transfer, and also a note to be included in the PDF.
+- Added free text note for each product in a transfer. This text appears in the PDF.
+- Added a button to EDIT a product already added to the transfer.
+- Added to PDF the total number of products and units automatically summed.
+- Added the ID/REF field of the product in each row in the PDF.
+- Removed at PDF the empty top margin.
+- Removed the stock column on the transfer edit list of products when on Settings is set to No the displaying of batch/serial codes in the PDF.
+- Bugfixed an error on PDF product list when a product has not setted a selling price on database.
+- When selected a new product to be added to transfer (on edit transfer view) not it shows the current stock on both warehouses.
+- Added german translation.
+
+## v 1.13 [2020-02-08]
+- Checked compatibility with Dolibarr 11.0.0
+- Fixed a bug printing prices on PDF.
+- At product line on PDF, removed the serial/lot number or barcode if it's empty or one character size.
+
+## v 1.12 [2020-02-07]
+- Made compatible with new Dolibarr 10.0.6 && 11.0.0
+- Fixed a bug when adding a product line to a transfer whene exists some products' module settings.
+
+## v 1.11 [2019-07-03]
+- Made compatible with new Dolibarr 10.0.0
+- Minor bugfixes too.
+
+## v 1.10 [2019-06-29]
+- Fixed an issue when enabled lot/batch serial numbers on Dolibarr
+
+## v 1.9 [2019-06-29]
+- Added settings to configure the PDF generation
+- Added italian translation
+- Added bar code of products to the PDF, if they have
+
+## v 1.8 [2019-06-17]
+- Improved the add_line form on transfer_edit view:
+  + check required fields
+  + show a warning when changing data of a previously added line
+
+## v 1.7 [2019-06-17]
+- Minor improvements on transfer list:
+  + fixed some issues on date format
+  + add a direct PDF download link
+  + add some tooltips
+
+## v 1.6 [2019-06-13]
+- upgraded to be fully compatible with Dolibarr 7.x 8.x & 9.0.x
+
+## v 1.5 [2018-08-03]
+- pdf view: improved the header specifying departure & destination info.
+
+## v 1.4 [2018-07-03]
+- transfer_edit view: fixed an issue with dates, on days/months number lower than 10 (ie. 1/2/2018)
+
+## v 1.3
+- transfer edit page: easter egg to render the raw data of the transfer on database when double clicking a hidden link
+
+## v 1.2 [2017-11-29]
+- made compatible the module with /custom install
+- fixed some issues when not enabled Projects module
+
+## v 1.1 [2017-11-20]
+- first version

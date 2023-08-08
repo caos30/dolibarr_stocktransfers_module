@@ -89,7 +89,7 @@ dol_fiche_head($head, 'tabchangelog', $langs->trans('stocktransfersMenuTitle2'),
 
 /* CHANGELOG */
 print "<div style='padding:1em 2em;'>";
-$fh = fopen(__DIR__.'/../CHANGELOG.TXT',"r");
+$fh = fopen(__DIR__.'/../ChangeLog.md',"r");
 while ($line = fgets($fh)){
     $line = trim($line);
     $ini = substr($line,0,2);
@@ -104,7 +104,7 @@ while ($line = fgets($fh)){
     }
 }
 fclose($fh);
-//print nl2br(file_get_contents(__DIR__.'/../CHANGELOG.TXT'));
+//print nl2br(file_get_contents(__DIR__.'/../ChangeLog.md'));
 print "</div>";
 
 dol_fiche_end();

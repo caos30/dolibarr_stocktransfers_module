@@ -129,10 +129,20 @@ STsettTit04=Recueil
 STsettLab14=Nombre de décimales pour les quantités en stock
 
 ##### version 1.22 #####
+
 STsettLab15=Afficher le logo
 
 ##### version 1.23 #####
+
 STsettLab16=Langage par défaut
 STsettLab16opt1=Celui de l'utilisateur générant le PDF
 STsettLab17=Format de date
 STsettLab17opt1=Le format défini dans le système
+
+##### version 1.31 #####
+
+STsettLab08opt2=Oui (dans la colonne Description)
+STsettLab08opt2b=Oui (dans sa propre colonne)
+STsettLab18=Montrer la référence
+STpdfBarCode=Code à barres
+

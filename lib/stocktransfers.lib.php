@@ -28,6 +28,20 @@
 $linktohelp='EN:Module_stockTransfers_En|CA:Modul_stockTransfers|ES:Modulo_stockTransfers';
 
 /*
+    these are to guarantee compatibility to Dolibarr versions previous to 10 and 11, where didn't exist newToken() and currentToken()
+*/
+if (!function_exists('newToken')){
+	function newToken(){
+		return empty($_SESSION['newtoken']) ? '' : $_SESSION['newtoken'];
+	}
+}
+if (!function_exists('currentToken')){
+	function currentToken(){
+		return isset($_SESSION['token']) ? $_SESSION['token'] : '';
+	}
+}
+
+/*
     this function should not be necessary, but i've not understood why the dolibarr price() function doesn't render thousands separator
 */
 function _price($floatval){

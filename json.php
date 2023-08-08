@@ -25,8 +25,12 @@
  *      \version    v 1.0 2020/04/28
  */
 
-    // == ACTIVATE the ERROR reporting
-    ini_set('display_errors',1);ini_set('display_startup_errors',1);error_reporting(-1);
+// == ACTIVATE the ERROR reporting
+ini_set('display_errors',1);ini_set('display_startup_errors',1);error_reporting(-1);
+
+if (!defined('NOTOKENRENEWAL')) {
+	define('NOTOKENRENEWAL', 1); // Disables token renewal
+}
 
 $res=0;
 if (! $res && file_exists("../main.inc.php")) $res=@include("../main.inc.php");

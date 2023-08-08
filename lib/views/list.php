@@ -51,6 +51,7 @@
     // == object fields
         $arrayfields=array(
             //'rowid'=>array('label'=>$langs->trans("STID"), 'checked'=>1, 'style'=>'width:4rem;'),
+            'rowid'=>array('label'=>'Ref.', 'checked'=>1, 'style'=>'width:3rem;'),
             'ts_create'=>array('label'=>$langs->trans("STDate"), 'checked'=>1),
             'label'=>array('label'=>$langs->trans("STLabel"), 'checked'=>1),
             'inventorycode'=>array('label'=>$langs->trans("STinventorycode"), 'checked'=>0),
@@ -243,7 +244,7 @@
 
     <form method="POST" id="transfer_searchFormList" name="searchFormList" action="<?= $_SERVER["PHP_SELF"] ?>">
 
-        <input type="hidden" name="token" value="<?= $_SESSION['token'] ?>" />
+        <input type="hidden" name="token" value="<?= newToken() ?>" />
 		<input type="hidden" name="formfilteraction" id="formfilteraction" value="list" />
         <input type="hidden" name="action" value="list" />
         <input type="hidden" name="sortfield" value="<?= $sortfield ?>" />
@@ -261,12 +262,12 @@
     <div class="tabsAction">
 
     <?php   if ($user->rights->stock->mouvement->creer) { ?>
-            <a class="butAction" href="<?= $_SERVER["PHP_SELF"].'?id='.$id.'&action=correction' ?>">
+            <a class="butAction" href="<?= $_SERVER["PHP_SELF"].'?id='.$id.'&action=correction&token='.(newToken()) ?>">
                 <?= $langs->trans("StockCorrection") ?></a>
     <?php       } ?>
 
     <?php   if ($user->rights->stock->mouvement->creer) { ?>
-            <a class="butAction" href="<?= $_SERVER["PHP_SELF"].'?id='.$id.'&action=transfert' ?>">
+            <a class="butAction" href="<?= $_SERVER["PHP_SELF"].'?id='.$id.'&action=transfert&token='.(newToken()) ?>">
                 <?= $langs->trans("StockTransfer") ?></a>
     <?php   } ?>
 
@@ -286,11 +287,11 @@
     <!-- ========= header first row (column titles) ========= -->
 
         <tr class="liste_titre">
-            <td>&nbsp;</td> <!-- action column for buttons (edit...) -->
+            <!--<td>&nbsp;</td> <!-- action column for buttons (edit...) -->
             <?php
                 // == field columns
                 foreach($arrayfields as $f=>$field){
-                    if (!empty($field['checked'])){
+                    if (!empty($field['checked']) || $f=='rowid'){
 						$moreattrib = 'style="white-space:normal;"';
                         print_liste_field_titre($field['label'],$_SERVER["PHP_SELF"],$f,'',$param,$moreattrib,$sortfield,$sortorder);
                     }
@@ -305,11 +306,11 @@
     <!-- ========= header second row (filters) ========= -->
 
         <tr class="liste_titre">
-            <td>&nbsp;</td> <!-- action column for buttons (edit...) -->
+            <!-- <td>&nbsp;</td> <!-- action column for buttons (edit...) -->
             <?php
                 // == field columns
                 foreach($arrayfields as $f=>$field){
-                    if (!empty($field['checked'])){
+                    if (!empty($field['checked']) || $f=='rowid'){
                         print '<td class="liste_titre" align="left">';
 
                         if ($f=='n_products'){
@@ -383,17 +384,21 @@
     ?>
         <tr>
             <!-- action column for buttons (edit...) -->
+            <!--
             <td>
                 <a class="button" href="transfer_edit.php?mainmenu=products&leftmenu=&rowid=<?= $ele['rowid'] ?>">
                     <span class="fa fa-cog"></span>
                 </a>
             </td>
+            -->
             <?php
                 foreach($arrayfields as $f=>$field){ //  use this to render fancy tooltips stored on title attribute of a link class="classfortooltip"
-                    if (!empty($field['checked'])){
+                    if (!empty($field['checked']) || $f=='rowid'){
                         if ($f=='rowid'){
                             print '<td style="text-align:center;">'
-                                 .' <a href="transfer_edit.php?mainmenu=products&leftmenu=&rowid='.$ele[$f].'">#'.$ele['rowid'].'</a>'
+                                 .' <a class="button" href="transfer_edit.php?mainmenu=products&leftmenu=&rowid='.$ele[$f].'" '
+                                 .'    style="width:100%;white-space:nowrap;min-width:0;padding:0.3em 0.2em 0.3em 0.1em;margin:0;">'
+                                 .'<i class="fa fa-dolly"></i> #'.$ele['rowid'].' </a>'
                                  .'</td>';
 
                         }else if ($f=='ts_create'){

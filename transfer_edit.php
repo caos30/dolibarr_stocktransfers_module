@@ -94,16 +94,6 @@ $langs->load("stocktransfers@stocktransfers");
     $listofdata=array();
     if (! empty($_SESSION['massstockmove'])) $listofdata=json_decode($_SESSION['massstockmove'],true);
 
-// == SESSION MESSAGES (this is from this module)
-    if (!empty($_SESSION['EventMessages']) && is_array($_SESSION['EventMessages']) && count($_SESSION['EventMessages'])>0){
-        foreach($_SESSION['EventMessages'] as $arr){
-            setEventMessages($arr[0],$arr[1],$arr[2]);
-        }
-    }
-    $_SESSION['EventMessages'] = array();
-
-    //if (!empty($_POST)){     echo _var($_GET,'$_GET')._var($_POST,'$_POST')._var($_FILES,'$_FILES'); }
-
 /***************************************************
  *
  *	Actions
@@ -113,10 +103,10 @@ $langs->load("stocktransfers@stocktransfers");
 if ($action == 'delete_transfer') {
 
     if (!$transfer->rowid || $transfer->status != '0'){
-        $_SESSION['EventMessages'][] = array("stocktransfersErrorMsg04",null,'errors');
+		setEventMessage($langs->trans("stocktransfersErrorMsg04"),  'errors');
     }else{
         $transfer->delete($user);
-        $_SESSION['EventMessages'][] = array("RecordDeleted",null,'mesgs');
+        setEventMessage($langs->trans("RecordDeleted"),  'errors');
     }
 
     // == redirect to list
@@ -206,9 +196,9 @@ if ($action == 'delete_transfer') {
         if ($result < 0){
             dol_print_error($db,$transfer->error);
         }else if ($new){
-            $_SESSION['EventMessages'][] = array("RecordCreatedSuccessfully",null,'mesgs');
+			setEventMessage($langs->trans("RecordCreatedSuccessfully"),  'mesgs');
         }else{
-            $_SESSION['EventMessages'][] = array("RecordModifiedSuccessfully",null,'mesgs');
+			setEventMessage($langs->trans("RecordModifiedSuccessfully"), 'mesgs');
         }
 
     // == redirect to list
@@ -218,11 +208,10 @@ if ($action == 'delete_transfer') {
 }else if ($action == 'add_line') {
 
     if (empty($_POST['add_pid'])){
-        $_SESSION['EventMessages'][] = array($langs->trans("ErrorGlobalVariableUpdater2",'product'),null,'errors');
+		setEventMessage($langs->trans("ErrorGlobalVariableUpdater2",'product'), 'errors');
     }else if (empty($_POST['n'])){
-        $_SESSION['EventMessages'][] = array($langs->trans("ErrorGlobalVariableUpdater2",'n'),null,'errors');
+		setEventMessage($langs->trans("ErrorGlobalVariableUpdater2",'n'), 'errors');
     }else{
-        //echo _var_export($_POST,'$_POST');die();
         $transfer->products[$_POST['add_pid']] = array(
             'id'=>$_POST['add_pid'],
             'n'=>floatval($_POST['n']),
@@ -235,7 +224,7 @@ if ($action == 'delete_transfer') {
         if ($result < 0)
             dol_print_error($db,$transfer->error);
         else
-            $_SESSION['EventMessages'][] = array("RecordModifiedSuccessfully",null,'mesgs');
+			setEventMessage($langs->trans("RecordModifiedSuccessfully"), 'mesgs');
     }
 
     // == redirect to list
@@ -244,7 +233,7 @@ if ($action == 'delete_transfer') {
 }else if ($action == 'del_line') {
 
     if (empty($_POST['del_pid'])){
-        $_SESSION['EventMessages'][] = array($langs->trans("ErrorGlobalVariableUpdater2",'product'),null,'errors');
+		setEventMessage($langs->trans("ErrorGlobalVariableUpdater2",'product'), 'errors');
     }else{
 
         $transfer->products[$_POST['del_pid']];
@@ -259,7 +248,7 @@ if ($action == 'delete_transfer') {
         if ($result < 0) {
             dol_print_error($db,$transfer->error);
         }else{
-            $_SESSION['EventMessages'][] = array("DeleteLine",null,'mesgs');
+			setEventMessage($langs->trans("RecordDeleted"), 'mesgs');
         }
     }
 
@@ -267,7 +256,6 @@ if ($action == 'delete_transfer') {
         header("Location: transfer_edit.php?mainmenu=products&leftmenu=&rowid=".$transfer->rowid); die();
 
 }
-
 
 /***************************************************
  *

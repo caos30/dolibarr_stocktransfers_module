@@ -129,10 +129,20 @@ STsettTit04=Miscelánea
 STsettLab14=Núm. de decimales para cantidades de stock
 
 ##### version 1.22 #####
+
 STsettLab15=Mostrar el logo
 
 ##### version 1.23 #####
+
 STsettLab16=Idioma por defecto
 STsettLab16opt1=El del usuario generando el PDF
 STsettLab17=Formato de la fecha
 STsettLab17opt1=El formato definido en el sistema
+
+##### version 1.31 #####
+
+STsettLab08opt2=Sí (en la columna Descripción)
+STsettLab08opt2b=Sí (en su propia columna)
+STsettLab18=Mostrar la referencia
+STpdfBarCode=Código de barras
+

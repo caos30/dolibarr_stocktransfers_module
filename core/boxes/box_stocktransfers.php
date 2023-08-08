@@ -58,16 +58,7 @@ class box_stocktransfers extends ModeleBoxes
 		global $conf, $user;
 
 		$this->db = $db;
-                $this->hidden =  !$user->rights->stock->mouvement->lire || !$user->rights->produit;
-
-                // == STOCKTRANSFERS_MODULE DOCUMENT_ROOT & URL_ROOT
-                    if (file_exists(DOL_DOCUMENT_ROOT.'/custom/stocktransfers/core/modules/modStocktransfers.class.php')){
-                        define('STOCKTRANSFERS_MODULE_DOCUMENT_ROOT',DOL_DOCUMENT_ROOT.'/custom/stocktransfers');
-                        define('STOCKTRANSFERS_MODULE_URL_ROOT',DOL_URL_ROOT.'/custom/stocktransfers');
-                    }else{
-                        define('STOCKTRANSFERS_MODULE_DOCUMENT_ROOT',DOL_DOCUMENT_ROOT.'/stocktransfers');
-                        define('STOCKTRANSFERS_MODULE_URL_ROOT',DOL_URL_ROOT.'/stocktransfers');
-                    }
+		$this->hidden =  !$user->rights->stock->mouvement->lire || !$user->rights->produit;
 
 	}
 
@@ -94,6 +85,17 @@ class box_stocktransfers extends ModeleBoxes
                         );
                         return;
                     }
+
+                // == STOCKTRANSFERS_MODULE DOCUMENT_ROOT & URL_ROOT
+					if (!defined('STOCKTRANSFERS_MODULE_DOCUMENT_ROOT')){
+						if (file_exists(DOL_DOCUMENT_ROOT.'/custom/stocktransfers/core/modules/modStocktransfers.class.php')){
+							define('STOCKTRANSFERS_MODULE_DOCUMENT_ROOT',DOL_DOCUMENT_ROOT.'/custom/stocktransfers');
+							define('STOCKTRANSFERS_MODULE_URL_ROOT',DOL_URL_ROOT.'/custom/stocktransfers');
+						}else{
+							define('STOCKTRANSFERS_MODULE_DOCUMENT_ROOT',DOL_DOCUMENT_ROOT.'/stocktransfers');
+							define('STOCKTRANSFERS_MODULE_URL_ROOT',DOL_URL_ROOT.'/stocktransfers');
+						}
+					}
 
                 // == load data
                     include_once STOCKTRANSFERS_MODULE_DOCUMENT_ROOT.'/lib/stocktransfers_transfer.class.php';

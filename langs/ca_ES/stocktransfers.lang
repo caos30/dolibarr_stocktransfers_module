@@ -129,10 +129,20 @@ STsettTit04=Miscel·lània
 STsettLab14=Núm. de decimals per quantitats d'estoc
 
 ##### version 1.22 #####
+
 STsettLab15=Mostrar el logo
 
 ##### version 1.23 #####
+
 STsettLab16=Idioma per defecte
 STsettLab16opt1=El de l'usuari generant el PDF
 STsettLab17=Format de la data
 STsettLab17opt1=El format definit al sistema
+
+##### version 1.31 #####
+
+STsettLab08opt2=Sí (a la columna Descripció)
+STsettLab08opt2b=Sí (a la seva pròpia columna)
+STsettLab18=Mostrar la referència
+STpdfBarCode=Codi de barres
+
